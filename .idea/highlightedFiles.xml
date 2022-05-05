@@ -5,6 +5,7 @@
       <node color="1" path="$PROJECT_DIR$/src/components/Panel/PanelButtonsList" />
       <node color="4" path="$PROJECT_DIR$/src/components/Panel/PanelFooter" />
       <node color="7" path="$PROJECT_DIR$/src/components/Panel/PanelHeader" />
+      <node color="2" path="$PROJECT_DIR$/src/Layout" />
     </files>
     <colors>
       <color id="1" value="#22403c" name="Color 1" enabled="true" />

@@ -1,11 +1,17 @@
 import React from 'react'
-import { Panel } from './components/Panel/Panel'
+import { Navigate, Route, Routes } from 'react-router-dom'
+import BasicUserLayout from './Layout/BasicLayout/BasicLayout'
 
 const App = () => (
-  <div className='App'>
+  <>
+    <Routes>
 
-  <Panel/>
-  </div>
+      <Route element={<BasicUserLayout/>} path='/students'>
+
+      </Route>
+      <Route element={<Navigate to='/students'/>} path='*'/>
+    </Routes>
+  </>
 )
 
 export default App

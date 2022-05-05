@@ -1,2 +1,7 @@
 @import "reset";
 @import "colors";
+
+#root {
+  display    : flex;
+  min-height : 100vh;
+}
