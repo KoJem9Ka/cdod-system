@@ -3,7 +3,8 @@ import { Panel } from './components/Panel/Panel'
 
 const App = () => (
   <div className='App'>
-    <Panel/>
+
+  <Panel/>
   </div>
 )
 
