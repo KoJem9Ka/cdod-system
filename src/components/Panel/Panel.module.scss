@@ -1,4 +1,11 @@
+@import "src/styles/colors.scss";
+
 .Panel{
-  background-color: #ffafaf;
+  color: white;
+  font-family: "JetBrains Mono", serif;
+  background-color: $panel_color;
+
   display: flex;
+  flex-direction: column;
+  width: 350px;
 }
