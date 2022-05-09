@@ -1,9 +1,12 @@
 import React from 'react'
 import style from './NotFoundPage.module.scss'
+import { ReactComponent as Robot } from '../../assets/img/Robot404.svg'
 
 const NotFoundPage: React.FC = () => (
   <div className={style.NotFoundPage}>
-    <h1 className={'_icon-ads'}>Error 404</h1>
+    <Robot/>
+    <h1>404 Error</h1>
+    <h2>Page not found</h2>
   </div>
 )
 
