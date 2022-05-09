@@ -1,14 +1,14 @@
 @font-face {
-  font-family: 'icons';
+  font-family  : 'icons';
 
-  src:  url(src/assets/fonts/icons.eot?rozpkd);
-  src:  url(src/assets/fonts/icons.eot?rozpkd#iefix) format('embedded-opentype'),
-    url(src/assets/fonts/icons.ttf?rozpkd) format('truetype'),
-    url(src/assets/fonts/icons.woff?rozpkd) format('woff'),
-    url(src/assets/fonts/icons.svg?rozpkd#icons) format('svg');
-  font-weight: normal;
-  font-style: normal;
-  font-display: block;
+  src          : url(../assets/fonts/icons.eot?rozpkd);
+  src          : url(../assets/fonts/icons.eot?rozpkd#iefix) format('embedded-opentype'),
+  url(../assets/fonts/icons.ttf?rozpkd) format('truetype'),
+  url(../assets/fonts/icons.woff?rozpkd) format('woff'),
+  url(../assets/fonts/icons.svg?rozpkd#icons) format('svg');
+  font-weight  : normal;
+  font-style   : normal;
+  font-display : block;
 }
 
 [class^="_icon-"]::before,

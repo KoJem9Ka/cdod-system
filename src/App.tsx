@@ -1,7 +1,7 @@
 import React from 'react'
-import { Navigate, Route, Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import BasicLayout from './Layout/BasicLayout/BasicLayout'
-import NotFoundPage from './Layout/NotFoundPage/NotFoundPage'
+import NotFoundPage from './Pages/NotFoundPage/NotFoundPage'
 
 const App: React.FC = () => (
   <>

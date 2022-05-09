@@ -1,0 +1,11 @@
+.NotFoundPage {
+  font-size      : 100px;
+  display        : flex;
+  flex-direction : column;
+  margin         : 0 auto;
+
+  & > h1 {
+    font-family : "JetBrains Mono", serif;
+    font-size   : 100px;
+  }
+}
