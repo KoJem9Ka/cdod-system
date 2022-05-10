@@ -3,7 +3,7 @@
 .Panel{
   color: white;
   font-family: "JetBrains Mono", serif;
-  background-color: $dgray_panel_color;
+  background-color: var(--dgray_panel_color);
 
   display: flex;
   flex-direction: column;
