@@ -1,7 +1,18 @@
-.PanelHeader{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 20px;
-  font-size: 25px;
+.PanelHeader {
+  display         : flex;
+  align-items     : center;
+  justify-content : space-between;
+  margin          : 0 1.25rem;
+
+  & > svg {
+
+  }
+
+  & > div {
+    cursor : pointer;
+
+    &:hover {
+      transform : scale(1.2)
+    }
+  }
 }

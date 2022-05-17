@@ -1,26 +1,17 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { PanelButton } from './PanelButton/PanelButton'
 import style from './PanelButtonsList.module.scss'
+import { CRoutesTest } from '../PanelConfig'
 
 type TPanelButtonItem = {
   name: string
   route: string
 }
 
-export const PanelButtonsList: React.FC = () => {
-  const [ routes, setRoutes ] = useState<TPanelButtonItem[]>([
-    { route:'students', name:'Ученики' },
-    { route:'schedule', name:'Расписание' },
-    { route:'courses', name:'Курсы' },
-    { route:'groups', name:'Группы' },
-    { route:'ads', name:'Объявления' },
-    { route:'teachers', name:'Преподаватели' },
-    { route:'payment', name:'Оплата' }
-  ])
-
-  return (
-    <div className={style.PanelButtonsList}>
-      {routes.map(element => <PanelButton key={element.route} name={element.name} route={element.route} />)}
-    </div>
-  )
-}
+export const PanelButtonsList: React.FC = () => (
+  <div className={style.PanelButtonsList}>
+    {CRoutesTest.map( routeItem => (
+      <PanelButton key={routeItem.route} {...routeItem}/>
+    ) )}
+  </div>
+)

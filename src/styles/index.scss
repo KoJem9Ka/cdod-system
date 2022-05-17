@@ -1,17 +1,12 @@
 @import "reset";
 @import "colors";
-@import 'iconsfont';
+@import '../assets/fonts/icomoon/icomoon_font';
+@import '../assets/fonts/rubik/rubik_font';
 
 #root {
-  display    : flex;
-  min-height : 100vh;
-  background-color: $bg_color;
-  color: $dgray_text_color;
-}
-:root{
-  --dgray_panel_color: #2C2C2C;
-  --bg_color: #F0F5FA;
-  --dgray_text_color: #2B2E36;
-  --dblue_color: #007AA9;
-  --lblue_color: #57BDDB;
+  font-family      : Rubik, serif;
+  display          : flex;
+  min-height       : 100vh;
+  color            : var(--COLOR_dark-gray-text);
+  background-color : var(--COLOR_background);
 }

@@ -1,11 +1,15 @@
 @import "src/styles/colors.scss";
 
-.Panel{
-  color: white;
-  font-family: "JetBrains Mono", serif;
-  background-color: var(--dgray_panel_color);
+.Panel {
+  font-size        : 1.25rem;
+  display          : flex;
+  flex-direction   : column;
+  min-width        : 350px;
+  padding          : 1.25rem 0 3.125rem;
+  color            : var(--COLOR_white);
+  background-color : var(--COLOR_dark);
 
-  display: flex;
-  flex-direction: column;
-  width: 350px;
+  & > * + * {
+    margin-top : 1.25rem;
+  }
 }

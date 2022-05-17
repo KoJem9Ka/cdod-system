@@ -4,6 +4,7 @@ import { PanelButtonsList } from './PanelButtonsList/PanelButtonsList'
 import { PanelFooter } from './PanelFooter/PanelFooter'
 import style from './Panel.module.scss'
 
+//TODO: По всей панели настроить usePanelOpening()
 const Panel: React.FC = () => (
   <div className={style.Panel}>
     <PanelHeader/>

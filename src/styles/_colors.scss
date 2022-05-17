@@ -1,5 +1,103 @@
-$dgray_panel_color: #2C2C2C;
-$bg_color: #F0F5FA;
-$dgray_text_color: #2B2E36;
-$dblue_color: #007AA9;
-$lblue_color: #57BDDB;
+//:root {
+//  --dgray_panel_color : #2C2C2C;
+//  --bg_color          : #F0F5FA;
+//  --dgray_text_color  : #2B2E36;
+//  --dblue_color       : #007AA9;
+//  --lblue_color       : #57BDDB;
+//}
+//$dgray_panel_color : #2C2C2C;
+//$bg_color          : #F0F5FA;
+//$dgray_text_color  : #2B2E36;
+//$dblue_color       : #007AA9;
+//$lblue_color       : #57BDDB;
+
+:root {
+  //тёмный
+  --COLOR_dark                                      : rgba(44, 44, 44, 1);
+  //черный
+  --COLOR_black                                     : rgba(0, 0, 0, 1);
+  //белый
+  --COLOR_white                                     : rgba(255, 255, 255, 1);
+  //логотип
+  --COLOR_logo                                      : rgba(0, 122, 169, 1);
+  //голубой
+  --COLOR_blue                                      : rgba(87, 189, 219, 1);
+  //тёмно-серый-текст
+  --COLOR_dark-gray-text                            : rgba(43, 46, 54, 1);
+  //фон
+  --COLOR_background                                : rgba(240, 245, 250, 1);
+  //серый-фон
+  --COLOR_gray-background                           : rgba(245, 245, 245, 1);
+  //серая-линия
+  --COLOR_gray-line                                 : rgba(184, 187, 199, 1);
+  //серый-бледный-пунктир
+  --COLOR_gray-pale-punctuated                      : rgba(147, 152, 168, 1);
+  //линия-прозрачно-синяя
+  --COLOR_line-transparent-blue                     : rgba(189, 207, 228, 1);
+  //галочка/*Ф*/
+  --COLOR_tick                                      : rgba(26, 129, 169, 1);
+  //тёмно-светлый
+  --COLOR_dark-blue                                 : rgba(70, 70, 70, 1);
+  //--time
+  --COLOR_time                                      : rgba(255, 196, 46, 1);
+  //что-то-непонятное-и-шорты--голубой-тёмный
+  --COLOR_something-unclear-and-shorts-blue-dark    : rgba(36, 163, 203, 1);
+  //что-то-непонятное-и-шорты--красный
+  --COLOR_something-unclear-and-shorts-red          : rgba(254, 76, 76, 1);
+  //что-то-непонятное-и-шорты--красный-бледный
+  --COLOR_something-unclear-and-shorts-red-pale     : rgba(254, 107, 107, 1);
+  //что-то-непонятное-и-шорты--обводка
+  --COLOR_something-unclear-and-shorts-rimmed       : rgba(63, 69, 85, 1);
+  //что-то-непонятное-и-шорты--star-search
+  --COLOR_something-unclear-and-shorts-star-search  : rgba(243, 217, 79, 1);
+  //что-то-непонятное-и-шорты--time-search
+  --COLOR_something-unclear-and-shorts--time-search : rgba(228, 86, 53, 1);
+  //иконка--иконка-преподавателя
+  --COLOR_icon-and-icon-teacher                     : rgba(87, 189, 219, 1);
+  //иконка--иконка-родителя--ученика
+  --COLOR_icon-parent-icon-student                  : rgba(183, 87, 219, 1);
+  //иконка--иконка-пользователя
+  --COLOR_icon-icon-user-                           : rgba(123, 219, 87, 1);
+  //курсы--питон
+  --COLOR_courses--python                           : rgba(2, 119, 189, 1);
+  //курсы--android--new
+  --COLOR_courses--android--new                     : rgba(61, 220, 132, 1);
+  //курсы--android--old
+  --COLOR_courses--android--old                     : rgba(124, 179, 66, 1);
+  //курсы--c
+  --COLOR_courses--c                                : rgba(150, 85, 245, 1);
+  //курсы--3d
+  --COLOR_courses--3d                               : rgba(0, 131, 143, 1);
+  //курсы--робот-жёлтый
+  --COLOR_courses--robot-yellow                     : rgba(255, 193, 7, 1);
+  //курсы--робот-серый
+  --COLOR_courses--robot--gray                      : rgba(69, 90, 100, 1);
+  //курсы--2-d
+  --COLOR_courses--2-d                              : rgba(0, 0, 91, 1);
+  //курсы--v-r
+  --COLOR_courses--v-r                              : rgba(39, 128, 255, 1);
+  //курсы--prototype
+  --COLOR_courses--prototype                        : rgba(217, 79, 136, 1);
+  //оценки--mark--great--main
+  --COLOR_grades-mark--great--main                  : rgba(0, 145, 50, 1);
+  //оценки--mark--great-back
+  --COLOR_grades-mark--great-back                   : rgba(225, 255, 224, 1);
+  //оценки--mark--medium--main
+  --COLOR_grades-mark-medium-main                   : rgba(253, 111, 2, 1);
+  //оценки--mark--medium-back
+  --COLOR_grades-mark-medium-back                   : rgba(254, 236, 179, 1);
+  //оценки--mark--bad--main
+  --COLOR_grades-mark--bad--main                    : rgba(223, 56, 38, 1);
+  //оценки--mark--bad-back
+  --COLOR_estimates-mark--bad-back                  : rgba(255, 219, 221, 1);
+  //floppa--красный
+  --COLOR_floppa--red                               : rgba(215, 55, 63, 1);
+  //floppa--оранжевый
+  --COLOR_floppa--orange                            : rgba(218, 123, 17, 1);
+  //floppa--зелёный
+  --COLOR_floppa--green                             : rgba(38, 142, 108, 1);
+  //floppa--синий
+  --COLOR_floppa--blue                              : rgba(20, 115, 230, 1);
+  //floppa--фиолетовый
+  --COLOR_floppa--purple                            : rgba(121, 40, 202, 1);
+}

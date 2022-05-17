@@ -1,21 +1,22 @@
 import React from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
-import BasicLayout from './Layout/BasicLayout/BasicLayout'
+import UserLayoutWithPanel from './Layout/BasicLayout/UserLayoutWithPanel'
 import NotFoundPage from './Pages/NotFoundPage/NotFoundPage'
+import LoginPage from './Pages/LoginPage/LoginPage'
+import { CRoutesTest } from './components/Panel/PanelConfig'
 
 const App: React.FC = () => (
   <>
     <Routes>
-      <Route element={<BasicLayout/>} path='/students'/>
       <Route element={<Navigate to='/students'/>} path='/'/>
-      {/*
-      //students
-      //schedule
-      //courses
-      //groups
-      //teachers
-      //payment
-      */}
+
+      <Route element={<UserLayoutWithPanel/>} path='/'>
+        {CRoutesTest.map( page => (
+          <Route key={page.route} element={page.element} path={page.route}/>
+        ) )}
+      </Route>
+
+      <Route element={<LoginPage/>} path='login'/>
       <Route element={<NotFoundPage/>} path='*'/>
     </Routes>
   </>

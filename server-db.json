@@ -1,0 +1,12 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "type": "admin",
+      "login": "admin1",
+      "name_second": "Щербакова",
+      "name_first": "Наталия",
+      "name_third": "Львовна"
+    }
+  ]
+}

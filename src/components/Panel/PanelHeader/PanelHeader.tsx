@@ -1,11 +1,19 @@
 import React from 'react'
 import style from './PanelHeader.module.scss'
-// import Img from '../../../assets/img/Logo.svg'
 import { ReactComponent as Logo } from '../../../assets/img/Logo.svg'
+import { useNavigate } from 'react-router-dom'
+import { PathDefault } from '../../../PathConfig'
+import { usePanelOpening } from '../../../store/InsteadOfContext/hook'
 
-export const PanelHeader: React.FC = () => (
-  <div className={style.PanelHeader}>
-    <Logo/>
-    <a className='_icon-menu' href=''/>
-  </div>
-)
+export const PanelHeader: React.FC = () => {
+  const navigate = useNavigate()
+  const { opened, toggleOpened } = usePanelOpening()
+
+  return (
+    <div className={style.PanelHeader}>
+      {/* TODO: Скрывать иконку при opened === false */}
+      <Logo onClick={() => navigate( PathDefault )}/>
+      <div className='_icon-menu' onClick={toggleOpened}/>
+    </div>
+  )
+}
