@@ -3,8 +3,9 @@
 .Panel {
   font-size        : 1.25rem;
   display          : flex;
+  overflow         : hidden;
+  //min-width        : 500px;
   flex-direction   : column;
-  min-width        : 350px;
   padding          : 1.25rem 0 3.125rem;
   color            : var(--COLOR_white);
   background-color : var(--COLOR_dark);

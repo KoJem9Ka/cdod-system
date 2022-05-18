@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectTreeColorHighlighter">
     <files>
+      <node color="4" path="$PROJECT_DIR$/src/assets" />
       <node color="1" path="$PROJECT_DIR$/src/components/Panel/PanelButtonsList" />
       <node color="4" path="$PROJECT_DIR$/src/components/Panel/PanelFooter" />
       <node color="7" path="$PROJECT_DIR$/src/components/Panel/PanelHeader" />

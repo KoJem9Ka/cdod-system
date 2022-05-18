@@ -1,22 +1,22 @@
-env          :
-  browser: true
-  es2021 : true
-extends      :
+env           :
+  browser : true
+  es2021  : true
+extends       :
   - eslint:recommended
   - plugin:react/recommended
   - plugin:@typescript-eslint/recommended
-parser       : '@typescript-eslint/parser'
-parserOptions:
-  ecmaFeatures:
-    jsx: true
-  ecmaVersion : latest
-  sourceType  : module
-  project     :
+parser        : '@typescript-eslint/parser'
+parserOptions :
+  ecmaFeatures :
+    jsx : true
+  ecmaVersion  : latest
+  sourceType   : module
+  project      :
     - tsconfig.json
-plugins      :
+plugins       :
   - react
   - '@typescript-eslint'
-rules        : {
+rules         : {
 
   indent                                                      : off,
   '@typescript-eslint/indent'                                 : [ warn, 2 ],
@@ -112,5 +112,6 @@ rules        : {
   '@typescript-eslint/no-empty-function'                      : 0,
   react/no-children-prop                                      : 0,
   no-case-declarations                                        : 0,
-  react/display-name                                         : 0,
+  react/display-name                                          : 0,
+  react/prop-types                                            : off,
 }
