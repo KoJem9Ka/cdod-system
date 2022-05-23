@@ -32,7 +32,7 @@ const GridTable = styled.div<GridTableProps>`
   display               : grid;
   overflow-y            : auto;
   overflow-x            : auto;
-  grid-template-rows    : min-content 1fr 2fr;
+  grid-template-rows    : min-content;
 
   //Если scrollable, то таблица должна заполнить свой контейнер
   ${props => props.scrollable && 'flex-grow: 1;'} //TODO: Добавить проверку что видимых элементов меньше количества элементов на страницу
@@ -40,17 +40,17 @@ const GridTable = styled.div<GridTableProps>`
     const min = col.minWidth ? `${col.minWidth}px` : 'auto'
     const max = col.maxWidth ? `${col.maxWidth}px` : 'auto'
     return col.minContent ? 'min-content' :
-            col.maxContent ? 'max-content' :
-                    !(col.minWidth || col.maxWidth) ? 'auto' :
-                            `minmax(${min}, ${max})`
+      col.maxContent ? 'max-content' :
+        !(col.minWidth || col.maxWidth) ? 'auto' :
+          `minmax(${min}, ${max})`
   } ).join( ' ' )};
 
   //Применение свойств к столбцам
   ${props => (props.columns.map( (col, i) => `
   & > *:nth-child(${props.columns.length}n + ${i + 1}) { ${[
-    col.textAlign && `text-align: ${col.textAlign};`,
-    col.textIndent && `text-indent: ${col.textIndent}`
-  ].join( ';' )} }` )).join( '' )}
+      col.textAlign && `text-align: ${col.textAlign};`,
+      col.textIndent && `text-indent: ${col.textIndent}`
+    ].join( ';' )} }` )).join( '' )}
     //отступ
   .th, .td {
     display         : flex;
@@ -239,7 +239,7 @@ export const MyTableDiv: React.FC<TableProps<any>> = <T extends TElementExample>
             {sortConfig && sortConfig.column === col.connector && <span>{sortConfig.ascending ? '🔽' : '🔼'}</span>}
             {col.selectable && <select defaultValue='all' onChange={e => setSelectConfig( col.connector, e.currentTarget.value )} onClick={e => e.stopPropagation()}>
               <option value='all'>Все</option>
-              {columnSelections && columnSelections[col.connector].map( value => <option key={value} value={value}>{value}</option> )}
+              {columnSelections && columnSelections[col.connector]?.map( value => <option key={value} value={value}>{value}</option> )}
             </select>}
           </GridHeadCell>
         ) )}

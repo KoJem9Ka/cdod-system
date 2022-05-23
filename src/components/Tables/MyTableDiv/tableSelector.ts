@@ -5,26 +5,23 @@ import { SimpleObject } from './types'
 export const tableSelector = <TArray extends SimpleObject[]>(dataOriginal: TArray) => {
   type TElemObject = TArray[number]
   type TElemObjectValue = TElemObject[string]
-  type TSelectConfig = {
-    [key: string]: TElemObjectValue
-  }
-  type TSelections = {
-    [key: string]: any[]
-  }
+  type TSelectConfig = Record<string, TElemObjectValue>
+  type TSelections = Record<string, any[] | undefined>
 
   const [ columnSelections, setColumnSelections ] = useState<TSelections>()
   const [ selectConfig, setSelectConfig ] = useState<TSelectConfig>( {} )
 
   const dataSelected = useMemo( () => (Object.keys( selectConfig ).length === 0 ? dataOriginal :
-      dataOriginal.filter( elem => Object.keys( selectConfig ).every( key => elem[key] === selectConfig[key] ) ))
-    , [ dataOriginal, selectConfig ] ) as TArray
+    dataOriginal.filter( elem => Object.keys( selectConfig ).every( key => elem[key] === selectConfig[key] ) ))
+  , [ dataOriginal, selectConfig ] ) as TArray
 
   const selectConfigHandler = (key: string, value: any) => {
     if (value === 'all' && selectConfig[key]) {
       const newSelectConfig = { ...selectConfig }
       delete newSelectConfig[key]
       setSelectConfig( newSelectConfig )
-    } else
+    }
+    else
       setSelectConfig( { ...selectConfig, [key]: value } )
   }
 

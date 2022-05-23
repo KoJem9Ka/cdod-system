@@ -1,8 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../store/store'
 import { thunkLoadStudentsTable } from '../../../store/students/thunks'
 import Workspace from '../../../HOC/Workspace/Workspace'
 import styles from './StudentsPage.module.scss'
+import MyTableDiv from '../../../components/Tables/MyTableDiv/MyTableDiv'
+import { CStudentTable, TStudentTable } from './studentsTableConfig'
 
 const StudentsPage: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -12,9 +14,15 @@ const StudentsPage: React.FC = () => {
     error   : state.students.error,
   }) )
 
+  const [ preparedStudents, setPreparedStudents ] = useState<TStudentTable[]>([])
+
   useEffect( () => {
     dispatch( thunkLoadStudentsTable() )
   }, [] )
+
+  useEffect(() => {
+    setPreparedStudents(students.map(student => ({ ...student, FIO: `${student.first_name} ${student.last_name} ${student.patronymic}` })))
+  }, [ students ])
 
   return (
     <Workspace className={styles.StudentsPage}>
@@ -28,6 +36,7 @@ const StudentsPage: React.FC = () => {
               </>
             )
       }
+      <MyTableDiv columns={CStudentTable} data={preparedStudents}/>
     </Workspace>
   )
 }
