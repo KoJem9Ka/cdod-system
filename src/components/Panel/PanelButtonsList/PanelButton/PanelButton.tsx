@@ -10,11 +10,11 @@ import { motion, MotionProps } from 'framer-motion'
 const wrapperProps: (i: number) => MotionProps = index => ({
   animate: {
     transition: { delay: index * .02 },
-    x: 0,
-    opacity: 1,
+    x         : 0,
+    opacity   : 1,
   },
   initial: {
-    x: -50,
+    x      : -50,
     opacity: 0,
   },
 })
@@ -38,7 +38,7 @@ export const PanelButton: React.FC<TPanelButtonProps> = ({ title, route, index }
     isActive && style.active,
     !opened && style.collapsed
   ].join( ' ' )
-
+  //TODO: Иконки располагаются не ровно
   return (
     <NavLinkMotioned className={activeClassHandler} to={`/${route}`} layout>
       {match && <motion.div {...activeDivProps} className={style.backgrd} layoutId='bg'/>}

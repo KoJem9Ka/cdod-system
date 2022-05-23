@@ -7,7 +7,7 @@
   justify-content : center;
   height          : 3.75rem;
   padding         : 0 6rem 0 1.25rem;
-  transition      : background .3s ease;
+  transition      : background .3s var(--test1);
   background      : transparent;
 
   & > span {

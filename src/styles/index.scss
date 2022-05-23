@@ -2,6 +2,8 @@
 @import "colors";
 //@import '../assets/fonts/icomoon/icomoon_font';
 @import '../assets/fonts/rubik/rubik_font';
+@import 'tables';
+//@import 'tableDiv';
 
 #root {
   font-family      : Rubik, serif;
@@ -9,4 +11,8 @@
   min-height       : 100vh;
   color            : var(--COLOR_dark-gray-text);
   background-color : var(--COLOR_background);
+}
+
+code {
+  font-family : "JetBrains Mono", monospace;
 }

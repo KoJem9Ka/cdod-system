@@ -29,46 +29,43 @@
 # request_date: date
 # contract_status
 import codecs
-from datetime import datetime, timedelta
-from random import randint, random
-from loremipsum import get_sentences
 
-from arrays import male_first_names, female_first_names, female_third_names, female_last_names, male_last_names, male_third_names, courses, phone_numbers
+from arrays import FigureValues
 
 
 def generate_student(id: int):
-    gender = round(random()) == 1
-    isNotes = random() <= 0.4
-    isPaid = random() <= 0.8
-    isSetPaid = random() <= 0.8
-    names = (male_first_names if gender else female_first_names)
-    surnames = (male_last_names if gender else female_last_names)
-    patronymics = (male_third_names if gender else female_third_names)
-
-    course = list(courses.keys())[randint(0, len(courses) - 1)]
+    last_name, first_name, patronymic = FigureValues.getFIO()
+    course, group = FigureValues.getCourseAndGroup()
 
     return f'''
 {{
     "id": {id},
-    "last_name": "{surnames[randint(0, len(surnames) - 1)]}",
-    "first_name": "{names[randint(0, len(names) - 1)]}",
-    "third_name": "{patronymics[randint(0, len(patronymics) - 1)]}",
-    "birth_date": "{(datetime.today() - timedelta(days = 365 * randint(9, 15) + randint(0, 365))).date()}",
+    "last_name": "{last_name}",
+    "first_name": "{first_name}",
+    "patronymic": "{patronymic}",
+    "birth_date": "{FigureValues.getDateBetweenYearsAgo(9, 15)}",
     "course": "{course}",
-    "group": "{courses[course][randint(0, len(courses[course]) - 1)]}",
-    "phone_number": "{phone_numbers[randint(0, len(phone_numbers) - 1)]}",
-    "notes": "{' '.join(get_sentences(randint(0, 2))).replace("'", '') if isNotes else ''}",
-    "paid": {str(isPaid).lower()},
-    "set_payment": {str(isSetPaid).lower() if course == 'Робофабрика' else 'null'},
-    "request_date": "{(datetime.today() - timedelta(days = 365 * randint(0, 3) + randint(10, 365))).date()}",
-    "contract_status": "Учится"
+    "group": "{group}",
+    "phone_number": "{FigureValues.getPhone()}",
+    "notes": {FigureValues.getNotes()},
+    "paid": {FigureValues.getPaid()},
+    "materials_paid": {FigureValues.getMaterialsPaid(course)},
+    "request_date": "{FigureValues.getDateBetweenYearsAgo(0, 3)}",
+    "contract_status": "{FigureValues.getContractStatus()}"
 }}
 '''.strip()
 
 
 if __name__ == '__main__':
-    students = [generate_student(i) for i in range(500)]
-    json = f'''{{"students": [{','.join(students)}]}}'''
+    students = [generate_student(i) for i in range(1,500+1)]
+    sep = ',\n'
+    json = f'''
+{{
+    "students": [
+        {sep.join(students)}
+    ]
+}}
+    '''.strip()
     # print(','.join(students[0:3]))
     with codecs.open('students.json', 'w', 'utf-8') as file:
         file.write(json)

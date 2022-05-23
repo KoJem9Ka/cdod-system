@@ -1,9 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { TAppAsyncThinkConfig } from '../store'
+import { TStudent } from './types'
 
-export const thunkLoadStudentsTable = createAsyncThunk<void/*TStudent[]*/, void, TAppAsyncThinkConfig>( 'students/load',
+export const thunkLoadStudentsTable = createAsyncThunk<TStudent[], void, TAppAsyncThinkConfig>( 'students/load',
   async (_ = undefined, { extra: api }) => {
-    const students = await api.studentsTable.get()
-    console.log( students )
+    const { data } = await api.studentsTable.get()
+    return data
   }
 )

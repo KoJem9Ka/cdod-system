@@ -12,7 +12,7 @@ export const store = configureStore( {
   },
   devTools: true,
   middleware: getDefaultMiddleware => getDefaultMiddleware( {
-    thunk: { extraArgument: { api } },
+    thunk: { extraArgument: api },
   } ).concat( logger ),
 } )
 

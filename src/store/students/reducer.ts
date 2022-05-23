@@ -16,8 +16,7 @@ export const studentsSlice = createSlice( {
   reducers: {},
   extraReducers: builder => builder
     .addCase( thunkLoadStudentsTable.fulfilled, (state, action) => {
-      state.status = 'fulfilled'
-      state.list = [] //todo : add action payload to thunk
+      state.list = action.payload
     } )
     .addMatcher( action => action.type.endsWith( '/pending' ), (state, action) => {
       state.status = 'pending'

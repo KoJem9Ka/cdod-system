@@ -1,4 +1,5 @@
 .BasicLayout {
-  display     : flex;
-  align-items : stretch;
+  display : flex;
+  //align-items : stretch; непонятно, вроде нужно, а может и нет?
+  width   : 100%;
 }

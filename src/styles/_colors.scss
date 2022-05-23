@@ -12,6 +12,8 @@
 //$lblue_color       : #57BDDB;
 
 :root {
+  //animations
+  --test1                                           : cubic-bezier(.87, .08, .08, .89);
   //тёмный
   --COLOR_dark                                      : rgba(44, 44, 44, 1);
   //черный
