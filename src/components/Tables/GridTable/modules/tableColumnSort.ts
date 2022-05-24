@@ -1,9 +1,9 @@
 import { useMemo, useState } from 'react'
-import { SimpleObject } from './types'
+import { SimpleObject } from '../types'
 
 // type ElementOfArray<T> = T[keyof T]
 //Пиздец бля какой то
-export const tableSort = <Elem extends SimpleObject>(dataOriginal: Elem[]) => {
+export const tableColumnSort = <Elem extends SimpleObject>(dataOriginal: Elem[]) => {
   type ElemKeys = keyof Elem & string
   type ElemValue = Elem[ElemKeys]
   type TSort = { column: ElemKeys, ascending: boolean }

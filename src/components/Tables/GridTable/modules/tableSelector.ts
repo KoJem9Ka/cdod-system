@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { SimpleObject, TTableColumnsConfig } from './types'
+import { SimpleObject, TTableColumnsConfig } from '../types'
 
 
 export const tableSelector = <Elem extends SimpleObject, TColConf extends TTableColumnsConfig<Elem>>(dataOriginal: Elem[], columnsConfig: TColConf) => {
@@ -39,5 +39,5 @@ export const tableSelector = <Elem extends SimpleObject, TColConf extends TTable
     availableSelections,
 
     dataSelected,
-  })
+  } as const)
 }

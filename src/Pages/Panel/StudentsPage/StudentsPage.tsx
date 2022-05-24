@@ -3,8 +3,8 @@ import { useAppDispatch, useAppSelector } from '../../../store/store'
 import { thunkLoadStudentsTable } from '../../../store/students/thunks'
 import Workspace from '../../../HOC/Workspace/Workspace'
 import styles from './StudentsPage.module.scss'
-import MyTableDiv from '../../../components/Tables/MyTableDiv/MyTableDiv'
 import { CStudentTable, TStudentTable } from './studentsTableConfig'
+import GridTable from '../../../components/Tables/GridTable/GridTable'
 
 const StudentsPage: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -33,7 +33,7 @@ const StudentsPage: React.FC = () => {
             status === 'fulfilled' && (
               <>
                 <h3>{`Loaded: ${students.length}`}</h3>
-                <MyTableDiv
+                <GridTable
                   columnsConfig={CStudentTable}
                   data={preparedStudents}
                   globalSearch

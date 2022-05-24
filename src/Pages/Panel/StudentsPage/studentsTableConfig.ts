@@ -1,5 +1,5 @@
 import { TStudent } from '../../../store/students/types'
-import { TTableColumnsConfig } from '../../../components/Tables/MyTableDiv/types'
+import { TTableColumnsConfig } from '../../../components/Tables/GridTable/types'
 
 export type TStudentTable = Omit<TStudent, 'last_name' | 'first_name' | 'patronymic'> & {
   FIO: string

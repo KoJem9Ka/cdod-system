@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
+import { SimpleObject } from '../../types'
 
-export const tablePagination = <TDataArray extends object[]>(dataOriginal: TDataArray, paginatable?: boolean) => {
+export const tablePagination = <Elem extends SimpleObject>(dataOriginal: Elem[], paginatable?: boolean) => {
   const [ onePageCount, setOnePageCount ] = useState( 15 )
   const [ currentPage, setCurrentPage ] = useState( 0 )
 
@@ -19,7 +20,7 @@ export const tablePagination = <TDataArray extends object[]>(dataOriginal: TData
     dataOriginal.slice(
       currentPage * onePageCount,
       (currentPage + 1) * onePageCount
-    ) as TDataArray
+    )
 
   useEffect( () => {
     setCans( {
