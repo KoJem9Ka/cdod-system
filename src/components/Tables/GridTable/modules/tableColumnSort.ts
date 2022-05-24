@@ -12,7 +12,7 @@ export const tableColumnSort = <Elem extends SimpleObject>(dataOriginal: Elem[])
 
   const sortFunc = (x: Elem, y: Elem, col: ElemKeys, asc: boolean): -1 | 0 | 1 => {
     let a = x[col],
-      b = y[col]
+        b = y[col]
 
     if (typeof a === 'string' && typeof b === 'string') {
       a = a.toLowerCase() as ElemValue

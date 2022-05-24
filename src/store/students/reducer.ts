@@ -5,9 +5,9 @@ import { thunkLoadStudentsTable } from './thunks'
 
 
 const initialState = {
-  list: [] as TStudent[],
+  list  : [] as TStudent[],
   status: 'idle' as TStatus,
-  error: null as TError,
+  error : null as TError,
 }
 
 export const studentsSlice = createSlice( {

@@ -50,8 +50,8 @@ export const CStudentTable: TTableColumnsConfig<TStudentTable> = [
     connector : 'notes',
     textIndent: '1rem',
     sortable  : true,
-    minWidth  : 200,
-    maxWidth  : 300,
+    minWidth  : 350,
+    maxWidth  : 450,
   },
   {
     title    : 'Оплата курса',
