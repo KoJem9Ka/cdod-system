@@ -24,7 +24,7 @@ const GridNotFound = styled.div.attrs( { className: 'td' } )<{ columnsCount: num
 `
 
 type GridTableProps = {
-  columns: TableProps<any>['columns']
+  columns: TableProps<any>['columnsConfig']
   scrollable?: true
 }
 
@@ -128,7 +128,7 @@ type TElementExample = {
 }
 
 type TableProps<T extends TElementExample> = {
-  columns: readonly (TColumnConfig<T> & { connector: string })[]
+  columnsConfig: readonly (TColumnConfig<T> & { connector: string })[]
   data: T[]
   paginatable?: true
   globalSearch?: true
@@ -143,7 +143,7 @@ type TableProps<T extends TElementExample> = {
 //  Нажатие по одной строке с передачей её id
 
 export const MyTableDiv: React.FC<TableProps<any>> = <T extends TElementExample>({
-  columns,
+  columnsConfig,
   data: dataOriginal,
   paginatable,
   globalSearch,
@@ -151,21 +151,20 @@ export const MyTableDiv: React.FC<TableProps<any>> = <T extends TElementExample>
 }: TableProps<T>) => {
 
   const {
-    dataSelected,
-    selectConfig,
-    setSelectConfig,
-    columnSelections,
-  } = tableSelector( dataOriginal )
-  const {
     dataSorted,
     sortConfig,
     sortHandler,
-  } = tableSort( dataSelected )
+  } = tableSort( dataOriginal )
+  const {
+    dataSelected,
+    selectColumn,
+    availableSelections,
+  } = tableSelector( dataSorted, columnsConfig )
   const {
     search,
     setSearch,
     dataSearched,
-  } = tableSearch( dataSorted )
+  } = tableSearch( dataSelected )
   const {
     canNextPage,
     canPreviousPage,
@@ -224,8 +223,8 @@ export const MyTableDiv: React.FC<TableProps<any>> = <T extends TElementExample>
         </div>}
       </div>}
 
-      <GridTable columns={columns} scrollable={scrollable}>
-        {columns.map( col => (
+      <GridTable columns={columnsConfig} scrollable={scrollable}>
+        {columnsConfig.map( col => (
           <GridHeadCell
             key={col.title}
             style={{
@@ -237,16 +236,16 @@ export const MyTableDiv: React.FC<TableProps<any>> = <T extends TElementExample>
           >
             {col.title}
             {sortConfig && sortConfig.column === col.connector && <span>{sortConfig.ascending ? '🔽' : '🔼'}</span>}
-            {col.selectable && <select defaultValue='all' onChange={e => setSelectConfig( col.connector, e.currentTarget.value )} onClick={e => e.stopPropagation()}>
+            {col.selectable && <select defaultValue='all' onChange={e => selectColumn( col.connector, e.currentTarget.value )} onClick={e => e.stopPropagation()}>
               <option value='all'>Все</option>
-              {columnSelections && columnSelections[col.connector]?.map( value => <option key={value} value={value}>{value}</option> )}
+              {availableSelections && availableSelections[col.connector]?.map( value => <option key={value} value={value}>{value}</option> )}
             </select>}
           </GridHeadCell>
         ) )}
 
         {!dataFinal.length
-          ? <GridNotFound columnsCount={columns.length}>{search ? 'Ничего не найдено' : 'Нет данных'}</GridNotFound>
-          : dataFinal.map( row => columns.map( col => (
+          ? <GridNotFound columnsCount={columnsConfig.length}>{search ? 'Ничего не найдено' : 'Нет данных'}</GridNotFound>
+          : dataFinal.map( row => columnsConfig.map( col => (
             <GridDataCell key={col.title}>{row[col.connector] as never}</GridDataCell>
           ) ) )}
       </GridTable>

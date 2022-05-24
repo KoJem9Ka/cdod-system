@@ -11,9 +11,9 @@ const initialState = {
 }
 
 export const studentsSlice = createSlice( {
-  name: 'students',
+  name         : 'students',
   initialState,
-  reducers: {},
+  reducers     : {},
   extraReducers: builder => builder
     .addCase( thunkLoadStudentsTable.fulfilled, (state, action) => {
       state.list = action.payload

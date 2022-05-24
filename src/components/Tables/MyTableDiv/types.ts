@@ -13,8 +13,8 @@ export type TColumnConfig<TElement extends SimpleObject> = {
   maxWidth?: number
   minWidth?: number
 
-  textAlign?: 'left' | 'center' | 'right' | 'justify'
+  textAlign?: 'center' | 'right' | 'justify'
   textIndent?: string
 }
 
-export type TTableColumnsConfig<T extends SimpleObject> = TColumnConfig<T>[]
+export type TTableColumnsConfig<T extends SimpleObject> = readonly TColumnConfig<T>[]

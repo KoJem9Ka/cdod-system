@@ -1,19 +1,18 @@
 /* eslint-disable arrow-body-style */
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { SimpleObject } from './types'
 
-export const tableSearch = <TDataArray extends SimpleObject[]>(dataOriginal: TDataArray) => {
+export const tableSearch = <Elem extends SimpleObject>(dataOriginal: Elem[]) => {
   const [ search, setSearch ] = useState( '' )
 
-  const dataSearched = !search.length ? dataOriginal :
-    dataOriginal.filter( (elem, i) => {
-      const keys = Object.keys( elem )
-      return -1 !== keys.findIndex( key => {
+  const dataSearched = useMemo<Elem[]>( () => (!search.length ? dataOriginal :
+    dataOriginal.filter( elem => {
+      return Object.keys( elem ).some( key => {
         const value = typeof elem[key] === 'number' ? String( elem[key] ) : elem[key]
-        return typeof value !== 'string' ? '' :
+        return typeof value !== 'string' ? false :
           value.toLowerCase().includes( search.toLowerCase() )
       } )
-    } ) as TDataArray
+    } )), [ dataOriginal, search ] )
 
   return ({
     search,

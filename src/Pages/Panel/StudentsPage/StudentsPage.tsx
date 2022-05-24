@@ -14,15 +14,15 @@ const StudentsPage: React.FC = () => {
     error   : state.students.error,
   }) )
 
-  const [ preparedStudents, setPreparedStudents ] = useState<TStudentTable[]>([])
+  const [ preparedStudents, setPreparedStudents ] = useState<TStudentTable[]>( [] )
 
   useEffect( () => {
     dispatch( thunkLoadStudentsTable() )
   }, [] )
 
-  useEffect(() => {
-    setPreparedStudents(students.map(student => ({ ...student, FIO: `${student.first_name} ${student.last_name} ${student.patronymic}` })))
-  }, [ students ])
+  useEffect( () => {
+    setPreparedStudents( students.map( student => ({ ...student, FIO: `${student.first_name} ${student.last_name} ${student.patronymic}` }) ) )
+  }, [ students ] )
 
   return (
     <Workspace className={styles.StudentsPage}>
@@ -33,10 +33,16 @@ const StudentsPage: React.FC = () => {
             status === 'fulfilled' && (
               <>
                 <h3>{`Loaded: ${students.length}`}</h3>
+                <MyTableDiv
+                  columnsConfig={CStudentTable}
+                  data={preparedStudents}
+                  globalSearch
+                  paginatable
+                  scrollable
+                />
               </>
             )
       }
-      <MyTableDiv columns={CStudentTable} data={preparedStudents}/>
     </Workspace>
   )
 }
