@@ -1,0 +1,26 @@
+.grid {
+  //overflow: hidden;
+  border-radius: 1.25rem;
+  box-shadow: 0px 0px 1rem rgba(0, 0, 0, 0.15);
+}
+
+
+.Paid {
+  font-weight: 500;
+  //padding       : 2px 10px;
+  text-align: center;
+  border-radius: 10px;
+}
+
+.yes {
+  @extend .Paid;
+  color: #009132;
+  background: #E1FFE0;
+}
+
+.no {
+  @extend .Paid;
+  font-weight: 700;
+  color: #DF3826;
+  background: #FFDBDD;
+}

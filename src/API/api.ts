@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios'
-import { TStudent } from '../store/students/types'
+import { TStudent }             from '../types'
 
 const BASE_URL = 'http://localhost:3001'
 

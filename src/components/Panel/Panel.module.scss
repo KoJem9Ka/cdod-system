@@ -1,11 +1,7 @@
-@import "src/styles/colors.scss";
-
 .Panel {
   font-size        : 1.25rem;
   display          : flex;
-  overflow         : hidden;
   flex-direction   : column;
-  //min-width        : 500px;
   flex-shrink      : 0;
   padding          : 1.25rem 0 3.125rem;
   color            : var(--COLOR_white);

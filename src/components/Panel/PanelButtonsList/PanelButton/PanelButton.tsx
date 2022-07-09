@@ -1,20 +1,29 @@
-import React from 'react'
-import style from './PanelButton.module.scss'
-import { NavLinkProps, useMatch } from 'react-router-dom'
+import React               from 'react'
+import style               from './PanelButton.module.scss'
+import {
+  NavLinkProps,
+  useMatch
+}                          from 'react-router-dom'
 import { usePanelOpening } from '../../../../store/InsteadOfContext/hook'
-import NavLinkMotioned from '../../../MotionedCustomComponents/NavLinkMotioned'
-import IconsPanel from '../../../../assets/icons/IconsPanel'
-import { TCRoutes } from '../../PanelConfig'
-import { motion, MotionProps } from 'framer-motion'
+import NavLinkMotioned     from '../../../MotionedCustomComponents/NavLinkMotioned'
+import IconsPanel          from '../../../../assets/icons/IconsPanel'
+import { TCRoutes }        from '../../PanelConfig'
+import {
+  motion,
+  MotionProps
+}                          from 'framer-motion'
+import { AnimationProps }  from 'framer-motion/types/motion/types'
 
-const wrapperProps: (i: number) => MotionProps = index => ({
+
+
+const NavLinkMotionedProps: ( i: number )=> AnimationProps = index => ({
   animate: {
-    transition: { delay: index * .02 },
-    x         : 0,
-    opacity   : 1,
+    transition: { delay: index * .1 },
+    x:          0,
+    opacity:    1,
   },
   initial: {
-    x      : -50,
+    x:       -50,
     opacity: 0,
   },
 })
@@ -29,23 +38,29 @@ type TPanelButtonProps = {
   index: number
 }
 
-export const PanelButton: React.FC<TPanelButtonProps> = ({ title, route, index }) => {
+export const PanelButton: React.FC<TPanelButtonProps> = ( { title, route, index } ) => {
   const match = useMatch( route )
   const { opened } = usePanelOpening()
 
-  const activeClassHandler: NavLinkProps['className'] = ({ isActive }) => [
+  const activeClassHandler: NavLinkProps['className'] = ( { isActive } ) => [
     style.PanelButton,
     isActive && style.active,
     !opened && style.collapsed
   ].join( ' ' )
-  //TODO: Иконки располагаются не ровно
+
+  //TODO: При клике на нижнюю кнопку панели, предудыщая моргает
   return (
-    <NavLinkMotioned className={activeClassHandler} to={`/${route}`} layout>
-      {match && <motion.div {...activeDivProps} className={style.backgrd} layoutId='bg'/>}
-      <motion.span {...wrapperProps( index )}>
-        <IconsPanel ico={route} layout/>
-        {opened && <span>{title}</span>}
-      </motion.span>
+    <NavLinkMotioned
+      className={ activeClassHandler }
+      to={ `/${ route }` }
+      layout
+      { ...NavLinkMotionedProps( index ) }
+    >
+      { match && <motion.div { ...activeDivProps } className={ style.backgrd } layoutId='bg'/> }
+      {/*<motion.span {...wrapperProps( index )}>*/ }
+      <IconsPanel ico={ route } layout/>
+      { opened && <span>{ title }</span> }
+      {/*</motion.span>*/ }
     </NavLinkMotioned>
   )
 }

@@ -1,9 +1,12 @@
 // import React from 'react'
-import styled from 'styled-components'
+import styled     from 'styled-components'
 import { motion } from 'framer-motion'
+
+
 
 const Workspace = styled( motion.div ).attrs( { layout: true } )`
   overflow-y : auto;
+  //overflow: hidden;
   flex-grow  : 1;
   max-height : 100vh;
   padding    : 2rem 1rem;

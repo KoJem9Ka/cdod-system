@@ -1,30 +1,12 @@
 .PanelButton {
-  font-size       : 1.25rem;
-  position        : relative;
-  z-index         : 0;
-  display         : flex;
-  flex-direction  : column;
-  justify-content : center;
-  height          : 3.75rem;
-  padding         : 0 6rem 0 1.25rem;
-  transition      : background .3s var(--test1);
-  background      : transparent;
-
-  & > span {
-    display     : flex;
-    align-items : center;
-
-    i {
-      font-size   : 40px;
-      line-height : 40px;
-      width       : 40px;
-      height      : 40px;
-    }
-
-    span {
-      margin-left : 10px;
-    }
-  }
+  font-size   : 1.25rem;
+  position    : relative;
+  z-index     : 1;
+  display     : flex;
+  align-items : center;
+  padding     : 1rem;
+  transition  : background .3s var(--test1);
+  gap         : 1rem;
 
   &:not(.active):hover {
     background : var(--COLOR_dark-blue);
@@ -32,15 +14,17 @@
 }
 
 .collapsed {
-  padding : 0 1.25rem;
+  justify-content : center;
+  padding         : 0.5rem;
 }
 
 .backgrd {
   position         : absolute;
   z-index          : -1;
   top              : 0;
+  right            : -10rem;
   bottom           : 0;
   left             : 0;
-  width            : 200%;
+  //width            : 200%;
   background-color : var(--COLOR_blue);
 }
