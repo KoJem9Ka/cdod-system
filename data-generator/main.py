@@ -57,7 +57,7 @@ def generate_student(id: int):
 
 
 if __name__ == '__main__':
-    students = [generate_student(i) for i in range(1,500+1)]
+    students = [generate_student(i) for i in range(1, 500 + 1)]
     sep = ',\n'
     json = f'''
 {{
