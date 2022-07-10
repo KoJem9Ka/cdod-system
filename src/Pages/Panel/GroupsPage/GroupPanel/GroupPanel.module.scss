@@ -1,0 +1,148 @@
+.group_panel {
+  position: absolute;
+  top: 0;
+  right: 1rem;
+  color: white;
+  overflow: auto;
+  height: fit-content;
+  width: 400px;
+  border-radius: 20px;
+
+  .group_panel_header {
+    padding: 20px 40px;
+    background: var(--COLOR_blue);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    & > img {
+      border-radius: 100px;
+    }
+    & > div {
+      text-align: center;
+    }
+    .group_panel_text {
+      margin: 0 0 0 15px;
+    }
+    .group_course {
+      font-weight: 700;
+      font-size: 24px;
+    }
+    .group_name {
+      font-weight: 500;
+      font-size: 20px;
+      margin: 0 0 15px;
+    }
+    .group_teacher {
+      font-weight: 700;
+      font-size: 20px;
+    }
+    .group_count {
+      font-weight: 400;
+      font-size: 20px;
+    }
+  }
+
+  .group_panel_header_edit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+     & > input{
+        text-align: center;
+        background: none;
+        border: none;
+        color: white;
+        font-family: Rubik, serif;
+        font-size: 20px;
+        font-weight: 500;
+      }
+    & > select{
+      background: none;
+      border: none;
+      color: white;
+      font-family: Rubik, serif;
+      font-size: 20px;
+      font-weight: 500;
+    }
+  }
+
+
+  .group_panel_footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 55px;
+    width: 400px;
+    gap: 10px;
+    background-color: var(--COLOR_blue);
+    z-index: 5;
+
+    & > button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 18px;
+      font-weight: 700;
+      font-family: Rubik, serif;
+      width: 100%;
+      height: 100%;
+      display: block;
+      cursor: pointer;
+    }
+
+    // Inactive button
+    .inactive {
+      opacity: 0.5;
+    }
+  }
+
+  .group_panel_list {
+    max-height: 500px;
+    overflow: auto;
+    background-color: white;
+    .group_panel_item {
+      color: var(--COLOR_dark-gray-text);
+      background: white;
+      display: grid;
+      padding: 15px 0;
+      line-height: 2rem;
+      grid-template-columns: 1.3fr 7fr 1.7fr;
+
+      & > span:first-child {
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+
+        & > img {
+          vertical-align: middle;
+        }
+      }
+
+      .edit_icon {
+        cursor: pointer;
+      }
+
+    }
+
+    .group_panel_item:nth-child(even) {
+      background: var(--COLOR_gray-background);
+    }
+  }
+
+  .group_panel_not_found {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+    gap: 10px;
+
+    & > p {
+      color: var(--COLOR_gray-pale-punctuated);
+      font-size: 20px;
+      font-weight: 500;
+    }
+  }
+}

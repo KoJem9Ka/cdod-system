@@ -6,6 +6,7 @@ export type TStudent = {
   birth_date: Date
   course: string
   group: string
+  group_id: number
   phone_number: string
   notes?: string
   paid: boolean
@@ -13,3 +14,14 @@ export type TStudent = {
   request_date: Date
   contract_status: 'Выпущен' | 'Учится'
 }
+
+export type TGroup = {
+  id: number
+  course: string
+  groupName: string
+  dateOfCreation: string
+  studentsCount: number
+  teacher: string
+}
+
+export type TGroupWithStudents = { Group: TGroup & { Students: TStudent[] } }

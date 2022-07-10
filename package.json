@@ -19,6 +19,7 @@
     "framer-motion": "^6.3.3",
     "graphql": "^16.5.0",
     "json-graphql-server": "^2.3.1",
+    "lodash": "^4.17.21",
     "node-sass": "^7.0.1",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
@@ -59,6 +60,7 @@
     ]
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.182",
     "@types/redux-logger": "^3.0.9",
     "@types/styled-components": "^5.1.25",
     "@typescript-eslint/eslint-plugin": "^5.22.0",
