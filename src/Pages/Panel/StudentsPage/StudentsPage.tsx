@@ -1,20 +1,18 @@
-import React, { useEffect } from 'react'
+import React                from 'react'
 import Workspace            from '../../../HOC/Workspace/Workspace'
 import styles               from './StudentsPage.module.scss'
 import { useQueryStudents } from '../../../queriesLOCAL'
 import StudentsTable        from './StudentsTable/StudentsTable'
 import { TStudent }         from '../../../types'
 import { toast }            from 'react-toastify'
-import usePreloader         from '../../../components/Preloader/Preloader'
+import { usePreloader }     from '../../../components/Preloader/Preloader'
 
 
 
 const StudentsPage: React.FC = () => {
   const { loading, error, students } = useQueryStudents()
 
-  useEffect( () => {
-    usePreloader( loading )
-  }, [ loading ] )
+  usePreloader( loading )
 
   const rowHandler = ( id: TStudent['id'] ) => {
     toast( `student id: ${ id }` )

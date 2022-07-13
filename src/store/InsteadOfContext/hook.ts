@@ -1,5 +1,10 @@
-import { useAppDispatch, useAppSelector } from '../store'
+import {
+  useAppDispatch,
+  useAppSelector
+}                            from '../store'
 import { actionTogglePanel } from './reducer'
+
+
 
 export const usePanelOpening = () => {
   const dispatch = useAppDispatch()
@@ -7,3 +12,4 @@ export const usePanelOpening = () => {
   const toggleOpened = () => dispatch( actionTogglePanel() )
   return { opened, toggleOpened }
 }
+

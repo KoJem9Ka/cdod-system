@@ -1,14 +1,11 @@
-import React, {
-  useEffect,
-  useState
-}                         from 'react'
-import GroupsTable        from './GroupTable/GroupsTable'
-import { TGroup }         from '../../../types'
-import GroupForm          from './GroupForm/GroupForm'
-import Workspace          from '../../../HOC/Workspace/Workspace'
-import { useQueryGroups } from '../../../queriesLOCAL'
-import styled             from 'styled-components'
-import usePreloader       from '../../../components/Preloader/Preloader'
+import React, { useState } from 'react'
+import GroupsTable         from './GroupTable/GroupsTable'
+import { TGroup }          from '../../../types'
+import GroupForm           from './GroupForm/GroupForm'
+import Workspace           from '../../../HOC/Workspace/Workspace'
+import { useQueryGroups }  from '../../../queriesLOCAL'
+import styled              from 'styled-components'
+import { usePreloader }    from '../../../components/Preloader/Preloader'
 
 
 
@@ -23,9 +20,7 @@ const GroupsPage: React.FC = () => {
   const [ chosenId, setChosenId ] = useState( 0 )
   const { groups, loading } = useQueryGroups()
 
-  useEffect( () => {
-    usePreloader( loading )
-  }, [ loading ] )
+  usePreloader( loading )
 
   const handler = ( id: TGroup['id'] ) => {
     setChosenId( +id )

@@ -1,9 +1,14 @@
 import React, {
   FC,
-  useState
-}                    from 'react'
-import preloaderWebp from './Preloader.webp'
-import styled        from 'styled-components'
+  useEffect
+}                             from 'react'
+import preloaderWebp          from './Preloader.webp'
+import styled                 from 'styled-components'
+import {
+  useAppDispatch,
+  useAppSelector
+}                             from '../../store/store'
+import { actionSetPreloader } from '../../store/InsteadOfContext/reducer'
 
 
 
@@ -45,28 +50,28 @@ const PreloaderWrapper = styled.div<PreloaderWrapperProps>`
   }
 `
 
-let setLoading: React.Dispatch<React.SetStateAction<boolean>>
-let timers: ReturnType<typeof setTimeout>[] = []
+let timer: number | undefined
 
-const usePreloader = ( loading: boolean ) => {
-  if ( loading )
-    timers.push( setTimeout( () => setLoading( true ), 500 ) )
-  else {
-    timers.forEach( timer => clearTimeout( timer ) )
-    timers = []
-    setLoading( false )
-  }
+export const usePreloader = ( nextLoading: boolean ) => {
+  const dispatch = useAppDispatch()
+  const loading = useAppSelector( state => state.insteadOfContext.isPreloader )
+  const isDifferent = () => loading !== nextLoading
+  useEffect( () => {
+    if ( nextLoading )
+      !timer && (timer = setTimeout( () => isDifferent() && dispatch( actionSetPreloader( true ) ), 500 ) as unknown as number)
+    else {
+      clearTimeout( timer )
+      timer = undefined
+      isDifferent() && dispatch( actionSetPreloader( false ) )
+    }
+  }, [ nextLoading ] )
 }
 
 export const Preloader: FC = () => {
-  const [ isLoading, setIsLoading ] = useState<boolean>( false )
-  setLoading = setIsLoading
-
+  const loading = useAppSelector( state => state.insteadOfContext.isPreloader )
   return (
-    <PreloaderWrapper loading={ isLoading }>
+    <PreloaderWrapper loading={ loading }>
       <img alt='loading animation' src={ preloaderWebp }/>
     </PreloaderWrapper>
   )
 }
-
-export default usePreloader
