@@ -1,0 +1,13 @@
+{
+  "extends": "stylelint-config-standard-scss",
+  "rules": {
+    "declaration-colon-space-after": null,
+    "declaration-colon-space-before": null,
+    "color-hex-case": "upper",
+    "declaration-empty-line-before": null,
+    "selector-list-comma-newline-after": null,
+    "color-function-notation": null,
+    "scss/double-slash-comment-whitespace-inside": null,
+    "scss/double-slash-comment-empty-line-before": null
+  }
+}

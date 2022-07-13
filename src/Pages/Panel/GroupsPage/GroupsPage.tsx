@@ -1,47 +1,44 @@
-import React, { useState } from 'react'
-import GroupTable from './GroupTable/GroupTable'
-import { TGroup } from '../../../types'
-import { gql, useQuery } from '@apollo/client'
-import { toast } from 'react-toastify'
-import GroupPanel from './GroupPanel/GroupPanel'
+import React, {
+  useEffect,
+  useState
+}                         from 'react'
+import GroupsTable        from './GroupTable/GroupsTable'
+import { TGroup }         from '../../../types'
+import GroupForm          from './GroupForm/GroupForm'
+import Workspace          from '../../../HOC/Workspace/Workspace'
+import { useQueryGroups } from '../../../queriesLOCAL'
+import styled             from 'styled-components'
+import usePreloader       from '../../../components/Preloader/Preloader'
+
+
+
+const FlexRow = styled.div`
+  overflow : hidden;
+  display  : flex;
+  height   : 100%;
+  gap      : 1rem;
+`
 
 const GroupsPage: React.FC = () => {
-  
-  const [ chosenId, setChosenId ] = useState(0)
-  type TGetAllGroups = { allGroups: TGroup[] }
-  
-  const getAllGroupsQuery = gql`
-    query getAllGroups{
-      allGroups{
-        id
-        course
-        groupName
-        teacher
-        dateOfCreation
-        studentsCount
-      }
-    }`
-  
-  const { data } = useQuery<TGetAllGroups>(getAllGroupsQuery)
-  
-  const handler = (id: TGroup['id']) => {
-    setChosenId(+id)
-    toast(`Выбрана группа с id ${id}`)
+  const [ chosenId, setChosenId ] = useState( 0 )
+  const { groups, loading } = useQueryGroups()
+
+  useEffect( () => {
+    usePreloader( loading )
+  }, [ loading ] )
+
+  const handler = ( id: TGroup['id'] ) => {
+    setChosenId( +id )
+    // toast( `Выбрана группа с id ${ id }` )
   }
-  
+
   return (
-    <>
-      {
-        data && <>
-          <GroupTable data={data.allGroups} onRowSelected={handler}/>
-          {
-            chosenId && <>
-              <GroupPanel id={chosenId}/>
-            </>
-          }
-        </>
-      }
-    </>
+    <Workspace>
+      <FlexRow>
+        <GroupsTable data={ groups } onRowSelected={ handler }/>
+        { !chosenId ? <></> : <GroupForm id={ chosenId }/> }
+      </FlexRow>
+    </Workspace>
   )
 }
 

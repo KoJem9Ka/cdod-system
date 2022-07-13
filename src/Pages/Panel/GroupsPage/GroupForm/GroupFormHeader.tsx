@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import style from './GroupPanel.module.scss'
-import { TGroup } from '../../../../types'
+import style                          from './GroupForm.module.scss'
+import { TGroup }                     from '../../../../types'
 
 type GroupPanelHeaderProps = {
   group: TGroup
@@ -10,8 +10,8 @@ type GroupPanelHeaderProps = {
   handleSetEditedGroup: (group: TGroup)=> void
 }
 
-const GroupPanelHeader: React.FC<GroupPanelHeaderProps> = ({ group, isEdit, countStudents, handleSetEditedGroup }) => {
-// const GroupPanelHeader: React.FC<GroupPanelHeaderProps> = ({group, isEdit, countStudents, handleSetEditGroup}) => {
+const GroupFormHeader: React.FC<GroupPanelHeaderProps> = ( { group, isEdit, countStudents, handleSetEditedGroup }) => {
+// const GroupFormHeader: React.FC<GroupPanelHeaderProps> = ({group, isEdit, countStudents, handleSetEditGroup}) => {
   const teacherName = group.teacher.split(' ')
   const picMap = new Map([
     [ '', './images/group/groupLogos/noCourse.svg' ],
@@ -103,9 +103,9 @@ const GroupPanelHeader: React.FC<GroupPanelHeaderProps> = ({ group, isEdit, coun
     )
 }
 
-export default GroupPanelHeader
+export default GroupFormHeader
 // import React, {useEffect, useState} from 'react';
-// import style from './GroupPanel.module.scss';
+// import style from './GroupForm.module.scss';
 // import {TCourse, TGroup} from '../../types';
 // import {gql, useQuery} from '@apollo/client';
 //
@@ -115,7 +115,7 @@ export default GroupPanelHeader
 // 	countStudents: number
 // }
 //
-// const GroupPanelHeader: React.FC<GroupPanelHeaderProps> = ({group, isEdit, countStudents}) => {
+// const GroupFormHeader: React.FC<GroupPanelHeaderProps> = ({group, isEdit, countStudents}) => {
 // 	const [currentGroup, setCurrentGroup] = useState<TGroup>()
 // 	const teacherName = group.teacher.split(' ')
 // 	const picMap = new Map([
@@ -210,4 +210,4 @@ export default GroupPanelHeader
 // 		)
 // };
 //
-// export default GroupPanelHeader;
+// export default GroupFormHeader;

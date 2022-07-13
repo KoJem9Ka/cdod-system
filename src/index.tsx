@@ -1,4 +1,4 @@
-import 'devextreme/dist/css/dx.material.blue.light.compact.css'
+import 'devextreme/dist/css/dx.material.blue.light.css'
 import 'react-toastify/dist/ReactToastify.css'
 import './styles/index.scss'
 import React              from 'react'
@@ -13,7 +13,8 @@ import {
   ApolloProvider,
   InMemoryCache
 }                         from '@apollo/client'
-
+import { Preloader }      from './components/Preloader/Preloader'
+  
 
 
 const client = new ApolloClient( {
@@ -34,6 +35,7 @@ createRoot( document.getElementById( 'root' ) as HTMLElement ).render(
             theme={ 'light' }
             pauseOnHover
           />
+          <Preloader/>
         </ApolloProvider>
       </Provider>
     </BrowserRouter>

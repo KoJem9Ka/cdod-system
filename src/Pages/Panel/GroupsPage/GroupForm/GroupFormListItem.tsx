@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import style from './GroupPanel.module.scss'
-import { TStudent } from '../../../../types'
+import style                          from './GroupForm.module.scss'
+import { TStudent }                   from '../../../../types'
 
 type GroupPanelItemProps = {
   Students: Pick<TStudent, 'id' | 'last_name' | 'first_name' | 'patronymic' | 'birth_date'>
@@ -9,7 +9,7 @@ type GroupPanelItemProps = {
   handleRemove: (id: number)=> void
 }
 
-const GroupPaneItem: React.FC<GroupPanelItemProps> = ({ Students: { id, birth_date, first_name, last_name, patronymic }, index, isEdit, handleRemove,
+const GroupFormListItem: React.FC<GroupPanelItemProps> = ( { Students: { id, birth_date, first_name, last_name, patronymic }, index, isEdit, handleRemove,
 }) => {
   const iconRemove = './images/group/editIcons/remove.svg'
   const iconRemoved = './images/group/editIcons/removed.svg'
@@ -45,4 +45,4 @@ const GroupPaneItem: React.FC<GroupPanelItemProps> = ({ Students: { id, birth_da
   )
 }
 
-export default GroupPaneItem
+export default GroupFormListItem

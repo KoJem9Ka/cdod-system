@@ -1,5 +1,2 @@
-import { useQueryStudents } from './students'
-
-
-
-export { useQueryStudents }
+export { useQueryStudents } from './students'
+export { useQueryGroups }   from './groups'
