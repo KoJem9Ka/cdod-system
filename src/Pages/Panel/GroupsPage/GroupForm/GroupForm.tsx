@@ -24,6 +24,7 @@ const GroupForm: React.FC<{ id: number }> = ( { id } ) => {
 
   const { data: group } = useQueryGroupById( id )
 
+  const handleSaving = () => undefined
   const handleRemove = ( id1: number ) => {
     removedIDs.includes( id1 )
       ? setRemovedIDs( removedIDs.filter( itemId => itemId !== id1 ) )
