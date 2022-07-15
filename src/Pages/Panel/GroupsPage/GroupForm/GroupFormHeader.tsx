@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import style                          from './GroupForm.module.scss'
-import { TGroup }                     from '../../../../types'
+import style      from './GroupForm.module.scss'
+import { TGroup } from '../../../../other/typesOLD'
 
 type GroupPanelHeaderProps = {
   group: TGroup
@@ -22,7 +22,7 @@ const GroupFormHeader: React.FC<GroupPanelHeaderProps> = ( { group, isEdit, coun
     [ 'Прототипирование', './images/group/groupLogos/prototype.svg' ],
     [ 'Робофабрика', './images/group/groupLogos/robot.svg' ],
     [ 'Android', './images/group/groupLogos/android.svg' ],
-    [ 'C#', './images/group/groupLogos/c#.svg' ],
+    [ 'C#', './images/group/groupLogos/csharp.svg' ],
     [ 'Python', './images/group/groupLogos/python.svg' ]
   ])
 	
@@ -127,7 +127,7 @@ export default GroupFormHeader
 // 		['Прототипирование', './images/group/groupLogos/prototype.svg'],
 // 		['Робофабрика', './images/group/groupLogos/robot.svg'],
 // 		['Android', './images/group/groupLogos/android.svg'],
-// 		['C#', './images/group/groupLogos/c#.svg'],
+// 		['C#', './images/group/groupLogos/csharp.svg'],
 // 		['Python', './images/group/groupLogos/python.svg'],
 // 	])
 //

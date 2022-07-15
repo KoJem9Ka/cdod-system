@@ -1,8 +1,8 @@
 import React               from 'react'
 import { DataGrid }        from 'devextreme-react'
-import { Column }          from 'devextreme-react/data-grid'
-import { TGroup }          from '../../../../types'
-import classes             from '../../../../styles/TablesStyles.module.scss'
+import { Column } from 'devextreme-react/data-grid'
+import { TGroup } from '../../../../other/typesOLD'
+import classes    from '../../../../styles/TablesStyles.module.scss'
 import { GridBaseOptions } from 'devextreme/ui/data_grid'
 
 

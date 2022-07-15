@@ -1,6 +1,7 @@
-import 'devextreme/dist/css/dx.material.blue.light.css'
+import 'devextreme/dist/css/dx.material.blue.light.compact.css'
 import 'react-toastify/dist/ReactToastify.css'
 import './styles/index.scss'
+import 'moment/locale/ru'
 import React              from 'react'
 import { createRoot }     from 'react-dom/client'
 import App                from './App'
@@ -14,10 +15,12 @@ import {
   InMemoryCache
 }                         from '@apollo/client'
 import { Preloader }      from './components/Preloader/Preloader'
-  
 
 
-const client = new ApolloClient( {
+
+export const client = new ApolloClient( {
+  // uri:               'http://localhost:5094/',
+  // uri: 'https://localhost:7094/',
   uri:               'http://localhost:3001',
   cache:             new InMemoryCache(),
   connectToDevTools: true,

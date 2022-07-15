@@ -1,0 +1,1331 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+"The `@defer` directive may be provided for fragment spreads and inline fragments to inform the executor to delay the execution of the current fragment to indicate deprioritization of the current fragment. A query with `@defer` directive will cause the request to potentially return multiple responses, where non-deferred data is delivered in the initial response and data deferred is delivered in a subsequent response. `@include` and `@skip` take precedence over `@defer`."
+directive @defer(
+  "Deferred when true."
+  if: Boolean,
+  "If this argument label has a value other than null, it will be passed on to the result of this defer directive. This label is intended to give client applications a way to identify to which fragment a deferred result belongs to."
+  label: String
+) on FRAGMENT_SPREAD | INLINE_FRAGMENT
+
+"The `@stream` directive may be provided for a field of `List` type so that the backend can leverage technology such as asynchronous iterators to provide a partial list in the initial response, and additional list items in subsequent responses. `@include` and `@skip` take precedence over `@stream`."
+directive @stream(
+  "Streamed when true."
+  if: Boolean,
+  "The initial elements that shall be send down to the consumer."
+  initialCount: Int! = 0,
+  "If this argument label has a value other than null, it will be passed on to the result of this stream directive. This label is intended to give client applications a way to identify to which fragment a streamed result belongs to."
+  label: String
+) on FIELD
+
+type Announcement {
+  courses: [Course]!
+  endDate: Date!
+  groups: [Group]!
+  heading: String!
+  id: Int!
+  pictureUrl: String!
+  startDate: Date!
+  text: String!
+  type: AnnouncementTypeEnum!
+  user: User!
+  userId: Int!
+}
+
+"A connection to a list of items."
+type AnnouncementsConnection {
+  "A list of edges."
+  edges: [AnnouncementsEdge!]
+  "A flattened list of the nodes."
+  nodes: [Announcement!]
+  "Information to aid in pagination."
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+"An edge in a connection."
+type AnnouncementsEdge {
+  "A cursor for use in pagination."
+  cursor: String!
+  "The item at the end of the edge."
+  node: Announcement!
+}
+
+"A connection to a list of items."
+type ContactStatesConnection {
+  "A list of edges."
+  edges: [ContactStatesEdge!]
+  "A flattened list of the nodes."
+  nodes: [ContractState!]
+  "Information to aid in pagination."
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+"An edge in a connection."
+type ContactStatesEdge {
+  "A cursor for use in pagination."
+  cursor: String!
+  "The item at the end of the edge."
+  node: ContractState!
+}
+
+type ContractState {
+  id: Int!
+  name: String!
+  studentsToCourses: [StudentToCourse]!
+}
+
+type Course {
+  announcements: [Announcement]!
+  coursePrice: Float!
+  durationInMonths: Int!
+  equipmentPriceWithRobot: Float
+  equipmentPriceWithoutRobot: Float
+  groups: [Group]!
+  id: Int!
+  name: String!
+  payNotes: [PayNote!]!
+  programFileUrl: String!
+  studentToCourses: [StudentToCourse]!
+  teachers: [Teacher]!
+}
+
+type CourseType {
+  durationInMonths: Int!
+  equipmentPriceWithRobot: Float
+  equipmentPriceWithoutRobot: Float
+  id: Int!
+  name: String!
+  price: Float!
+  programFileUrl: String!
+}
+
+type Group {
+  announcements: [Announcement]!
+  course: Course!
+  courseId: Int!
+  id: Int!
+  lessons: [Lesson]!
+  name: String!
+  startDate: Date!
+  studentsToGroups: [StudentsToGroups]!
+  teacher: Teacher!
+  teacherId: Int!
+}
+
+type GroupType {
+  course: CourseType!
+  courseId: Int!
+  id: Int!
+  name: String!
+  startDate: Date!
+  studentsCount: Int!
+  teacher: TeacherType!
+  teacherId: Int!
+}
+
+type InfoType {
+  admissionDate: Date!
+  contractState: String!
+  contractStateId: Int!
+  course: CourseType!
+  courseId: Int!
+  group: GroupType
+  isCoursePaid: Boolean!
+  isEquipmentPaid: Boolean
+  isGetRobot: Boolean
+  studentId: Int!
+}
+
+type Lesson {
+  classRoom: String!
+  duration: Int!
+  group: Group!
+  groupId: Int!
+  homework: String!
+  id: Int!
+  lessonTopic: String!
+  startTime: TimeSpan!
+  studentsToLessons: [StudentToLesson]!
+  teacherToLessons: [TeacherToLesson]!
+}
+
+"A connection to a list of items."
+type LessonsConnection {
+  "A list of edges."
+  edges: [LessonsEdge!]
+  "A flattened list of the nodes."
+  nodes: [Lesson!]
+  "Information to aid in pagination."
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+"An edge in a connection."
+type LessonsEdge {
+  "A cursor for use in pagination."
+  cursor: String!
+  "The item at the end of the edge."
+  node: Lesson!
+}
+
+type Mutation {
+  attachStudentsToCourses(studentsToCourses: [StudentToCourseCreateInput!]!): Boolean!
+  attachStudentsToGroups(studentsToGroups: [StudentToGroupInput!]!): Boolean!
+  courseCreateCourse(course: CourseCreateInput!): CourseType!
+  courseDeleteMany(courseIds: [Int!]!): Boolean!
+  courseUpdateMany(courses: [CourseUpdateInput!]!): Boolean!
+  detachStudentsToCourses(studentsToCourses: [StudentToCourseDetachInput!]!): Boolean!
+  dettachStudentsFromGroups(studentsToGroups: [StudentToGroupInput!]!): Boolean!
+  groupCreate(group: GroupCreateInput!): GroupType!
+  groupDeleteMany(groupIds: [Int!]!): Boolean!
+  groupUpdateMany(groups: [GroupUpdateInput!]!): Boolean!
+  parentCreate(parent: ParentCreateInput!): ParentType!
+  parentDeleteMany(parentsIds: [Int!]!): Boolean!
+  parentUpdateMany(parent: [ParentUpdateInput!]!): Boolean!
+  studentCreate(student: StudentCreateInput!): Student!
+  studentDeleteMany(studentIds: [Int!]!): Boolean!
+  studentUpdateMany(students: [StudentUpdateInput!]!): Boolean!
+  updateFromGoogleTable: Boolean!
+  updateStudentsToCourses(studentsToCourses: [StudentToCourseUpdateInput!]!): Boolean!
+}
+
+"Information about pagination in a connection."
+type PageInfo {
+  "When paginating forwards, the cursor to continue."
+  endCursor: String
+  "Indicates whether more edges exist following the set defined by the clients arguments."
+  hasNextPage: Boolean!
+  "Indicates whether more edges exist prior the set defined by the clients arguments."
+  hasPreviousPage: Boolean!
+  "When paginating backwards, the cursor to continue."
+  startCursor: String
+}
+
+type Parent {
+  secondEmail: String
+  secondPhoneNumber: String
+  signDate: Date!
+  students: [Student]!
+  user: User!
+  userId: Int!
+}
+
+type ParentType {
+  address: String
+  birthday: Date
+  education: String
+  email: String
+  firstName: String!
+  id: Int!
+  inn: String
+  isAdmin: Boolean!
+  lastName: String!
+  passportCode: String
+  passportDate: Date
+  passportIssue: String
+  passportNo: String
+  password: String!
+  patronymic: String
+  phoneNumber: String
+  secondEmail: String
+  secondPhoneNumber: String
+  signDate: Date!
+  snils: String
+}
+
+"A connection to a list of items."
+type ParentsConnection {
+  "A list of edges."
+  edges: [ParentsEdge!]
+  "A flattened list of the nodes."
+  nodes: [Parent!]
+  "Information to aid in pagination."
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+"An edge in a connection."
+type ParentsEdge {
+  "A cursor for use in pagination."
+  cursor: String!
+  "The item at the end of the edge."
+  node: Parent!
+}
+
+type PayNote {
+  appointment: Appointment!
+  checkURL: String!
+  course: Course!
+  courseId: Int!
+  date: Date!
+  id: Int!
+  student: Student!
+  studentId: Int!
+  sum: Float!
+  user: User!
+  userId: Int!
+}
+
+"A connection to a list of items."
+type PayNotesConnection {
+  "A list of edges."
+  edges: [PayNotesEdge!]
+  "A flattened list of the nodes."
+  nodes: [PayNote!]
+  "Information to aid in pagination."
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+"An edge in a connection."
+type PayNotesEdge {
+  "A cursor for use in pagination."
+  cursor: String!
+  "The item at the end of the edge."
+  node: PayNote!
+}
+
+type Post {
+  id: Int!
+  name: String!
+}
+
+"A connection to a list of items."
+type PostsConnection {
+  "A list of edges."
+  edges: [PostsEdge!]
+  "A flattened list of the nodes."
+  nodes: [Post!]
+  "Information to aid in pagination."
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+"An edge in a connection."
+type PostsEdge {
+  "A cursor for use in pagination."
+  cursor: String!
+  "The item at the end of the edge."
+  node: Post!
+}
+
+type Query {
+  announcementById(id: Int!): Announcement!
+  announcements(
+    "Returns the elements in the list that come after the specified cursor."
+    after: String,
+    "Returns the elements in the list that come before the specified cursor."
+    before: String,
+    "Returns the first _n_ elements from the list."
+    first: Int,
+    "Returns the last _n_ elements from the list."
+    last: Int,
+    order: [AnnouncementSortInput!],
+    where: AnnouncementFilterInput
+  ): AnnouncementsConnection
+  contactStateById(id: Int!): ContractState!
+  contactStates(
+    "Returns the elements in the list that come after the specified cursor."
+    after: String,
+    "Returns the elements in the list that come before the specified cursor."
+    before: String,
+    "Returns the first _n_ elements from the list."
+    first: Int,
+    "Returns the last _n_ elements from the list."
+    last: Int,
+    order: [ContractStateSortInput!],
+    where: ContractStateFilterInput
+  ): ContactStatesConnection
+  course: [CourseType!]!
+  group(id: Int!): GroupType!
+  groups(courseId: Int): [GroupType!]!
+  lessonById(id: Int!): Lesson!
+  lessons(
+    "Returns the elements in the list that come after the specified cursor."
+    after: String,
+    "Returns the elements in the list that come before the specified cursor."
+    before: String,
+    "Returns the first _n_ elements from the list."
+    first: Int,
+    "Returns the last _n_ elements from the list."
+    last: Int,
+    order: [LessonSortInput!],
+    where: LessonFilterInput
+  ): LessonsConnection
+  parentById(id: Int!): Parent!
+  parents(
+    "Returns the elements in the list that come after the specified cursor."
+    after: String,
+    "Returns the elements in the list that come before the specified cursor."
+    before: String,
+    "Returns the first _n_ elements from the list."
+    first: Int,
+    "Returns the last _n_ elements from the list."
+    last: Int,
+    order: [ParentSortInput!],
+    where: ParentFilterInput
+  ): ParentsConnection
+  payNoteById(id: Int!): PayNote!
+  payNotes(
+    "Returns the elements in the list that come after the specified cursor."
+    after: String,
+    "Returns the elements in the list that come before the specified cursor."
+    before: String,
+    "Returns the first _n_ elements from the list."
+    first: Int,
+    "Returns the last _n_ elements from the list."
+    last: Int,
+    order: [PayNoteSortInput!],
+    where: PayNoteFilterInput
+  ): PayNotesConnection
+  postById(id: Int!): Post!
+  posts(
+    "Returns the elements in the list that come after the specified cursor."
+    after: String,
+    "Returns the elements in the list that come before the specified cursor."
+    before: String,
+    "Returns the first _n_ elements from the list."
+    first: Int,
+    "Returns the last _n_ elements from the list."
+    last: Int,
+    order: [PostSortInput!],
+    where: PostFilterInput
+  ): PostsConnection
+  schoolById(id: Int!): School!
+  schools(
+    "Returns the elements in the list that come after the specified cursor."
+    after: String,
+    "Returns the elements in the list that come before the specified cursor."
+    before: String,
+    "Returns the first _n_ elements from the list."
+    first: Int,
+    "Returns the last _n_ elements from the list."
+    last: Int,
+    order: [SchoolSortInput!],
+    where: SchoolFilterInput
+  ): SchoolsConnection
+  student(id: Int!): StudentType!
+  students(courseId: Int, groupId: Int, parentId: Int, where: StudentTypeFilterInput): [StudentType!]!
+  teacher(groupId: Int, id: Int): TeacherType!
+  teachers(lessonId: Int): [TeacherType!]!
+  userById(id: Int!): User!
+  users(
+    "Returns the elements in the list that come after the specified cursor."
+    after: String,
+    "Returns the elements in the list that come before the specified cursor."
+    before: String,
+    "Returns the first _n_ elements from the list."
+    first: Int,
+    "Returns the last _n_ elements from the list."
+    last: Int,
+    order: [UserSortInput!],
+    where: UserFilterInput
+  ): UsersConnection
+}
+
+type School {
+  district: District!
+  id: Int!
+  name: String!
+  students: [Student]!
+}
+
+type SchoolType {
+  district: District!
+  id: Int!
+  name: String!
+  students: [StudentType!]!
+}
+
+"A connection to a list of items."
+type SchoolsConnection {
+  "A list of edges."
+  edges: [SchoolsEdge!]
+  "A flattened list of the nodes."
+  nodes: [School!]
+  "Information to aid in pagination."
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+"An edge in a connection."
+type SchoolsEdge {
+  "A cursor for use in pagination."
+  cursor: String!
+  "The item at the end of the edge."
+  node: School!
+}
+
+type Student {
+  birthDate: Date!
+  description: String
+  firstName: String!
+  id: Int!
+  lastName: String!
+  parent: Parent!
+  parentId: Int!
+  patronymic: String
+  payNotes: [PayNote]!
+  school: School!
+  schoolId: Int!
+  studentToCourses: [StudentToCourse]!
+  studentToLessons: [StudentToLesson]!
+  studentsToGroups: [StudentsToGroups]!
+}
+
+type StudentToCourse {
+  contractState: ContractState!
+  contractStateId: Int!
+  contractUrl: String
+  course: Course!
+  courseId: Int!
+  debt: Float
+  equipmentPriceWithRobot: Boolean
+  signDate: Date!
+  student: Student!
+  studentId: Int!
+}
+
+type StudentToLesson {
+  lesson: Lesson!
+  lessonId: Int!
+  mark: Int!
+  note: String!
+  status: Status!
+  student: Student!
+  studentId: Int!
+}
+
+type StudentType {
+  birthDate: Date!
+  description: String
+  firstName: String!
+  id: Int!
+  info: [InfoType!]!
+  lastName: String!
+  parent: ParentType!
+  parentId: Int!
+  patronymic: String
+  school: SchoolType!
+  schoolId: Int!
+}
+
+type StudentsToGroups {
+  group: Group!
+  groupId: Int!
+  student: Student!
+  studentId: Int!
+}
+
+type Teacher {
+  courses: [Course]!
+  groups: [Group]!
+  post: Post!
+  postId: Int!
+  teacherToLessons: [TeacherToLesson]!
+  user: User!
+  userId: Int!
+  workPlace: String!
+}
+
+type TeacherToLesson {
+  lesson: Lesson!
+  lessonId: Int!
+  teacher: Teacher!
+  teacherId: Int!
+  workTime: TimeSpan!
+}
+
+type TeacherType {
+  address: String
+  birthday: Date
+  education: String
+  email: String
+  firstName: String!
+  id: Int!
+  inn: String
+  isAdmin: Boolean!
+  lastName: String!
+  passportCode: String
+  passportDate: Date
+  passportIssue: String
+  passportNo: String
+  password: String!
+  patronymic: String
+  phoneNumber: String
+  post: String!
+  postId: Int!
+  snils: String
+  workPlace: String!
+}
+
+type User {
+  address: String
+  announcements: [Announcement]!
+  birthday: Date
+  education: String
+  email: String
+  firstname: String
+  id: Int!
+  inn: String
+  isAdmin: Boolean!
+  lastname: String
+  passportCode: String
+  passportDate: Date
+  passportIssue: String
+  passportNo: String
+  password: String!
+  patronymic: String
+  payNotes: [PayNote]!
+  phoneNumber: String
+  snils: String
+}
+
+"A connection to a list of items."
+type UsersConnection {
+  "A list of edges."
+  edges: [UsersEdge!]
+  "A flattened list of the nodes."
+  nodes: [User!]
+  "Information to aid in pagination."
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+"An edge in a connection."
+type UsersEdge {
+  "A cursor for use in pagination."
+  cursor: String!
+  "The item at the end of the edge."
+  node: User!
+}
+
+enum AnnouncementTypeEnum {
+  IMPORTANT
+  UNIMPORTANT
+}
+
+enum Appointment {
+  COURSE
+  MATERIAL
+}
+
+enum District {
+  CENTRAL
+  TRACTOR
+  VOROSHILOVSKIY
+}
+
+enum SortEnumType {
+  ASC
+  DESC
+}
+
+enum Status {
+  DONTWAS
+  WAS
+}
+
+"The `Date` scalar represents an ISO-8601 compliant date type."
+scalar Date
+
+"The `TimeSpan` scalar represents an ISO-8601 compliant duration type."
+scalar TimeSpan
+
+input AnnouncementFilterInput {
+  and: [AnnouncementFilterInput!]
+  courses: ListFilterInputTypeOfCourseFilterInput
+  endDate: ComparableDateOnlyOperationFilterInput
+  groups: ListFilterInputTypeOfGroupFilterInput
+  heading: StringOperationFilterInput
+  id: ComparableInt32OperationFilterInput
+  or: [AnnouncementFilterInput!]
+  pictureUrl: StringOperationFilterInput
+  startDate: ComparableDateOnlyOperationFilterInput
+  text: StringOperationFilterInput
+  type: AnnouncementTypeEnumOperationFilterInput
+  user: UserFilterInput
+  userId: ComparableInt32OperationFilterInput
+}
+
+input AnnouncementSortInput {
+  endDate: SortEnumType
+  heading: SortEnumType
+  id: SortEnumType
+  pictureUrl: SortEnumType
+  startDate: SortEnumType
+  text: SortEnumType
+  type: SortEnumType
+  user: UserSortInput
+  userId: SortEnumType
+}
+
+input AnnouncementTypeEnumOperationFilterInput {
+  eq: AnnouncementTypeEnum
+  in: [AnnouncementTypeEnum!]
+  neq: AnnouncementTypeEnum
+  nin: [AnnouncementTypeEnum!]
+}
+
+input AppointmentOperationFilterInput {
+  eq: Appointment
+  in: [Appointment!]
+  neq: Appointment
+  nin: [Appointment!]
+}
+
+input BooleanOperationFilterInput {
+  eq: Boolean
+  neq: Boolean
+}
+
+input ComparableDateOnlyOperationFilterInput {
+  eq: Date
+  gt: Date
+  gte: Date
+  in: [Date!]
+  lt: Date
+  lte: Date
+  neq: Date
+  ngt: Date
+  ngte: Date
+  nin: [Date!]
+  nlt: Date
+  nlte: Date
+}
+
+input ComparableDoubleOperationFilterInput {
+  eq: Float
+  gt: Float
+  gte: Float
+  in: [Float!]
+  lt: Float
+  lte: Float
+  neq: Float
+  ngt: Float
+  ngte: Float
+  nin: [Float!]
+  nlt: Float
+  nlte: Float
+}
+
+input ComparableInt32OperationFilterInput {
+  eq: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  neq: Int
+  ngt: Int
+  ngte: Int
+  nin: [Int!]
+  nlt: Int
+  nlte: Int
+}
+
+input ComparableNullableOfDateOnlyOperationFilterInput {
+  eq: Date
+  gt: Date
+  gte: Date
+  in: [Date]
+  lt: Date
+  lte: Date
+  neq: Date
+  ngt: Date
+  ngte: Date
+  nin: [Date]
+  nlt: Date
+  nlte: Date
+}
+
+input ComparableNullableOfDoubleOperationFilterInput {
+  eq: Float
+  gt: Float
+  gte: Float
+  in: [Float]
+  lt: Float
+  lte: Float
+  neq: Float
+  ngt: Float
+  ngte: Float
+  nin: [Float]
+  nlt: Float
+  nlte: Float
+}
+
+input ComparableTimeOnlyOperationFilterInput {
+  eq: TimeSpan
+  gt: TimeSpan
+  gte: TimeSpan
+  in: [TimeSpan!]
+  lt: TimeSpan
+  lte: TimeSpan
+  neq: TimeSpan
+  ngt: TimeSpan
+  ngte: TimeSpan
+  nin: [TimeSpan!]
+  nlt: TimeSpan
+  nlte: TimeSpan
+}
+
+input ContractStateFilterInput {
+  and: [ContractStateFilterInput!]
+  id: ComparableInt32OperationFilterInput
+  name: StringOperationFilterInput
+  or: [ContractStateFilterInput!]
+  studentsToCourses: ListFilterInputTypeOfStudentToCourseFilterInput
+}
+
+input ContractStateSortInput {
+  id: SortEnumType
+  name: SortEnumType
+}
+
+input CourseCreateInput {
+  coursePrice: Float!
+  durationInMonths: Int!
+  equipmentPriceWithRobot: Float
+  equipmentPriceWithoutRobot: Float
+  name: String!
+  programFileUrl: String!
+}
+
+input CourseFilterInput {
+  and: [CourseFilterInput!]
+  announcements: ListFilterInputTypeOfAnnouncementFilterInput
+  coursePrice: ComparableDoubleOperationFilterInput
+  durationInMonths: ComparableInt32OperationFilterInput
+  equipmentPriceWithRobot: ComparableNullableOfDoubleOperationFilterInput
+  equipmentPriceWithoutRobot: ComparableNullableOfDoubleOperationFilterInput
+  groups: ListFilterInputTypeOfGroupFilterInput
+  id: ComparableInt32OperationFilterInput
+  name: StringOperationFilterInput
+  or: [CourseFilterInput!]
+  payNotes: ListFilterInputTypeOfPayNoteFilterInput
+  programFileUrl: StringOperationFilterInput
+  studentToCourses: ListFilterInputTypeOfStudentToCourseFilterInput
+  teachers: ListFilterInputTypeOfTeacherFilterInput
+}
+
+input CourseSortInput {
+  coursePrice: SortEnumType
+  durationInMonths: SortEnumType
+  equipmentPriceWithRobot: SortEnumType
+  equipmentPriceWithoutRobot: SortEnumType
+  id: SortEnumType
+  name: SortEnumType
+  programFileUrl: SortEnumType
+}
+
+input CourseUpdateInput {
+  coursePrice: Float
+  durationInMonths: Int
+  equipmentPriceWithRobot: Float
+  equipmentPriceWithoutRobot: Float
+  id: Int!
+  name: String
+  programFileUrl: String
+}
+
+input DistrictOperationFilterInput {
+  eq: District
+  in: [District!]
+  neq: District
+  nin: [District!]
+}
+
+input GroupCreateInput {
+  courseId: Int!
+  name: String!
+  startDate: Date!
+  teacherId: Int!
+}
+
+input GroupFilterInput {
+  and: [GroupFilterInput!]
+  announcements: ListFilterInputTypeOfAnnouncementFilterInput
+  course: CourseFilterInput
+  courseId: ComparableInt32OperationFilterInput
+  id: ComparableInt32OperationFilterInput
+  lessons: ListFilterInputTypeOfLessonFilterInput
+  name: StringOperationFilterInput
+  or: [GroupFilterInput!]
+  startDate: ComparableDateOnlyOperationFilterInput
+  studentsToGroups: ListFilterInputTypeOfStudentsToGroupsFilterInput
+  teacher: TeacherFilterInput
+  teacherId: ComparableInt32OperationFilterInput
+}
+
+input GroupSortInput {
+  course: CourseSortInput
+  courseId: SortEnumType
+  id: SortEnumType
+  name: SortEnumType
+  startDate: SortEnumType
+  teacher: TeacherSortInput
+  teacherId: SortEnumType
+}
+
+input GroupUpdateInput {
+  id: Int!
+  name: String
+  startDate: Date
+  teacherId: Int
+}
+
+input LessonFilterInput {
+  and: [LessonFilterInput!]
+  classRoom: StringOperationFilterInput
+  duration: ComparableInt32OperationFilterInput
+  group: GroupFilterInput
+  groupId: ComparableInt32OperationFilterInput
+  homework: StringOperationFilterInput
+  id: ComparableInt32OperationFilterInput
+  lessonTopic: StringOperationFilterInput
+  or: [LessonFilterInput!]
+  startTime: ComparableTimeOnlyOperationFilterInput
+  studentsToLessons: ListFilterInputTypeOfStudentToLessonFilterInput
+  teacherToLessons: ListFilterInputTypeOfTeacherToLessonFilterInput
+}
+
+input LessonSortInput {
+  classRoom: SortEnumType
+  duration: SortEnumType
+  group: GroupSortInput
+  groupId: SortEnumType
+  homework: SortEnumType
+  id: SortEnumType
+  lessonTopic: SortEnumType
+  startTime: SortEnumType
+}
+
+input ListFilterInputTypeOfAnnouncementFilterInput {
+  all: AnnouncementFilterInput
+  any: Boolean
+  none: AnnouncementFilterInput
+  some: AnnouncementFilterInput
+}
+
+input ListFilterInputTypeOfCourseFilterInput {
+  all: CourseFilterInput
+  any: Boolean
+  none: CourseFilterInput
+  some: CourseFilterInput
+}
+
+input ListFilterInputTypeOfGroupFilterInput {
+  all: GroupFilterInput
+  any: Boolean
+  none: GroupFilterInput
+  some: GroupFilterInput
+}
+
+input ListFilterInputTypeOfLessonFilterInput {
+  all: LessonFilterInput
+  any: Boolean
+  none: LessonFilterInput
+  some: LessonFilterInput
+}
+
+input ListFilterInputTypeOfPayNoteFilterInput {
+  all: PayNoteFilterInput
+  any: Boolean
+  none: PayNoteFilterInput
+  some: PayNoteFilterInput
+}
+
+input ListFilterInputTypeOfStudentFilterInput {
+  all: StudentFilterInput
+  any: Boolean
+  none: StudentFilterInput
+  some: StudentFilterInput
+}
+
+input ListFilterInputTypeOfStudentToCourseFilterInput {
+  all: StudentToCourseFilterInput
+  any: Boolean
+  none: StudentToCourseFilterInput
+  some: StudentToCourseFilterInput
+}
+
+input ListFilterInputTypeOfStudentToLessonFilterInput {
+  all: StudentToLessonFilterInput
+  any: Boolean
+  none: StudentToLessonFilterInput
+  some: StudentToLessonFilterInput
+}
+
+input ListFilterInputTypeOfStudentsToGroupsFilterInput {
+  all: StudentsToGroupsFilterInput
+  any: Boolean
+  none: StudentsToGroupsFilterInput
+  some: StudentsToGroupsFilterInput
+}
+
+input ListFilterInputTypeOfTeacherFilterInput {
+  all: TeacherFilterInput
+  any: Boolean
+  none: TeacherFilterInput
+  some: TeacherFilterInput
+}
+
+input ListFilterInputTypeOfTeacherToLessonFilterInput {
+  all: TeacherToLessonFilterInput
+  any: Boolean
+  none: TeacherToLessonFilterInput
+  some: TeacherToLessonFilterInput
+}
+
+input ParentCreateInput {
+  address: String
+  applyingDate: Date!
+  birthday: Date!
+  education: String
+  email: String!
+  firstname: String!
+  inn: String
+  lastname: String!
+  passportCode: String
+  passportDate: Date
+  passportIssue: String
+  passportNo: String
+  password: String!
+  patronymic: String
+  phoneNumber: String!
+  secondEmail: String
+  secondPhoneNumber: String
+  snils: String
+}
+
+input ParentFilterInput {
+  and: [ParentFilterInput!]
+  or: [ParentFilterInput!]
+  secondEmail: StringOperationFilterInput
+  secondPhoneNumber: StringOperationFilterInput
+  signDate: ComparableDateOnlyOperationFilterInput
+  students: ListFilterInputTypeOfStudentFilterInput
+  user: UserFilterInput
+  userId: ComparableInt32OperationFilterInput
+}
+
+input ParentSortInput {
+  secondEmail: SortEnumType
+  secondPhoneNumber: SortEnumType
+  signDate: SortEnumType
+  user: UserSortInput
+  userId: SortEnumType
+}
+
+input ParentUpdateInput {
+  address: String
+  applyingDate: Date
+  birthday: Date
+  education: String
+  email: String
+  firstname: String
+  id: Int!
+  inn: String
+  lastname: String
+  passportCode: String
+  passportDate: Date
+  passportIssue: String
+  passportNo: String
+  password: String
+  patronymic: String
+  phoneNumber: String
+  secondEmail: String
+  secondPhoneNumber: String
+  snils: String
+}
+
+input PayNoteFilterInput {
+  and: [PayNoteFilterInput!]
+  appointment: AppointmentOperationFilterInput
+  checkURL: StringOperationFilterInput
+  course: CourseFilterInput
+  courseId: ComparableInt32OperationFilterInput
+  date: ComparableDateOnlyOperationFilterInput
+  id: ComparableInt32OperationFilterInput
+  or: [PayNoteFilterInput!]
+  student: StudentFilterInput
+  studentId: ComparableInt32OperationFilterInput
+  sum: ComparableDoubleOperationFilterInput
+  user: UserFilterInput
+  userId: ComparableInt32OperationFilterInput
+}
+
+input PayNoteSortInput {
+  appointment: SortEnumType
+  checkURL: SortEnumType
+  course: CourseSortInput
+  courseId: SortEnumType
+  date: SortEnumType
+  id: SortEnumType
+  student: StudentSortInput
+  studentId: SortEnumType
+  sum: SortEnumType
+  user: UserSortInput
+  userId: SortEnumType
+}
+
+input PostFilterInput {
+  and: [PostFilterInput!]
+  id: ComparableInt32OperationFilterInput
+  name: StringOperationFilterInput
+  or: [PostFilterInput!]
+}
+
+input PostSortInput {
+  id: SortEnumType
+  name: SortEnumType
+}
+
+input SchoolFilterInput {
+  and: [SchoolFilterInput!]
+  district: DistrictOperationFilterInput
+  id: ComparableInt32OperationFilterInput
+  name: StringOperationFilterInput
+  or: [SchoolFilterInput!]
+  students: ListFilterInputTypeOfStudentFilterInput
+}
+
+input SchoolSortInput {
+  district: SortEnumType
+  id: SortEnumType
+  name: SortEnumType
+}
+
+input StatusOperationFilterInput {
+  eq: Status
+  in: [Status!]
+  neq: Status
+  nin: [Status!]
+}
+
+input StringOperationFilterInput {
+  and: [StringOperationFilterInput!]
+  contains: String
+  endsWith: String
+  eq: String
+  in: [String]
+  ncontains: String
+  nendsWith: String
+  neq: String
+  nin: [String]
+  nstartsWith: String
+  or: [StringOperationFilterInput!]
+  startsWith: String
+}
+
+input StudentCreateInput {
+  birthDate: Date!
+  description: String
+  firstName: String!
+  lastName: String!
+  parentId: Int!
+  patronymic: String
+  schoolId: Int!
+}
+
+input StudentFilterInput {
+  and: [StudentFilterInput!]
+  birthDate: ComparableDateOnlyOperationFilterInput
+  description: StringOperationFilterInput
+  firstName: StringOperationFilterInput
+  id: ComparableInt32OperationFilterInput
+  lastName: StringOperationFilterInput
+  or: [StudentFilterInput!]
+  parent: ParentFilterInput
+  parentId: ComparableInt32OperationFilterInput
+  patronymic: StringOperationFilterInput
+  payNotes: ListFilterInputTypeOfPayNoteFilterInput
+  school: SchoolFilterInput
+  schoolId: ComparableInt32OperationFilterInput
+  studentToCourses: ListFilterInputTypeOfStudentToCourseFilterInput
+  studentToLessons: ListFilterInputTypeOfStudentToLessonFilterInput
+  studentsToGroups: ListFilterInputTypeOfStudentsToGroupsFilterInput
+}
+
+input StudentSortInput {
+  birthDate: SortEnumType
+  description: SortEnumType
+  firstName: SortEnumType
+  id: SortEnumType
+  lastName: SortEnumType
+  parent: ParentSortInput
+  parentId: SortEnumType
+  patronymic: SortEnumType
+  school: SchoolSortInput
+  schoolId: SortEnumType
+}
+
+input StudentToCourseCreateInput {
+  admissionDate: Date!
+  contractStateId: Int!
+  contractUrl: String
+  courseId: Int!
+  isGetRobot: Boolean
+  studentId: Int!
+}
+
+input StudentToCourseDetachInput {
+  courseId: Int!
+  studentId: Int!
+}
+
+input StudentToCourseFilterInput {
+  and: [StudentToCourseFilterInput!]
+  contractState: ContractStateFilterInput
+  contractStateId: ComparableInt32OperationFilterInput
+  contractUrl: StringOperationFilterInput
+  course: CourseFilterInput
+  courseId: ComparableInt32OperationFilterInput
+  debt: ComparableNullableOfDoubleOperationFilterInput
+  equipmentPriceWithRobot: BooleanOperationFilterInput
+  or: [StudentToCourseFilterInput!]
+  signDate: ComparableDateOnlyOperationFilterInput
+  student: StudentFilterInput
+  studentId: ComparableInt32OperationFilterInput
+}
+
+input StudentToCourseUpdateInput {
+  admissionDate: Date
+  contractStateId: Int
+  contractUrl: String
+  courseId: Int!
+  isGetRobot: Boolean
+  studentId: Int!
+}
+
+input StudentToGroupInput {
+  groupId: Int!
+  studentId: Int!
+}
+
+input StudentToLessonFilterInput {
+  and: [StudentToLessonFilterInput!]
+  lesson: LessonFilterInput
+  lessonId: ComparableInt32OperationFilterInput
+  mark: ComparableInt32OperationFilterInput
+  note: StringOperationFilterInput
+  or: [StudentToLessonFilterInput!]
+  status: StatusOperationFilterInput
+  student: StudentFilterInput
+  studentId: ComparableInt32OperationFilterInput
+}
+
+input StudentTypeFilterInput {
+  and: [StudentTypeFilterInput!]
+  birthDate: ComparableDateOnlyOperationFilterInput
+  description: StringOperationFilterInput
+  firstName: StringOperationFilterInput
+  id: ComparableInt32OperationFilterInput
+  lastName: StringOperationFilterInput
+  or: [StudentTypeFilterInput!]
+  parentId: ComparableInt32OperationFilterInput
+  patronymic: StringOperationFilterInput
+  schoolId: ComparableInt32OperationFilterInput
+}
+
+input StudentUpdateInput {
+  birthDate: Date
+  description: String
+  firstName: String
+  id: Int!
+  lastName: String
+  parentId: Int
+  patronymic: String
+  schoolId: Int
+}
+
+input StudentsToGroupsFilterInput {
+  and: [StudentsToGroupsFilterInput!]
+  group: GroupFilterInput
+  groupId: ComparableInt32OperationFilterInput
+  or: [StudentsToGroupsFilterInput!]
+  student: StudentFilterInput
+  studentId: ComparableInt32OperationFilterInput
+}
+
+input TeacherFilterInput {
+  and: [TeacherFilterInput!]
+  courses: ListFilterInputTypeOfCourseFilterInput
+  groups: ListFilterInputTypeOfGroupFilterInput
+  or: [TeacherFilterInput!]
+  post: PostFilterInput
+  postId: ComparableInt32OperationFilterInput
+  teacherToLessons: ListFilterInputTypeOfTeacherToLessonFilterInput
+  user: UserFilterInput
+  userId: ComparableInt32OperationFilterInput
+  workPlace: StringOperationFilterInput
+}
+
+input TeacherSortInput {
+  post: PostSortInput
+  postId: SortEnumType
+  user: UserSortInput
+  userId: SortEnumType
+  workPlace: SortEnumType
+}
+
+input TeacherToLessonFilterInput {
+  and: [TeacherToLessonFilterInput!]
+  lesson: LessonFilterInput
+  lessonId: ComparableInt32OperationFilterInput
+  or: [TeacherToLessonFilterInput!]
+  teacher: TeacherFilterInput
+  teacherId: ComparableInt32OperationFilterInput
+  workTime: ComparableTimeOnlyOperationFilterInput
+}
+
+input UserFilterInput {
+  address: StringOperationFilterInput
+  and: [UserFilterInput!]
+  announcements: ListFilterInputTypeOfAnnouncementFilterInput
+  birthday: ComparableNullableOfDateOnlyOperationFilterInput
+  education: StringOperationFilterInput
+  email: StringOperationFilterInput
+  firstname: StringOperationFilterInput
+  id: ComparableInt32OperationFilterInput
+  inn: StringOperationFilterInput
+  isAdmin: BooleanOperationFilterInput
+  lastname: StringOperationFilterInput
+  or: [UserFilterInput!]
+  passportCode: StringOperationFilterInput
+  passportDate: ComparableNullableOfDateOnlyOperationFilterInput
+  passportIssue: StringOperationFilterInput
+  passportNo: StringOperationFilterInput
+  password: StringOperationFilterInput
+  patronymic: StringOperationFilterInput
+  payNotes: ListFilterInputTypeOfPayNoteFilterInput
+  phoneNumber: StringOperationFilterInput
+  snils: StringOperationFilterInput
+}
+
+input UserSortInput {
+  address: SortEnumType
+  birthday: SortEnumType
+  education: SortEnumType
+  email: SortEnumType
+  firstname: SortEnumType
+  id: SortEnumType
+  inn: SortEnumType
+  isAdmin: SortEnumType
+  lastname: SortEnumType
+  passportCode: SortEnumType
+  passportDate: SortEnumType
+  passportIssue: SortEnumType
+  passportNo: SortEnumType
+  password: SortEnumType
+  patronymic: SortEnumType
+  phoneNumber: SortEnumType
+  snils: SortEnumType
+}

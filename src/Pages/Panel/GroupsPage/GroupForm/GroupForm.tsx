@@ -1,18 +1,18 @@
 import React, {
   useEffect,
   useState
-}                            from 'react'
-import style                 from './GroupForm.module.scss'
-import GroupFormHeader       from './GroupFormHeader'
-import GroupFormList         from './GroupFormList'
-import GroupFormFooter       from './GroupFormFooter'
-import { isEqual }           from 'lodash/fp'
+}                                from 'react'
+import style                     from './GroupForm.module.scss'
+import GroupFormHeader           from './GroupFormHeader'
+import GroupFormList             from './GroupFormList/GroupFormList'
+import GroupFormFooter           from './GroupFormFooter'
+import { isEqual } from 'lodash/fp'
 import {
   TGroup,
   TGroupWithStudents,
   TStudent
-}                            from '../../../../types'
-import { useQueryGroupById } from '../../../../queriesLOCAL/group'
+}                  from '../../../../other/typesOLD'
+// import { useQueryGroupById_LOC } from '../../../../queries/LOCAL/group'
 
 const GroupForm: React.FC<{ id: number }> = ( { id } ) => {
   const [ isEdit, setIsEdit ] = useState( false )
@@ -22,7 +22,7 @@ const GroupForm: React.FC<{ id: number }> = ( { id } ) => {
   const [ currentGroup, setCurrentGroup ] = useState<TGroupWithStudents>()
   const [ editedGroup, setEditedGroup ] = useState<TGroupWithStudents>()
 
-  const { data: group } = useQueryGroupById( id )
+  // const { data: group } = useQueryGroupById_LOC( id )
 
   const handleSaving = () => undefined
   const handleRemove = ( id1: number ) => {
@@ -37,11 +37,11 @@ const GroupForm: React.FC<{ id: number }> = ( { id } ) => {
   const notChanged = isEqual( currentGroup, editedGroup ) && !removedIDs.length && !addedIDs.length
   const studentsCountAfterEdit = (editedGroup && editedGroup.Group.Students.length - removedIDs.length + addedIDs.length) as number
 
-  useEffect( () => {
-    if ( !group ) return
-    setCurrentGroup( { Group: group.Group } )
-    setEditedGroup( { Group: group.Group } )
-  }, [ group ] )
+  // useEffect( () => {
+  //   if ( !group ) return
+  // setCurrentGroup( { Group: group.Group } )
+  // setEditedGroup( { Group: group.Group } )
+  // }, [ group ] )
 
   useEffect( () => {
     if ( !isEdit ) {

@@ -4,17 +4,22 @@ import stylesPaid    from '../../../../styles/TablesStyles.module.scss'
 
 
 
-const Paid: FC<Record<string, any>> = ( { value } ) => (
-  value === null ? <></> :
+const Paid: FC<{ value: boolean | null }> = ( { value } ) => (
+  value === null ? <></> : (
     <div className={ value ? stylesPaid.yes : stylesPaid.no }>
       { value ? 'Оплачено' : 'Долг' }
     </div>
+  )
 )
+
+Paid.propTypes = {
+  value: PropTypes.bool.isRequired,
+}
 
 export default Paid
 
-Paid.propTypes = {
-  data: PropTypes.shape( {
-    value: PropTypes.bool,
-  } ),
-}
+// Paid.propTypes = {
+//   data: PropTypes.shape( {
+//     value: PropTypes.oneOf( [ PropTypes.string, null ] ),
+//   } ),
+// }

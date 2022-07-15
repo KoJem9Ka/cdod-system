@@ -22,7 +22,10 @@
 %paid {
   font-weight   : 500;
 
-  padding       : 0.2rem 0;
+  text-overflow: ellipsis;
+  overflow : hidden;
+
+  padding       : 0.3rem 15%;
   text-align    : center;
   border-radius : 10px;
 }

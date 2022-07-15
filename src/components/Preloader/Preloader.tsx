@@ -13,7 +13,7 @@ import { actionSetPreloader } from '../../store/InsteadOfContext/reducer'
 
 
 type PreloaderWrapperProps = {
-  loading: boolean
+  loading1: boolean
 }
 const PreloaderWrapper = styled.div<PreloaderWrapperProps>`
   position        : fixed;
@@ -38,7 +38,7 @@ const PreloaderWrapper = styled.div<PreloaderWrapperProps>`
     user-select    : none;
   }
 
-  ${ ( { loading } ) => (loading ? '' : 'display: none;') } @keyframes loading-open {
+  ${ ( { loading1 } ) => (loading1 ? '' : 'display: none;') } @keyframes loading-open {
     from {
       opacity   : 0;
       transform : scale(.5);
@@ -70,7 +70,7 @@ export const usePreloader = ( nextLoading: boolean ) => {
 export const Preloader: FC = () => {
   const loading = useAppSelector( state => state.insteadOfContext.isPreloader )
   return (
-    <PreloaderWrapper loading={ loading }>
+    <PreloaderWrapper loading1={ loading }>
       <img alt='loading animation' src={ preloaderWebp }/>
     </PreloaderWrapper>
   )

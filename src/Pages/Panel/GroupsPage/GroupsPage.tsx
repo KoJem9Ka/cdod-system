@@ -1,26 +1,15 @@
 import React, { useState } from 'react'
-import GroupsTable         from './GroupTable/GroupsTable'
-import { TGroup }          from '../../../types'
-import GroupForm           from './GroupForm/GroupForm'
+import { TGroup }          from '../../../other/typesOLD'
 import Workspace           from '../../../HOC/Workspace/Workspace'
-import { useQueryGroups }  from '../../../queriesLOCAL'
-import styled              from 'styled-components'
-import { usePreloader }    from '../../../components/Preloader/Preloader'
+import { FlexRow }         from '../../../components/styledComponents'
 
 
-
-const FlexRow = styled.div`
-  overflow : hidden;
-  display  : flex;
-  height   : 100%;
-  gap      : 1rem;
-`
 
 const GroupsPage: React.FC = () => {
   const [ chosenId, setChosenId ] = useState( 0 )
-  const { groups, loading } = useQueryGroups()
+  // const { groups, loading } = useQueryGroups_LOC()
 
-  usePreloader( loading )
+  // usePreloader( loading )
 
   const handler = ( id: TGroup['id'] ) => {
     setChosenId( +id )
@@ -30,8 +19,8 @@ const GroupsPage: React.FC = () => {
   return (
     <Workspace>
       <FlexRow>
-        <GroupsTable data={ groups } onRowSelected={ handler }/>
-        { !chosenId ? <></> : <GroupForm id={ chosenId }/> }
+        {/*<GroupsTable data={ groups } onRowSelected={ handler }/>*/}
+        {/*{ !chosenId ? <></> : <GroupForm id={ chosenId }/> }*/}
       </FlexRow>
     </Workspace>
   )

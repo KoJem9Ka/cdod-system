@@ -1,0 +1,55 @@
+#local
+query Students {
+  students: allStudents{
+    id
+    lastName
+    patronymic
+    birthDate
+    firstName
+    description
+    parent: Parent {
+      phoneNumber
+      secondPhoneNumber
+      applyingDate
+    }
+    info: Infos {
+      course: Course {
+        name
+      }
+      group: Group {
+        name
+      }
+      isCoursePaid
+      isEquipmentPaid
+      admissionDate
+      contractState
+    }
+  }
+}
+
+#asp
+#query Students {
+#  students{
+#    lastName
+#    patronymic
+#    birthDate
+#    firstName
+#    description
+#    parent {
+#      phoneNumber
+#      secondPhoneNumber
+#    }
+#    info {
+#      course {
+#        name
+#      }
+#      group {
+#        name
+#      }
+#      isCoursePaid
+#      isEquipmentPaid
+#      admissionDate
+#      contractState
+#    }
+#  }
+#}

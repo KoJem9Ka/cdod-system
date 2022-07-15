@@ -1,18 +1,28 @@
-import { configureStore } from '@reduxjs/toolkit'
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
-import { api, TApi } from '../API/api'
+import { configureStore }        from '@reduxjs/toolkit'
+import {
+  TypedUseSelectorHook,
+  useDispatch,
+  useSelector
+}                                from 'react-redux'
+import {
+  api,
+  TApi
+}                                from '../API/api'
 import { insteadOfContextSlice } from './InsteadOfContext/reducer'
-import logger from 'redux-logger'
-// import { studentsSlice } from './students/reducer'
+import logger                    from 'redux-logger'
+import { studentFormSlice }      from './studentsForm/reducer'
+import { client }                from '../index'
+
+
 
 export const store = configureStore( {
-  reducer: {
+  reducer:    {
     insteadOfContext: insteadOfContextSlice.reducer,
-    // students: studentsSlice.reducer,
+    studentForm:      studentFormSlice.reducer,
   },
-  devTools: true,
+  devTools:   true,
   middleware: getDefaultMiddleware => getDefaultMiddleware( {
-    thunk: { extraArgument: api },
+    thunk: { extraArgument: { api, client } },
   } ).concat( logger ),
 } )
 
@@ -21,5 +31,8 @@ export const useAppSelector: TypedUseSelectorHook<TAppState> = useSelector
 export type TAppDispatch = typeof store.dispatch
 export const useAppDispatch = () => useDispatch<TAppDispatch>()
 export type TAppAsyncThinkConfig = {
-  extra: TApi
+  extra: {
+    api: TApi
+    client: typeof client
+  }
 }

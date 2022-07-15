@@ -4,7 +4,7 @@ import React, {
   useState
 }                      from 'react'
 import { useNavigate } from 'react-router-dom'
-import { PathLogin }   from '../../PathConfig'
+import { PathLogin }   from '../../other/PathConfig'
 
 
 

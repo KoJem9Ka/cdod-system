@@ -3,35 +3,37 @@ import {
   ColumnChooser,
   DataGrid,
   FilterRow,
-  Pager,
   SearchPanel,
   Summary,
   TotalItem
-} from 'devextreme-react/data-grid'
-import React               from 'react'
-import Paid                from './Paid'
+}                          from 'devextreme-react/data-grid'
+import React, { memo }     from 'react'
 import classes             from '../../../../styles/TablesStyles.module.scss'
-import { TStudent }        from '../../../../types'
 import { GridBaseOptions } from 'devextreme/ui/data_grid'
+import StudyInfo           from './StudyInfo'
+import moment              from 'moment'
+import Paid                from './Paid'
+import {
+  isEqual,
+  isNil
+}                          from 'lodash'
+import { GStudentsQuery }  from '../GStudentsQuery'
+import { formatPhone }     from '../../../../other/helpers'
 
 
 
-type T = TStudent
+type T = GStudentsQuery['students'][number]
 
 type Props = {
   data: T[]
   onRowSelected: ( id: T['id'] )=> void
 }
 
-type selectEvent = GridBaseOptions<any>['onSelectionChanged']
+const StudentsTable: React.FC<Props> = memo(( { data, onRowSelected } ) => {
+  const handler: GridBaseOptions<any>['onSelectionChanged'] = ( { selectedRowKeys } ) => void onRowSelected( selectedRowKeys[0] )
 
-const StudentsTable: React.FC<Props> = ( { data, onRowSelected } ) => {
-  const handler: selectEvent = ( { selectedRowKeys } ) => {
-    onRowSelected( selectedRowKeys[0] )
-  }
-
-  if (data.length === 0)
-    return <h2>Нет данных</h2>
+  if ( data.length === 0 )
+    return <h2>Таблица: Нет данных</h2>
 
   return (
     <DataGrid
@@ -56,12 +58,12 @@ const StudentsTable: React.FC<Props> = ( { data, onRowSelected } ) => {
 
       // grouping={ { autoExpandAll: false, expandMode: 'rowClick' } }
 
-      repaintChangesOnly={ true}
-      scrolling={ { mode: 'virtual', rowRenderingMode: 'virtual', scrollByContent: true } }
+      // repaintChangesOnly={ true }
+      scrolling={ { mode: 'virtual', rowRenderingMode: 'virtual', columnRenderingMode: 'virtual' } }
       // renderAsync={ true }
 
       selection={ { mode: 'single' } }
-      showColumnLines={ true }
+      // showColumnLines={ true }
       // paging={ { enabled: true } }
 
       showRowLines={ true }
@@ -87,70 +89,63 @@ const StudentsTable: React.FC<Props> = ( { data, onRowSelected } ) => {
         visible={ false }
       />
       <Column
-        alignment='right'
+        // alignment='right'
         allowFiltering={ true }
-
-        allowHiding={ false }
-        // allowGrouping={ false }
         allowSearch={ true }
         allowSorting={ true }
-        calculateCellValue={ ( row: T ) => `${ row.last_name } ${ row.first_name } ${ row.patronymic }` }
+        calculateCellValue={ ( row: T ) => `${ row.lastName } ${ row.firstName } ${ row.patronymic }` }
         caption='ФИО'
         dataType={ 'string' }
         name='fio'
-        // fixed={ true }
       />
       <Column
         alignment='center'
-        caption='ДР'
-        dataField='birth_date'
-        dataType='date'
+        calculateCellValue={ ( row: T ) => `${ row.birthDate } (${ moment( row.birthDate ).fromNow( true ) })` }
+        caption='Возраст'
+        customizeText={ arg => `${ arg.valueText.match( /\d+ лет/ )![0] }` }
+        // customizeText={ arg => arg.valueText }
+        dataField='birthDate'
+        // dataType='date'
+        name='birthDate'
       />
       <Column
-        caption='Курс'
-        dataField='course'
-      />
-      <Column
-        caption='Группа'
-        dataField='group'
-      />
-      <Column
-        caption='Телефон'
-        dataField='phone_number'
+        alignment='center'
+        calculateCellValue={ ( row: T ) => formatPhone( row.parent.phoneNumber ) }
+        caption='Контакты'
+        name='contacts'
       />
       <Column
         caption='Заметки'
-        dataField='notes'
+        dataField='description'
         width={ 200 }
       />
       <Column
-        caption='Оплата'
-        cellRender={ Paid }
-        dataField='paid'
-        dataType='boolean'
-        falseText={ 'Долг' }
-        trueText={ 'Оплачено' }
+        caption={ 'Обучение' }
+        cellComponent={ StudyInfo }
       />
       <Column
-        caption='Материалы'
+        allowFiltering={ true }
+        calculateCellValue={ ( row: T ) => (row.info.length === 0 ? null : row.info.reduce<boolean>( ( previousValue, currentValue ) => previousValue && currentValue.isCoursePaid && (isNil( currentValue.isEquipmentPaid ) || currentValue.isEquipmentPaid), true )) }
+        caption='Оплата'
         cellRender={ Paid }
-        dataField='materials_paid'
         dataType='boolean'
         falseText={ 'Долг' }
         trueText={ 'Оплачено' }
       />
       <Column
         alignment='center'
+        calculateCellValue={ ( row: T ) => row.parent.applyingDate }
         caption='Дата заявки'
-        dataField='request_date'
+        customizeText={ arg => `${ arg.valueText } (${ moment( arg.valueText ).fromNow( true ) })` }
+        dataField='signDate'
         dataType='date'
         sortOrder='desc'
       />
-      <Column
-        alignment='center'
-        caption='Статус'
-        dataField='contract_status'
-      />
+      {/*<Column*/ }
+      {/*  alignment='center'*/ }
+      {/*  caption='Статус'*/ }
+      {/*  dataField='contract_status'*/ }
+      {/*/>*/ }
 
       <ColumnChooser
         allowSearch={ true }
@@ -177,7 +172,7 @@ const StudentsTable: React.FC<Props> = ( { data, onRowSelected } ) => {
       </Summary>
     </DataGrid>
   )
-}
+}, ( prevProps, nextProps ) => isEqual( prevProps.data, nextProps.data ) )
 
 
 export default StudentsTable

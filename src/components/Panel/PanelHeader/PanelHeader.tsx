@@ -1,6 +1,6 @@
 import React from 'react'
-import style from './PanelHeader.module.scss'
-import { PathDefault } from '../../../PathConfig'
+import style           from './PanelHeader.module.scss'
+import { PathDefault } from '../../../other/PathConfig'
 import { useNavigate } from 'react-router-dom'
 import { usePanelOpening } from '../../../store/InsteadOfContext/hook'
 import IconMenu from '../../../assets/icons/IconMenu'

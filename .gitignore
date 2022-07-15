@@ -1,11 +1,19 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+
+#Generated Files
+/src/**/*.generated.ts
+/json_data_generator/DB_Types.ts
+
+#Other Repos
+/schemas/cdod_server_scheme
+
 # jetbrains ide folders
 /.idea
 /**/.idea
 
 # dependencies
-/node_modules
+/**/node_modules
 /.pnp
 .pnp.js
 
@@ -25,5 +33,3 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-/data-generator/students.json

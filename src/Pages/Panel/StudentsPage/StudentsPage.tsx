@@ -1,31 +1,44 @@
-import React                from 'react'
+import React, {
+  useEffect,
+  useMemo
+}                           from 'react'
 import Workspace            from '../../../HOC/Workspace/Workspace'
 import styles               from './StudentsPage.module.scss'
-import { useQueryStudents } from '../../../queriesLOCAL'
 import StudentsTable        from './StudentsTable/StudentsTable'
-import { TStudent }         from '../../../types'
 import { toast }            from 'react-toastify'
 import { usePreloader }     from '../../../components/Preloader/Preloader'
+import { useStudentsQuery } from './Students.generated'
+import { useStudentForm }   from '../../../store/studentsForm/hooks'
+import StudentForm          from './StudentForm/StudentForm'
+import { FlexRow }          from '../../../components/styledComponents'
+import { isEqual }          from 'lodash'
 
 
+
+let prevFunc: any
 
 const StudentsPage: React.FC = () => {
-  const { loading, error, students } = useQueryStudents()
+  const { loading, error, data } = useStudentsQuery()
+  const students = useMemo( () => data?.students || [], [ loading ] )
+
+  const { selectStudent } = useStudentForm()
+
 
   usePreloader( loading )
-
-  const rowHandler = ( id: TStudent['id'] ) => {
-    toast( `student id: ${ id }` )
-  }
+  useEffect( () => {
+    error && toast.error( JSON.stringify( error ) )
+  }, [ error ] )
 
   return (
     <>
       <Workspace className={ styles.StudentsPage }>
-        <StudentsTable data={ students } onRowSelected={ rowHandler }/>
+        <FlexRow>
+          <StudentsTable data={ students } onRowSelected={ selectStudent }/>
+          <StudentForm/>
+        </FlexRow>
         <h2>
-          Всего:&nbsp;
-          { students.length }
-          &nbsp;студентов
+          Всего студентов:&nbsp;
+          { data?.students.length }
         </h2>
       </Workspace>
     </>

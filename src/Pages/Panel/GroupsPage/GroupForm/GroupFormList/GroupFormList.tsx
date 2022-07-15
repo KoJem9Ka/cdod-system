@@ -1,7 +1,7 @@
-import React         from 'react'
-import style             from './GroupForm.module.scss'
+import React             from 'react'
+import style             from '../GroupForm.module.scss'
 import GroupFormListItem from './GroupFormListItem'
-import { TStudent }      from '../../../../types'
+import { TStudent }      from '../../../../../other/typesOLD'
 
 
 

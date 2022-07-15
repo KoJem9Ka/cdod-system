@@ -12,6 +12,9 @@
 //$lblue_color       : #57BDDB;
 
 :root {
+  //DevExpressTable
+  --dxCellSeparator                                 : rgba(224, 224, 224, 1);
+
   //animations
   --test1                                           : cubic-bezier(.87, .08, .08, .89);
   //тёмный

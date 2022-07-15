@@ -22,6 +22,7 @@ rules        : { indent                                                     : of
                                                                                            "MemberExpression"  : 2 } ],
                  semi                                                       : off,
                  '@typescript-eslint/semi'                                  : [ warn, never ],
+                 '@typescript-eslint/no-extra-semi'                         : warn,
                  no-unused-vars                                             : off,
                  '@typescript-eslint/no-unused-vars'                        : [ warn, { args: all } ],
                  jsx-quotes                                                 : [ warn, prefer-single ],

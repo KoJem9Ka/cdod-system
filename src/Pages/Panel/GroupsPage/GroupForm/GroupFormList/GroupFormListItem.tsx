@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import style                          from './GroupForm.module.scss'
-import { TStudent }                   from '../../../../types'
+import style        from '../GroupForm.module.scss'
+import { TStudent } from '../../../../../other/typesOLD'
 
 type GroupPanelItemProps = {
   Students: Pick<TStudent, 'id' | 'last_name' | 'first_name' | 'patronymic' | 'birth_date'>

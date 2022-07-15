@@ -1,21 +1,14 @@
 {
   "name": "Untitled GraphQL Schema",
-  "schemaPath": "schema.graphql",
   "extensions": {
     "endpoints": {
       "json server": {
         "url": "http://localhost:3001",
-        "headers": {
-          "user-agent": "JS GraphQL"
-        },
-        "introspect": false
+        "schemaPath": "schemas\\local.graphql"
       },
       "aspnet": {
-        "url": "http://localhost:5094",
-        "headers": {
-          "user-agent": "JS GraphQL"
-        },
-        "introspect": false
+        "url": "https://localhost:7094/",
+        "schemaPath": "schemas\\asp.graphql"
       }
     }
   }
