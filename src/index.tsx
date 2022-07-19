@@ -20,8 +20,8 @@ import { Preloader }      from './components/Preloader/Preloader'
 
 export const client = new ApolloClient( {
   // uri:               'http://localhost:5094/',
-  // uri: 'https://localhost:7094/',
-  uri:               'http://localhost:3001',
+  uri: 'https://localhost:7094/',
+  // uri:               'http://localhost:3001',
   cache:             new InMemoryCache(),
   connectToDevTools: true,
 } )
