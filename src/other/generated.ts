@@ -13,8 +13,8 @@ export type Scalars = {
 };
 
 export type GCourse = {
-  Groups: Maybe<Array<Maybe<GGroup>>>;
-  Infos: Maybe<Array<Maybe<GInfo>>>;
+  Groups: Array<GGroup>;
+  Infos: Array<GInfo>;
   equipmentPriceWithRobot: Maybe<Scalars['Int']>;
   equipmentPriceWithoutRobot: Maybe<Scalars['Int']>;
   id: Scalars['ID'];
@@ -37,7 +37,7 @@ export type GCourseFilter = {
   equipmentPriceWithoutRobot_neq: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['ID']>;
   id_neq: InputMaybe<Scalars['ID']>;
-  ids: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  ids: Array<Scalars['ID']>;
   name: InputMaybe<Scalars['String']>;
   name_neq: InputMaybe<Scalars['String']>;
   price: InputMaybe<Scalars['Int']>;
@@ -58,13 +58,14 @@ export type GCourseInput = {
 };
 
 export type GGroup = {
-  Course: Maybe<GCourse>;
-  Infos: Maybe<Array<Maybe<GInfo>>>;
-  Teacher: Maybe<GTeacher>;
+  Course: GCourse;
+  Infos: Array<GInfo>;
+  Teacher: GTeacher;
   course_id: Scalars['ID'];
   id: Scalars['ID'];
   name: Scalars['String'];
   startDate: Scalars['String'];
+  studentsCount: Scalars['Int'];
   teacher_id: Scalars['ID'];
 };
 
@@ -73,12 +74,18 @@ export type GGroupFilter = {
   course_id_neq: InputMaybe<Scalars['ID']>;
   id: InputMaybe<Scalars['ID']>;
   id_neq: InputMaybe<Scalars['ID']>;
-  ids: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  ids: Array<Scalars['ID']>;
   name: InputMaybe<Scalars['String']>;
   name_neq: InputMaybe<Scalars['String']>;
   q: InputMaybe<Scalars['String']>;
   startDate: InputMaybe<Scalars['String']>;
   startDate_neq: InputMaybe<Scalars['String']>;
+  studentsCount: InputMaybe<Scalars['Int']>;
+  studentsCount_gt: InputMaybe<Scalars['Int']>;
+  studentsCount_gte: InputMaybe<Scalars['Int']>;
+  studentsCount_lt: InputMaybe<Scalars['Int']>;
+  studentsCount_lte: InputMaybe<Scalars['Int']>;
+  studentsCount_neq: InputMaybe<Scalars['Int']>;
   teacher_id: InputMaybe<Scalars['ID']>;
   teacher_id_neq: InputMaybe<Scalars['ID']>;
 };
@@ -88,13 +95,14 @@ export type GGroupInput = {
   id: Scalars['ID'];
   name: Scalars['String'];
   startDate: Scalars['String'];
+  studentsCount: Scalars['Int'];
   teacher_id: Scalars['ID'];
 };
 
 export type GInfo = {
-  Course: Maybe<GCourse>;
+  Course: GCourse;
   Group: Maybe<GGroup>;
-  Student: Maybe<GStudent>;
+  Student: GStudent;
   admissionDate: Scalars['String'];
   contractState: Scalars['String'];
   course_id: Scalars['ID'];
@@ -114,7 +122,7 @@ export type GInfoFilter = {
   course_id_neq: InputMaybe<Scalars['ID']>;
   group_id: InputMaybe<Scalars['ID']>;
   group_id_neq: InputMaybe<Scalars['ID']>;
-  ids: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  ids: Array<Scalars['ID']>;
   isCoursePaid: InputMaybe<Scalars['Boolean']>;
   isEquipmentPaid: InputMaybe<Scalars['Boolean']>;
   isGetRobot: InputMaybe<Scalars['Boolean']>;
@@ -142,13 +150,13 @@ export type GMutation = {
   createCourse: Maybe<GCourse>;
   createGroup: Maybe<GGroup>;
   createInfo: Maybe<GInfo>;
-  createManyCourse: Maybe<Array<Maybe<GCourse>>>;
-  createManyGroup: Maybe<Array<Maybe<GGroup>>>;
-  createManyInfo: Maybe<Array<Maybe<GInfo>>>;
-  createManyParent: Maybe<Array<Maybe<GParent>>>;
-  createManySchool: Maybe<Array<Maybe<GSchool>>>;
-  createManyStudent: Maybe<Array<Maybe<GStudent>>>;
-  createManyTeacher: Maybe<Array<Maybe<GTeacher>>>;
+  createManyCourse: Array<GCourse>;
+  createManyGroup: Array<GGroup>;
+  createManyInfo: Array<GInfo>;
+  createManyParent: Array<GParent>;
+  createManySchool: Array<GSchool>;
+  createManyStudent: Array<GStudent>;
+  createManyTeacher: Array<GTeacher>;
   createParent: Maybe<GParent>;
   createSchool: Maybe<GSchool>;
   createStudent: Maybe<GStudent>;
@@ -182,6 +190,7 @@ export type GMutationCreateGroupArgs = {
   course_id: Scalars['ID'];
   name: Scalars['String'];
   startDate: Scalars['String'];
+  studentsCount: Scalars['Int'];
   teacher_id: Scalars['ID'];
 };
 
@@ -199,37 +208,37 @@ export type GMutationCreateInfoArgs = {
 
 
 export type GMutationCreateManyCourseArgs = {
-  data: InputMaybe<Array<InputMaybe<GCourseInput>>>;
+  data: Array<GCourseInput>;
 };
 
 
 export type GMutationCreateManyGroupArgs = {
-  data: InputMaybe<Array<InputMaybe<GGroupInput>>>;
+  data: Array<GGroupInput>;
 };
 
 
 export type GMutationCreateManyInfoArgs = {
-  data: InputMaybe<Array<InputMaybe<GInfoInput>>>;
+  data: Array<GInfoInput>;
 };
 
 
 export type GMutationCreateManyParentArgs = {
-  data: InputMaybe<Array<InputMaybe<GParentInput>>>;
+  data: Array<GParentInput>;
 };
 
 
 export type GMutationCreateManySchoolArgs = {
-  data: InputMaybe<Array<InputMaybe<GSchoolInput>>>;
+  data: Array<GSchoolInput>;
 };
 
 
 export type GMutationCreateManyStudentArgs = {
-  data: InputMaybe<Array<InputMaybe<GStudentInput>>>;
+  data: Array<GStudentInput>;
 };
 
 
 export type GMutationCreateManyTeacherArgs = {
-  data: InputMaybe<Array<InputMaybe<GTeacherInput>>>;
+  data: Array<GTeacherInput>;
 };
 
 
@@ -322,6 +331,7 @@ export type GMutationUpdateGroupArgs = {
   id: Scalars['ID'];
   name: InputMaybe<Scalars['String']>;
   startDate: InputMaybe<Scalars['String']>;
+  studentsCount: InputMaybe<Scalars['Int']>;
   teacher_id: InputMaybe<Scalars['ID']>;
 };
 
@@ -382,7 +392,7 @@ export type GMutationUpdateTeacherArgs = {
 };
 
 export type GParent = {
-  Students: Maybe<Array<Maybe<GStudent>>>;
+  Students: Array<GStudent>;
   applyingDate: Scalars['String'];
   email: Scalars['String'];
   firstName: Scalars['String'];
@@ -403,7 +413,7 @@ export type GParentFilter = {
   firstName_neq: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['ID']>;
   id_neq: InputMaybe<Scalars['ID']>;
-  ids: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  ids: Array<Scalars['ID']>;
   lastName: InputMaybe<Scalars['String']>;
   lastName_neq: InputMaybe<Scalars['String']>;
   patronymic: InputMaybe<Scalars['String']>;
@@ -430,13 +440,13 @@ export type GParentInput = {
 };
 
 export type GQuery = {
-  Course: Maybe<GCourse>;
-  Group: Maybe<GGroup>;
-  Info: Maybe<GInfo>;
-  Parent: Maybe<GParent>;
-  School: Maybe<GSchool>;
-  Student: Maybe<GStudent>;
-  Teacher: Maybe<GTeacher>;
+  Course: GCourse;
+  Group: GGroup;
+  Info: GInfo;
+  Parent: GParent;
+  School: GSchool;
+  Student: GStudent;
+  Teacher: GTeacher;
   _allCoursesMeta: Maybe<GListMetadata>;
   _allGroupsMeta: Maybe<GListMetadata>;
   _allInfosMeta: Maybe<GListMetadata>;
@@ -444,13 +454,13 @@ export type GQuery = {
   _allSchoolsMeta: Maybe<GListMetadata>;
   _allStudentsMeta: Maybe<GListMetadata>;
   _allTeachersMeta: Maybe<GListMetadata>;
-  allCourses: Maybe<Array<Maybe<GCourse>>>;
-  allGroups: Maybe<Array<Maybe<GGroup>>>;
-  allInfos: Maybe<Array<Maybe<GInfo>>>;
-  allParents: Maybe<Array<Maybe<GParent>>>;
-  allSchools: Maybe<Array<Maybe<GSchool>>>;
-  allStudents: Maybe<Array<Maybe<GStudent>>>;
-  allTeachers: Maybe<Array<Maybe<GTeacher>>>;
+  allCourses: Array<GCourse>;
+  allGroups: Array<GGroup>;
+  allInfos: Array<GInfo>;
+  allParents: Array<GParent>;
+  allSchools: Array<GSchool>;
+  allStudents: Array<GStudent>;
+  allTeachers: Array<GTeacher>;
 };
 
 
@@ -601,7 +611,7 @@ export type GQueryAllTeachersArgs = {
 };
 
 export type GSchool = {
-  Students: Maybe<Array<Maybe<GStudent>>>;
+  Students: Array<GStudent>;
   district: Scalars['String'];
   id: Scalars['ID'];
   name: Scalars['String'];
@@ -612,7 +622,7 @@ export type GSchoolFilter = {
   district_neq: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['ID']>;
   id_neq: InputMaybe<Scalars['ID']>;
-  ids: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  ids: Array<Scalars['ID']>;
   name: InputMaybe<Scalars['String']>;
   name_neq: InputMaybe<Scalars['String']>;
   q: InputMaybe<Scalars['String']>;
@@ -625,9 +635,9 @@ export type GSchoolInput = {
 };
 
 export type GStudent = {
-  Infos: Maybe<Array<Maybe<GInfo>>>;
-  Parent: Maybe<GParent>;
-  School: Maybe<GSchool>;
+  Infos: Array<GInfo>;
+  Parent: GParent;
+  School: GSchool;
   birthDate: Scalars['String'];
   description: Maybe<Scalars['String']>;
   firstName: Scalars['String'];
@@ -647,7 +657,7 @@ export type GStudentFilter = {
   firstName_neq: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['ID']>;
   id_neq: InputMaybe<Scalars['ID']>;
-  ids: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  ids: Array<Scalars['ID']>;
   lastName: InputMaybe<Scalars['String']>;
   lastName_neq: InputMaybe<Scalars['String']>;
   parent_id: InputMaybe<Scalars['ID']>;
@@ -671,7 +681,7 @@ export type GStudentInput = {
 };
 
 export type GTeacher = {
-  Groups: Maybe<Array<Maybe<GGroup>>>;
+  Groups: Array<GGroup>;
   email: Scalars['String'];
   firstName: Scalars['String'];
   id: Scalars['ID'];
@@ -689,7 +699,7 @@ export type GTeacherFilter = {
   firstName_neq: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['ID']>;
   id_neq: InputMaybe<Scalars['ID']>;
-  ids: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  ids: Array<Scalars['ID']>;
   isAdmin: InputMaybe<Scalars['Boolean']>;
   lastName: InputMaybe<Scalars['String']>;
   lastName_neq: InputMaybe<Scalars['String']>;

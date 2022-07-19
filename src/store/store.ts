@@ -22,7 +22,7 @@ export const store = configureStore( {
   },
   devTools:   true,
   middleware: getDefaultMiddleware => getDefaultMiddleware( {
-    thunk: { extraArgument: { api, client } },
+    thunk: { extraArgument: { api } },
   } ).concat( logger ),
 } )
 
@@ -30,9 +30,8 @@ export type TAppState = ReturnType<typeof store.getState>
 export const useAppSelector: TypedUseSelectorHook<TAppState> = useSelector
 export type TAppDispatch = typeof store.dispatch
 export const useAppDispatch = () => useDispatch<TAppDispatch>()
-export type TAppAsyncThinkConfig = {
+export type TAppThunkConfig = {
   extra: {
     api: TApi
-    client: typeof client
   }
 }

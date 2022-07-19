@@ -1,0 +1,16 @@
+query Groups {
+  groups: allGroups {
+    id
+    name
+    course: Course {
+      name
+    }
+    teacher: Teacher {
+      lastName
+      firstName
+      patronymic
+    }
+    startDate
+    studentsCount
+  }
+}

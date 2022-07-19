@@ -1,23 +1,51 @@
 import {
   createSlice,
   PayloadAction
-}                   from '@reduxjs/toolkit'
-import { GStudent } from '../../other/generated'
+}                           from '@reduxjs/toolkit'
+import { thunkLoadStudent } from './thunks'
+import { ApolloError }      from '@apollo/client'
+import { GStudentQuery }    from './Student.generated_ok'
 
 
+
+type T = GStudentQuery['student']
 
 const initialState = {
-  id: undefined as undefined | GStudent['id'],
+  studentLoading:  false as boolean,
+  error:           null as ApolloError['message'] | null | undefined,
+  studentOriginal: null as T | null,
+  studentModified: null as T | null,
+  isEdit:          false as boolean,
 }
 
 export const studentFormSlice = createSlice( {
-  name:     'studentForm',
+  name:          'studentForm',
   initialState,
-  reducers: {
-    actionSelectStudent: ( state, action: PayloadAction<GStudent['id']> ) => {
-      state.id = action.payload
+  reducers:      {
+    actionToggleEdit:    ( state, action: PayloadAction<boolean | undefined> ) => {
+      state.isEdit = action.payload !== undefined ? action.payload : !state.isEdit
+    },
+    actionChangeStudent: ( state, action: PayloadAction<Partial<Omit<T, 'id'>>> ) => {
+      // @ts-ignore
+      state.studentModified = { ...state.studentModified, ...action.payload }
     },
   },
+  extraReducers: builder => builder
+      .addCase( thunkLoadStudent.pending, ( state, action ) => {
+        state.studentLoading = true
+        state.error = null
+        state.studentOriginal = null
+        state.studentModified = null
+      } )
+      .addCase( thunkLoadStudent.rejected, ( state, action ) => {
+        state.studentLoading = false
+        state.error = `${ action.error.message }: ${ action.payload }`
+      } )
+      .addCase( thunkLoadStudent.fulfilled, ( state, action ) => {
+        state.studentLoading = false
+        state.studentOriginal = action.payload
+        state.studentModified = action.payload
+      } ),
 } )
 
-export const { actionSelectStudent } = studentFormSlice.actions
+export const { actionToggleEdit, actionChangeStudent } = studentFormSlice.actions

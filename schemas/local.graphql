@@ -6,8 +6,8 @@ schema {
 }
 
 type Course {
-  Groups: [Group]
-  Infos: [Info]
+  Groups: [Group!]!
+  Infos: [Info!]!
   equipmentPriceWithRobot: Int
   equipmentPriceWithoutRobot: Int
   id: ID!
@@ -16,20 +16,21 @@ type Course {
 }
 
 type Group {
-  Course: Course
-  Infos: [Info]
-  Teacher: Teacher
+  Course: Course!
+  Infos: [Info!]!
+  Teacher: Teacher!
   course_id: ID!
   id: ID!
   name: String!
   startDate: String!
+  studentsCount: Int!
   teacher_id: ID!
 }
 
 type Info {
-  Course: Course
+  Course: Course!
   Group: Group
-  Student: Student
+  Student: Student!
   admissionDate: String!
   contractState: String!
   course_id: ID!
@@ -46,15 +47,15 @@ type ListMetadata {
 
 type Mutation {
   createCourse(equipmentPriceWithRobot: Int, equipmentPriceWithoutRobot: Int, name: String!, price: Int!): Course
-  createGroup(course_id: ID!, name: String!, startDate: String!, teacher_id: ID!): Group
+  createGroup(course_id: ID!, name: String!, startDate: String!, studentsCount: Int!, teacher_id: ID!): Group
   createInfo(admissionDate: String!, contractState: String!, course_id: ID!, group_id: ID!, isCoursePaid: Boolean!, isEquipmentPaid: Boolean, isGetRobot: Boolean, student_id: ID!): Info
-  createManyCourse(data: [CourseInput]): [Course]
-  createManyGroup(data: [GroupInput]): [Group]
-  createManyInfo(data: [InfoInput]): [Info]
-  createManyParent(data: [ParentInput]): [Parent]
-  createManySchool(data: [SchoolInput]): [School]
-  createManyStudent(data: [StudentInput]): [Student]
-  createManyTeacher(data: [TeacherInput]): [Teacher]
+  createManyCourse(data: [CourseInput!]!): [Course!]!
+  createManyGroup(data: [GroupInput!]!): [Group!]!
+  createManyInfo(data: [InfoInput!]!): [Info!]!
+  createManyParent(data: [ParentInput!]!): [Parent!]!
+  createManySchool(data: [SchoolInput!]!): [School!]!
+  createManyStudent(data: [StudentInput!]!): [Student!]!
+  createManyTeacher(data: [TeacherInput!]!): [Teacher!]!
   createParent(applyingDate: String!, email: String!, firstName: String!, lastName: String!, patronymic: String!, phoneNumber: String!, secondEmail: String!, secondPhoneNumber: String!): Parent
   createSchool(district: String!, name: String!): School
   createStudent(birthDate: String!, description: String, firstName: String!, lastName: String!, parent_id: ID!, patronymic: String!, school_id: ID!): Student
@@ -67,7 +68,7 @@ type Mutation {
   removeStudent(id: ID!): Student
   removeTeacher(id: ID!): Teacher
   updateCourse(equipmentPriceWithRobot: Int, equipmentPriceWithoutRobot: Int, id: ID!, name: String, price: Int): Course
-  updateGroup(course_id: ID, id: ID!, name: String, startDate: String, teacher_id: ID): Group
+  updateGroup(course_id: ID, id: ID!, name: String, startDate: String, studentsCount: Int, teacher_id: ID): Group
   updateInfo(admissionDate: String, contractState: String, course_id: ID, group_id: ID, isCoursePaid: Boolean, isEquipmentPaid: Boolean, isGetRobot: Boolean, student_id: ID): Info
   updateParent(applyingDate: String, email: String, firstName: String, id: ID!, lastName: String, patronymic: String, phoneNumber: String, secondEmail: String, secondPhoneNumber: String): Parent
   updateSchool(district: String, id: ID!, name: String): School
@@ -76,7 +77,7 @@ type Mutation {
 }
 
 type Parent {
-  Students: [Student]
+  Students: [Student!]!
   applyingDate: String!
   email: String!
   firstName: String!
@@ -89,13 +90,13 @@ type Parent {
 }
 
 type Query {
-  Course(id: ID!): Course
-  Group(id: ID!): Group
-  Info(id: ID!): Info
-  Parent(id: ID!): Parent
-  School(id: ID!): School
-  Student(id: ID!): Student
-  Teacher(id: ID!): Teacher
+  Course(id: ID!): Course!
+  Group(id: ID!): Group!
+  Info(id: ID!): Info!
+  Parent(id: ID!): Parent!
+  School(id: ID!): School!
+  Student(id: ID!): Student!
+  Teacher(id: ID!): Teacher!
   _allCoursesMeta(filter: CourseFilter, page: Int, perPage: Int): ListMetadata
   _allGroupsMeta(filter: GroupFilter, page: Int, perPage: Int): ListMetadata
   _allInfosMeta(filter: InfoFilter, page: Int, perPage: Int): ListMetadata
@@ -103,26 +104,26 @@ type Query {
   _allSchoolsMeta(filter: SchoolFilter, page: Int, perPage: Int): ListMetadata
   _allStudentsMeta(filter: StudentFilter, page: Int, perPage: Int): ListMetadata
   _allTeachersMeta(filter: TeacherFilter, page: Int, perPage: Int): ListMetadata
-  allCourses(filter: CourseFilter, page: Int, perPage: Int, sortField: String, sortOrder: String): [Course]
-  allGroups(filter: GroupFilter, page: Int, perPage: Int, sortField: String, sortOrder: String): [Group]
-  allInfos(filter: InfoFilter, page: Int, perPage: Int, sortField: String, sortOrder: String): [Info]
-  allParents(filter: ParentFilter, page: Int, perPage: Int, sortField: String, sortOrder: String): [Parent]
-  allSchools(filter: SchoolFilter, page: Int, perPage: Int, sortField: String, sortOrder: String): [School]
-  allStudents(filter: StudentFilter, page: Int, perPage: Int, sortField: String, sortOrder: String): [Student]
-  allTeachers(filter: TeacherFilter, page: Int, perPage: Int, sortField: String, sortOrder: String): [Teacher]
+  allCourses(filter: CourseFilter, page: Int, perPage: Int, sortField: String, sortOrder: String): [Course!]!
+  allGroups(filter: GroupFilter, page: Int, perPage: Int, sortField: String, sortOrder: String): [Group!]!
+  allInfos(filter: InfoFilter, page: Int, perPage: Int, sortField: String, sortOrder: String): [Info!]!
+  allParents(filter: ParentFilter, page: Int, perPage: Int, sortField: String, sortOrder: String): [Parent!]!
+  allSchools(filter: SchoolFilter, page: Int, perPage: Int, sortField: String, sortOrder: String): [School!]!
+  allStudents(filter: StudentFilter, page: Int, perPage: Int, sortField: String, sortOrder: String): [Student!]!
+  allTeachers(filter: TeacherFilter, page: Int, perPage: Int, sortField: String, sortOrder: String): [Teacher!]!
 }
 
 type School {
-  Students: [Student]
+  Students: [Student!]!
   district: String!
   id: ID!
   name: String!
 }
 
 type Student {
-  Infos: [Info]
-  Parent: Parent
-  School: School
+  Infos: [Info!]!
+  Parent: Parent!
+  School: School!
   birthDate: String!
   description: String
   firstName: String!
@@ -134,7 +135,7 @@ type Student {
 }
 
 type Teacher {
-  Groups: [Group]
+  Groups: [Group!]!
   email: String!
   firstName: String!
   id: ID!
@@ -160,7 +161,7 @@ input CourseFilter {
   equipmentPriceWithoutRobot_neq: Int
   id: ID
   id_neq: ID
-  ids: [ID]
+  ids: [ID!]!
   name: String
   name_neq: String
   price: Int
@@ -185,12 +186,18 @@ input GroupFilter {
   course_id_neq: ID
   id: ID
   id_neq: ID
-  ids: [ID]
+  ids: [ID!]!
   name: String
   name_neq: String
   q: String
   startDate: String
   startDate_neq: String
+  studentsCount: Int
+  studentsCount_gt: Int
+  studentsCount_gte: Int
+  studentsCount_lt: Int
+  studentsCount_lte: Int
+  studentsCount_neq: Int
   teacher_id: ID
   teacher_id_neq: ID
 }
@@ -200,6 +207,7 @@ input GroupInput {
   id: ID!
   name: String!
   startDate: String!
+  studentsCount: Int!
   teacher_id: ID!
 }
 
@@ -212,7 +220,7 @@ input InfoFilter {
   course_id_neq: ID
   group_id: ID
   group_id_neq: ID
-  ids: [ID]
+  ids: [ID!]!
   isCoursePaid: Boolean
   isEquipmentPaid: Boolean
   isGetRobot: Boolean
@@ -241,7 +249,7 @@ input ParentFilter {
   firstName_neq: String
   id: ID
   id_neq: ID
-  ids: [ID]
+  ids: [ID!]!
   lastName: String
   lastName_neq: String
   patronymic: String
@@ -272,7 +280,7 @@ input SchoolFilter {
   district_neq: String
   id: ID
   id_neq: ID
-  ids: [ID]
+  ids: [ID!]!
   name: String
   name_neq: String
   q: String
@@ -293,7 +301,7 @@ input StudentFilter {
   firstName_neq: String
   id: ID
   id_neq: ID
-  ids: [ID]
+  ids: [ID!]!
   lastName: String
   lastName_neq: String
   parent_id: ID
@@ -323,7 +331,7 @@ input TeacherFilter {
   firstName_neq: String
   id: ID
   id_neq: ID
-  ids: [ID]
+  ids: [ID!]!
   isAdmin: Boolean
   lastName: String
   lastName_neq: String

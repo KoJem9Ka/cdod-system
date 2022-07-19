@@ -3,9 +3,7 @@ import {
   ColumnChooser,
   DataGrid,
   FilterRow,
-  SearchPanel,
-  Summary,
-  TotalItem
+  SearchPanel
 }                          from 'devextreme-react/data-grid'
 import React, { memo }     from 'react'
 import classes             from '../../../../styles/TablesStyles.module.scss'
@@ -17,8 +15,8 @@ import {
   isEqual,
   isNil
 }                          from 'lodash'
-import { GStudentsQuery }  from '../GStudentsQuery'
 import { formatPhone }     from '../../../../other/helpers'
+import { GStudentsQuery }  from '../Students.generated_ok'
 
 
 
@@ -29,7 +27,7 @@ type Props = {
   onRowSelected: ( id: T['id'] )=> void
 }
 
-const StudentsTable: React.FC<Props> = memo(( { data, onRowSelected } ) => {
+const StudentsTable: React.FC<Props> = memo( ( { data, onRowSelected } ) => {
   const handler: GridBaseOptions<any>['onSelectionChanged'] = ( { selectedRowKeys } ) => void onRowSelected( selectedRowKeys[0] )
 
   if ( data.length === 0 )
@@ -46,7 +44,7 @@ const StudentsTable: React.FC<Props> = memo(( { data, onRowSelected } ) => {
 
       columnHidingEnabled={ true }
 
-      columnMinWidth={ 100 }
+      columnMinWidth={ 50 }
       columnResizingMode='widget'
       dataSource={ data }
       defaultPaging={ { enabled: true, pageSize: 50 } }
@@ -131,6 +129,7 @@ const StudentsTable: React.FC<Props> = memo(( { data, onRowSelected } ) => {
         dataType='boolean'
         falseText={ 'Долг' }
         trueText={ 'Оплачено' }
+        width={ 150 }
       />
       <Column
         alignment='center'
@@ -140,6 +139,7 @@ const StudentsTable: React.FC<Props> = memo(( { data, onRowSelected } ) => {
         dataField='signDate'
         dataType='date'
         sortOrder='desc'
+        width={200}
       />
       {/*<Column*/ }
       {/*  alignment='center'*/ }
@@ -163,13 +163,6 @@ const StudentsTable: React.FC<Props> = memo(( { data, onRowSelected } ) => {
         placeholder={ 'Поиск' }
         visible={ true }
       />
-
-      <Summary>
-        <TotalItem
-
-          summaryType='count'
-        />
-      </Summary>
     </DataGrid>
   )
 }, ( prevProps, nextProps ) => isEqual( prevProps.data, nextProps.data ) )

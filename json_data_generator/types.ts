@@ -38,6 +38,8 @@ export type TGroup = {
 
   course_id: number
   teacher_id: number
+
+  studentsCount: number
 }
 
 export type TCourse = {

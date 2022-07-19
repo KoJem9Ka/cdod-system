@@ -1,27 +1,25 @@
 import React               from 'react'
 import { DataGrid }        from 'devextreme-react'
-import { Column } from 'devextreme-react/data-grid'
-import { TGroup } from '../../../../other/typesOLD'
-import classes    from '../../../../styles/TablesStyles.module.scss'
+import { Column }          from 'devextreme-react/data-grid'
+import classes             from '../../../../styles/TablesStyles.module.scss'
 import { GridBaseOptions } from 'devextreme/ui/data_grid'
+import { GGroupsQuery }    from '../Groups.generated'
 
 
 
-type T = TGroup
+type T = GGroupsQuery['groups'][number]
 
 type Props = {
   data: T[]
   onRowSelected: ( id: T['id'] )=> void
 }
 
-type selectEvent = GridBaseOptions<any>['onSelectionChanged']
-
 const GroupsTable: React.FC<Props> = ( { data, onRowSelected } ) => {
-  const handler: selectEvent = ( { selectedRowKeys } ) => {
+  const handler: GridBaseOptions<any>['onSelectionChanged'] = ( { selectedRowKeys } ) => {
     onRowSelected( selectedRowKeys[0] )
   }
 
-  if (data.length === 0)
+  if ( data.length === 0 )
     return <h2>Нет данных</h2>
 
   return (
@@ -43,20 +41,21 @@ const GroupsTable: React.FC<Props> = ( { data, onRowSelected } ) => {
       onSelectionChanged={ handler }
     >
       <Column
+        calculateCellValue={ ( row: T ) => row.course.name }
         caption={ 'Курс' }
-        dataField={ 'course' }
       />
       <Column
         caption={ 'Группа' }
-        dataField={ 'groupName' }
+        dataField={ 'name' }
       />
       <Column
+        calculateCellValue={ ( row: T ) => `${ row.teacher.lastName } ${ row.teacher.firstName } ${ row.teacher.patronymic }` }
         caption={ 'Преподаватель' }
         dataField={ 'teacher' }
       />
       <Column
         caption={ 'Дата начала' }
-        dataField={ 'dateOfCreation' }
+        dataField={ 'startDate' }
         dataType={ 'date' }
       />
       <Column

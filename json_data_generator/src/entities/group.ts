@@ -6,17 +6,20 @@ import {
 }                      from 'lodash'
 import { randDate }    from '../generators'
 import { takeStudent } from './student'
+import { TGroup }      from '../../types'
 
 
 
 export const newGroup = ( name: string, course_id: number ) => {
-  let group = {
+  const studentsCount = random( 7, 25 )
+  const group: TGroup = {
     id:         groupsJSON.length + 1,
     name,
     course_id,
     teacher_id: takeTeacher().id,
     startDate:  randDate(),
+    studentsCount,
   }
   groupsJSON.push( group )
-  range( 1, random( 7, 25 ) ).forEach( () => takeStudent( course_id, group.id ) )
+  range( 1, studentsCount ).forEach( () => takeStudent( course_id, group.id ) )
 }

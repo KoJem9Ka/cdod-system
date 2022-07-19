@@ -7,27 +7,24 @@ import styles               from './StudentsPage.module.scss'
 import StudentsTable        from './StudentsTable/StudentsTable'
 import { toast }            from 'react-toastify'
 import { usePreloader }     from '../../../components/Preloader/Preloader'
-import { useStudentsQuery } from './Students.generated'
+import { useStudentsQuery } from './Students.generated_ok'
 import { useStudentForm }   from '../../../store/studentsForm/hooks'
 import StudentForm          from './StudentForm/StudentForm'
 import { FlexRow }          from '../../../components/styledComponents'
-import { isEqual }          from 'lodash'
+import { compact }          from 'lodash'
 
 
-
-let prevFunc: any
 
 const StudentsPage: React.FC = () => {
-  const { loading, error, data } = useStudentsQuery()
+  const { loading, error: error1, data } = useStudentsQuery()
   const students = useMemo( () => data?.students || [], [ loading ] )
 
-  const { selectStudent } = useStudentForm()
+  const { selectStudent, error: error2, studentLoading } = useStudentForm()
 
-
-  usePreloader( loading )
-  useEffect( () => {
-    error && toast.error( JSON.stringify( error ) )
-  }, [ error ] )
+  usePreloader( loading || studentLoading)
+  // useEffect( () => {
+  //   (error1 || error2) && toast.error( JSON.stringify( compact( [ error1, error2 ] ) ) )
+  // }, [ error1, error2 ] )
 
   return (
     <>

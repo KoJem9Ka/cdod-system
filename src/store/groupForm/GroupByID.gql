@@ -1,0 +1,22 @@
+query GroupByID($groupID: ID!) {
+  group: Group(id: $groupID) {
+    id
+    name
+    course: Course {
+      name
+    }
+    teacher: Teacher {
+      lastName
+      firstName
+      patronymic
+    }
+    students: Infos {
+      Student {
+        id
+        lastName
+        firstName
+        patronymic
+      }
+    }
+  }
+}

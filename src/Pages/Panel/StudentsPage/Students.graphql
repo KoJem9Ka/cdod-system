@@ -29,7 +29,7 @@ query Students {
 
 #asp
 #query Students {
-#  students{
+#  students {
 #    lastName
 #    patronymic
 #    birthDate
