@@ -9,7 +9,7 @@ import {
   actionChangeStudent,
   actionToggleEdit
 }                           from './reducer'
-import { GStudentQuery }    from './Student.generated_ok'
+import { GStudentQuery }    from './Student.generated'
 
 
 

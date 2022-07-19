@@ -1,13 +1,18 @@
 overwrite: true
 #schema   : schemas/server/**/*.graphql
-#schema   : schemas/asp.graphql
-schema   : schemas/local.graphql
+schema   : schemas/asp.graphql
+#schema   : schemas/local.graphql123
 documents: src/**/*.gql
 config   :
   constEnums       : true
   typesPrefix      : G
   skipTypename     : true
-  defaultScalarType: unknown
+  strictScalars: true
+  scalars:
+    Date: string
+    TimeSpan: string
+    DateTime: string
+#  defaultScalarType: unknown
   avoidOptionals   : true
 #  maybeValue       : T # | null | undefined
 generates:

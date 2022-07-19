@@ -5,7 +5,7 @@ import {
   GStudentQuery,
   GStudentQueryVariables,
   StudentDocument
-}                           from './Student.generated_ok'
+}                           from './Student.generated'
 import { client }        from '../../index'
 import { ApolloQueryResult }    from '@apollo/client'
 

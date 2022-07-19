@@ -4,10 +4,6 @@ import {
   useDispatch,
   useSelector
 }                                from 'react-redux'
-import {
-  api,
-  TApi
-}                                from '../API/api'
 import { insteadOfContextSlice } from './InsteadOfContext/reducer'
 import logger                    from 'redux-logger'
 import { studentFormSlice }      from './studentsForm/reducer'
@@ -22,7 +18,7 @@ export const store = configureStore( {
   },
   devTools:   true,
   middleware: getDefaultMiddleware => getDefaultMiddleware( {
-    thunk: { extraArgument: { api } },
+    thunk: { extraArgument: {}  },
   } ).concat( logger ),
 } )
 
@@ -32,6 +28,6 @@ export type TAppDispatch = typeof store.dispatch
 export const useAppDispatch = () => useDispatch<TAppDispatch>()
 export type TAppThunkConfig = {
   extra: {
-    api: TApi
+  
   }
 }

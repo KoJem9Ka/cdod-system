@@ -7,7 +7,7 @@ import {
   GStudentQuery,
   GStudentQueryVariables,
   StudentDocument
-} from '../studentsForm/Student.generated_ok'
+} from '../studentsForm/Student.generated'
 import {
   GGroupByIdQuery,
   GGroupByIdQueryVariables,

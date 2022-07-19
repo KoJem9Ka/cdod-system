@@ -11,8 +11,9 @@ const onCycle = () => {
 export const getJSON = ( obj: object ) => JSON.stringify( obj, onCycle() )
 
 export const formatPhone = ( phone: string ): string => {
-  if ( phone.length === 11 ) {
-    const [ , , bbb, ccc, dd, ee ] = phone.match( /(\d)(\d{3})(\d{3})(\d{2})(\d{2})/ )!
+  const matching = phone.match( /(\d)(\d{3})(\d{3})(\d{2})(\d{2})/ )
+  if ( matching?.length === 6 ) {
+    const [ , , bbb, ccc, dd, ee ] = matching
     return `+7(${ bbb })${ ccc }-${ dd }-${ ee }`
   }
   return phone

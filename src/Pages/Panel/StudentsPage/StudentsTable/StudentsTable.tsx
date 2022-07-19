@@ -16,7 +16,7 @@ import {
   isNil
 }                          from 'lodash'
 import { formatPhone }     from '../../../../other/helpers'
-import { GStudentsQuery }  from '../Students.generated_ok'
+import { GStudentsQuery } from '../Students.generated'
 
 
 
@@ -108,7 +108,7 @@ const StudentsTable: React.FC<Props> = memo( ( { data, onRowSelected } ) => {
       />
       <Column
         alignment='center'
-        calculateCellValue={ ( row: T ) => formatPhone( row.parent.phoneNumber ) }
+        calculateCellValue={ ( row: T ) => formatPhone( row.parent.phoneNumber || row.parent.secondPhoneNumber || 'Нет телефона' ) }
         caption='Контакты'
         name='contacts'
       />

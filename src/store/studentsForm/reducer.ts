@@ -4,7 +4,7 @@ import {
 }                           from '@reduxjs/toolkit'
 import { thunkLoadStudent } from './thunks'
 import { ApolloError }      from '@apollo/client'
-import { GStudentQuery }    from './Student.generated_ok'
+import { GStudentQuery }    from './Student.generated'
 
 
 

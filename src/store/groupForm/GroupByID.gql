@@ -1,22 +1,43 @@
-query GroupByID($groupID: ID!) {
-  group: Group(id: $groupID) {
+#query GroupByID($groupID: ID!) {
+#  group: Group(id: $groupID) {
+#    id
+#    name
+#    course: Course {
+#      name
+#    }
+#    teacher: Teacher {
+#      lastName
+#      firstName
+#      patronymic
+#    }
+#    students: Infos {
+#      Student {
+#        id
+#        lastName
+#        firstName
+#        patronymic
+#      }
+#    }
+#  }
+#}
+query GroupByID($groupID: Int!) {
+  group(id: $groupID) {
     id
     name
-    course: Course {
+    course{
       name
     }
-    teacher: Teacher {
+    teacher{
       lastName
       firstName
       patronymic
     }
-    students: Infos {
-      Student {
-        id
-        lastName
-        firstName
-        patronymic
-      }
-    }
+  }
+  students(groupId: $groupID){
+    id
+    firstName
+    lastName
+    patronymic
+    birthDate
   }
 }

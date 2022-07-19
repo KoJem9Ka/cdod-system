@@ -1,6 +1,7 @@
 import React, { FC }      from 'react'
 import styled             from 'styled-components'
-import { GStudentsQuery } from '../Students.generated_ok'
+import { GStudentsQuery } from '../Students.generated'
+// import { GStudentsQuery } from '../Students.generated_ok'
 
 
 
