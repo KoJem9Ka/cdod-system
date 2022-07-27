@@ -1,14 +1,14 @@
 {
-  "name": "Untitled GraphQL Schema",
+  "name"      : "CDOD GraphQL",
   "extensions": {
     "endpoints": {
-      "json server": {
-        "url": "http://localhost:3001",
-        "schemaPath": "schemas\\local.graphql"
-      },
       "aspnet": {
-        "url": "https://localhost:7094/",
-        "schemaPath": "schemas\\asp.graphql"
+        "url"       : "https://localhost:7094/",
+        "schemaPath": "schemas\\asp.graphql",
+        "headers"   : {
+          "user-agent": "JS GraphQL"
+        },
+        "introspect": false
       }
     }
   }

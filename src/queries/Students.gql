@@ -1,0 +1,28 @@
+query Students {
+  students {
+    id
+    lastName
+    patronymic
+    birthDate
+    firstName
+    description
+    parent {
+      phoneNumber
+      secondPhoneNumber
+      applyingDate
+    }
+    info {
+      course {
+        name
+      }
+      group {
+        name
+      }
+      isCoursePaid
+      isEquipmentPaid
+      admissionDate
+      contractState
+    }
+  }
+}
+

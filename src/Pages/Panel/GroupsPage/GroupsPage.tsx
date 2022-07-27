@@ -1,12 +1,12 @@
 import React            from 'react'
 import Workspace        from '../../../HOC/Workspace/Workspace'
 import { FlexRow }      from '../../../components/styledComponents'
+import { usePreloader } from '../../../components/Preloader/Preloader'
+import GroupsTable      from './GroupTable/GroupsTable'
 import {
   GGroupsQuery,
   useGroupsQuery
-}                       from './Groups.generated'
-import { usePreloader } from '../../../components/Preloader/Preloader'
-import GroupsTable      from './GroupTable/GroupsTable'
+}                       from '../../../other/generated'
 
 
 

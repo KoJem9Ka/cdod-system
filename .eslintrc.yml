@@ -70,7 +70,7 @@ rules        : { indent                                                     : of
                                                                                         reservedFirst       : true, } ],
                  react/jsx-max-props-per-line                               : [ warn, { maximum: { single: 3, multi: 1 } } ],
                  react/jsx-first-prop-new-line                              : [ warn, multiline ],
-                 react/jsx-one-expression-per-line                          : [ warn, { allow: single-child } ], #  //none | literal | single-child
+  #                 react/jsx-one-expression-per-line                          : [ warn, { allow: single-child } ], #  //none | literal | single-child
                  react/jsx-wrap-multilines                                  : [ warn, { declaration: parens,
                                                                                         assignment : parens,
                                                                                         return     : parens-new-line,

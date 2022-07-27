@@ -1,11 +1,13 @@
-import React from 'react'
-import StudentsPage from '../../Pages/Panel/StudentsPage/StudentsPage'
-import TeachersPage from '../../Pages/Panel/TeachersPage/TeachersPage'
-import PaymentPage from '../../Pages/Panel/PaymentPage/PaymentPage'
-import CoursesPage from '../../Pages/Panel/CoursesPage/CoursesPage'
-import SchedulePage from '../../Pages/Panel/SchedulePage/SchedulePage'
-import GroupsPage from '../../Pages/Panel/GroupsPage/GroupsPage'
+import React             from 'react'
+import StudentsPage      from '../../Pages/Panel/StudentsPage/StudentsPage'
+import TeachersPage      from '../../Pages/Panel/TeachersPage/TeachersPage'
+import PaymentPage       from '../../Pages/Panel/PaymentPage/PaymentPage'
+import CoursesPage       from '../../Pages/Panel/CoursesPage/CoursesPage'
+import SchedulePage      from '../../Pages/Panel/SchedulePage/SchedulePage'
+import GroupsPage        from '../../Pages/Panel/GroupsPage/GroupsPage'
 import NotificationsPage from '../../Pages/Panel/NotificationsPage/NotificationsPage'
+
+
 
 export const CRoutesTest = [
   { element: (<StudentsPage/>), route: 'students', title: 'Ученики' },

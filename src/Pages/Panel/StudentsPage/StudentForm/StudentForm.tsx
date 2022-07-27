@@ -1,15 +1,34 @@
 import React, { FC }                  from 'react'
 import { useStudentForm }             from '../../../../store/studentsForm/hooks'
-import styled                         from 'styled-components'
 import { ReactComponent as UserLogo } from '../../../../assets/img/userLogo.svg'
-import EditableLine                   from './EditableLine'
-import { compact }                    from 'lodash'
-import moment                         from 'moment'
+import {
+  EditableFIO,
+  Form,
+  FormBody,
+  FormFooter,
+  FormHead
+}                                     from '../../../../components/Forms'
+import {
+  BirthDayField,
+  DescriptionField,
+  FooterButtons,
+  SchoolField
+}                                     from './index'
+import ParentsField                   from './fields/ParentsField'
+import { useStudentFormQuery }        from '../../../../other/generated'
+import StudiesField                   from './fields/StudiesField'
+import { humanizeDate }               from '../../../../other/helpers'
 
 
 
 type Props = {}
 const StudentForm: FC<Props> = props => {
+  const {
+    loading: queryLoading,
+    data:    { schools, courses } = { schools: [], courses: [] },
+    error,
+  } = useStudentFormQuery()
+
   const {
     studentOriginal,
     studentModified,
@@ -18,43 +37,29 @@ const StudentForm: FC<Props> = props => {
     isEdit,
     toggleEdit,
   } = useStudentForm()
-  if ( studentLoading ) return <Form><h2>Loading</h2></Form>
-  if ( studentModified === null ) return <></>
-
-  const fio = compact( [ studentModified.lastName, studentModified.firstName, studentModified.patronymic ] ).join( ' ' )
-  const setFio = ( line: string ) => {
-    const fio1 = line.split( ' ' )
-    changeStudent( {
-      lastName:   fio1[0] || '',
-      firstName:  fio1[1] || '',
-      patronymic: fio1[2] || '',
-    } )
-  }
+  if ( studentLoading ) return (<Form><h2>Loading</h2></Form>)
+  if ( studentModified === null || studentOriginal === null ) return <></>
 
   return (
     <Form>
       <FormHead>
-
         <UserLogo/>
-        <EditableLine isEdit={ isEdit } setValue={ setFio } value={ fio }/>
-        <p>{ moment( studentModified.birthDate ).fromNow( true ) }</p>
-
+        <EditableFIO
+          isEdit={ isEdit }
+          setValues={ changeStudent }
+          values={ { patronymic: studentModified.patronymic, lastName: studentModified.lastName, firstName: studentModified.firstName } }
+        />
+        <p>{ humanizeDate( studentModified.birthDate ) }</p>
       </FormHead>
       <FormBody>
-
-        123322
-
+        <BirthDayField/>
+        <SchoolField/>
+        <StudiesField/>
+        <DescriptionField/>
+        <ParentsField/>
       </FormBody>
       <FormFooter>
-
-        { isEdit
-          ? <>
-            <button onClick={ () => toggleEdit() }>Сохранить</button>
-            <button onClick={ () => toggleEdit() }>Отмена</button>
-          </>
-          : <button onClick={ () => toggleEdit() }>Редактировать</button>
-        }
-
+        <FooterButtons/>
       </FormFooter>
     </Form>
   )
@@ -62,49 +67,3 @@ const StudentForm: FC<Props> = props => {
 
 export default StudentForm
 
-const Form = styled.div`
-  background    : white;
-  flex          : 0 0 385px;
-  height        : fit-content;
-  overflow: hidden;
-  max-height    : 100%;
-  color         : white;
-  border-radius : 1.25rem;
-`
-
-const FormHead = styled.div`
-  background     : var(--COLOR_blue);
-  padding        : 20px;
-  width          : 100%;
-  display        : flex;
-  flex-direction : column;
-  align-items    : center;
-
-  //p {
-  //  text-align : center;
-  //  width      : max-content;
-  //}
-  //
-  //p:nth-child(2) {
-  //  font-size   : 20px;
-  //  font-weight : bold;
-  //}
-  //
-  //p:nth-child(3) {
-  //  font-size : 18px;
-  //}
-
-  & > * + * {
-    margin-top : 20px;
-  }
-`
-
-const FormBody = styled.div`
-  height     : fit-content;
-  max-height : 100%;
-  overflow-y : auto;
-`
-
-const FormFooter = styled.div`
-  background : var(--COLOR_blue);
-`

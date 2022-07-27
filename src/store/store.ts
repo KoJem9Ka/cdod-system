@@ -7,7 +7,6 @@ import {
 import { insteadOfContextSlice } from './InsteadOfContext/reducer'
 import logger                    from 'redux-logger'
 import { studentFormSlice }      from './studentsForm/reducer'
-import { client }                from '../index'
 
 
 
@@ -18,7 +17,7 @@ export const store = configureStore( {
   },
   devTools:   true,
   middleware: getDefaultMiddleware => getDefaultMiddleware( {
-    thunk: { extraArgument: {}  },
+    thunk: { extraArgument: {} },
   } ).concat( logger ),
 } )
 
@@ -27,7 +26,5 @@ export const useAppSelector: TypedUseSelectorHook<TAppState> = useSelector
 export type TAppDispatch = typeof store.dispatch
 export const useAppDispatch = () => useDispatch<TAppDispatch>()
 export type TAppThunkConfig = {
-  extra: {
-  
-  }
+  extra: {}
 }

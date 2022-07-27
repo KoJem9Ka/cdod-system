@@ -1,0 +1,14 @@
+query ParentByID($id: Int!) {
+  parent(id: $id) {
+    id
+    lastName
+    firstName
+    patronymic
+    phoneNumber
+    secondPhoneNumber
+    type
+    email
+    secondEmail
+    applyingDate
+  }
+}

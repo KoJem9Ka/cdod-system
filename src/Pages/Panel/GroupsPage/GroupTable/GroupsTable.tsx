@@ -3,7 +3,7 @@ import { DataGrid }        from 'devextreme-react'
 import { Column }          from 'devextreme-react/data-grid'
 import classes             from '../../../../styles/TablesStyles.module.scss'
 import { GridBaseOptions } from 'devextreme/ui/data_grid'
-import { GGroupsQuery }    from '../Groups.generated'
+import { GGroupsQuery }    from '../../../../other/generated'
 
 
 

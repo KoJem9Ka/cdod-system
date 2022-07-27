@@ -5,12 +5,7 @@
       <excludeFolder url="file://$MODULE_DIR$/temp" />
       <excludeFolder url="file://$MODULE_DIR$/.tmp" />
       <excludeFolder url="file://$MODULE_DIR$/tmp" />
-      <excludeFolder url="file://$MODULE_DIR$/data-generator/.idea" />
-      <excludeFolder url="file://$MODULE_DIR$/schemas/server" />
-      <excludeFolder url="file://$MODULE_DIR$/.idea/sonarlint" />
-      <excludeFolder url="file://$MODULE_DIR$/.idea/stylesheetLinters" />
       <excludeFolder url="file://$MODULE_DIR$/schemas/cdod_server_scheme" />
-      <excludeFolder url="file://$MODULE_DIR$/json_data_generator" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

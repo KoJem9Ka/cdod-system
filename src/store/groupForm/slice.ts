@@ -1,5 +1,5 @@
 import { createSlice }     from '@reduxjs/toolkit'
-import { GGroupByIdQuery } from './GroupByID.generated'
+import { GGroupByIdQuery } from '../../other/generated'
 
 
 
@@ -15,7 +15,5 @@ const initialState = {
 const groupFormSLice = createSlice( {
   name:     ' groupForm',
   initialState,
-  reducers: {
-
-  },
+  reducers: {},
 } )

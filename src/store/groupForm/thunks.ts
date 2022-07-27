@@ -1,18 +1,12 @@
 import { createAsyncThunk }  from '@reduxjs/toolkit'
-import { GGroupsQuery }      from '../../Pages/Panel/GroupsPage/Groups.generated'
 import { TAppThunkConfig }   from '../store'
 import { client }            from '../../index'
 import { ApolloQueryResult } from '@apollo/client'
 import {
-  GStudentQuery,
-  GStudentQueryVariables,
-  StudentDocument
-} from '../studentsForm/Student.generated'
-import {
   GGroupByIdQuery,
   GGroupByIdQueryVariables,
   GroupByIdDocument
-} from './GroupByID.generated'
+}                            from '../../other/generated'
 
 
 

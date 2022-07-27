@@ -1,5 +1,10 @@
-import { motion, SVGMotionProps } from 'framer-motion'
+import {
+  motion,
+  SVGMotionProps
+}            from 'framer-motion'
 import React from 'react'
+
+
 
 const IconMenu: React.FC<SVGMotionProps<SVGSVGElement>> = props => (
   <motion.svg
@@ -8,7 +13,7 @@ const IconMenu: React.FC<SVGMotionProps<SVGSVGElement>> = props => (
     viewBox='0 0 512 512'
     width='50'
     xmlns='http://www.w3.org/2000/svg'
-    {...props}
+    { ...props }
   >
     <title></title>
     <g id='icomoon-ignore'>

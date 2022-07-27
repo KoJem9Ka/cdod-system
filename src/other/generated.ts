@@ -1,8 +1,11 @@
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -16,30 +19,6 @@ export type Scalars = {
   DateTime: string;
   /** The `TimeSpan` scalar represents an ISO-8601 compliant duration type. */
   TimeSpan: string;
-};
-
-export type GAnnouncement = {
-  courses: Array<Maybe<GCourse>>;
-  endDate: Scalars['Date'];
-  groups: Array<Maybe<GGroup>>;
-  heading: Scalars['String'];
-  id: Scalars['Int'];
-  pictureUrl: Scalars['String'];
-  startDate: Scalars['Date'];
-  text: Scalars['String'];
-  type: GAnnouncementTypeEnum;
-  user: GUser;
-  userId: Scalars['Int'];
-};
-
-export const enum GAnnouncementTypeEnum {
-  Important = 'IMPORTANT',
-  Unimportant = 'UNIMPORTANT'
-};
-
-export const enum GAppointment {
-  Course = 'COURSE',
-  Material = 'MATERIAL'
 };
 
 export type GAttendanceType = {
@@ -165,6 +144,21 @@ export type GComparableNullableOfDoubleOperationFilterInput = {
   nlte: InputMaybe<Scalars['Float']>;
 };
 
+export type GComparableNullableOfInt32OperationFilterInput = {
+  eq: InputMaybe<Scalars['Int']>;
+  gt: InputMaybe<Scalars['Int']>;
+  gte: InputMaybe<Scalars['Int']>;
+  in: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
+  lt: InputMaybe<Scalars['Int']>;
+  lte: InputMaybe<Scalars['Int']>;
+  neq: InputMaybe<Scalars['Int']>;
+  ngt: InputMaybe<Scalars['Int']>;
+  ngte: InputMaybe<Scalars['Int']>;
+  nin: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
+  nlt: InputMaybe<Scalars['Int']>;
+  nlte: InputMaybe<Scalars['Int']>;
+};
+
 export type GComparableTimeOnlyOperationFilterInput = {
   eq: InputMaybe<Scalars['TimeSpan']>;
   gt: InputMaybe<Scalars['TimeSpan']>;
@@ -180,25 +174,13 @@ export type GComparableTimeOnlyOperationFilterInput = {
   nlte: InputMaybe<Scalars['TimeSpan']>;
 };
 
-export type GContractState = {
-  id: Scalars['Int'];
-  name: Scalars['String'];
-  studentsToCourses: Array<Maybe<GStudentToCourse>>;
-};
-
-export type GCourse = {
-  announcements: Array<Maybe<GAnnouncement>>;
-  coursePrice: Scalars['Float'];
-  durationInMonths: Scalars['Int'];
-  equipmentPriceWithRobot: Maybe<Scalars['Float']>;
-  equipmentPriceWithoutRobot: Maybe<Scalars['Float']>;
-  groups: Array<Maybe<GGroup>>;
-  id: Scalars['Int'];
-  name: Scalars['String'];
-  payNotes: Array<GPayNote>;
-  programFileUrl: Scalars['String'];
-  studentToCourses: Array<Maybe<GStudentToCourse>>;
-  teachers: Array<Maybe<GTeacher>>;
+export const enum GContractState {
+  Completed = 'COMPLETED',
+  Consideration = 'CONSIDERATION',
+  Excluded = 'EXCLUDED',
+  Left = 'LEFT',
+  Rejected = 'REJECTED',
+  Studying = 'STUDYING'
 };
 
 export type GCourseCreateInput = {
@@ -207,7 +189,7 @@ export type GCourseCreateInput = {
   equipmentPriceWithRobot: InputMaybe<Scalars['Float']>;
   equipmentPriceWithoutRobot: InputMaybe<Scalars['Float']>;
   name: Scalars['String'];
-  programFileUrl: Scalars['String'];
+  programId: InputMaybe<Scalars['Int']>;
 };
 
 export type GCourseType = {
@@ -217,7 +199,7 @@ export type GCourseType = {
   id: Scalars['Int'];
   name: Scalars['String'];
   price: Scalars['Float'];
-  programFileUrl: Scalars['String'];
+  programId: Maybe<Scalars['Int']>;
 };
 
 export type GCourseTypeFilterInput = {
@@ -229,7 +211,7 @@ export type GCourseTypeFilterInput = {
   name: InputMaybe<GStringOperationFilterInput>;
   or: InputMaybe<Array<GCourseTypeFilterInput>>;
   price: InputMaybe<GComparableDoubleOperationFilterInput>;
-  programFileUrl: InputMaybe<GStringOperationFilterInput>;
+  programId: InputMaybe<GComparableNullableOfInt32OperationFilterInput>;
 };
 
 export type GCourseTypeSortInput = {
@@ -239,7 +221,7 @@ export type GCourseTypeSortInput = {
   id: InputMaybe<GSortEnumType>;
   name: InputMaybe<GSortEnumType>;
   price: InputMaybe<GSortEnumType>;
-  programFileUrl: InputMaybe<GSortEnumType>;
+  programId: InputMaybe<GSortEnumType>;
 };
 
 export type GCourseUpdateInput = {
@@ -249,7 +231,7 @@ export type GCourseUpdateInput = {
   equipmentPriceWithoutRobot: InputMaybe<Scalars['Float']>;
   id: Scalars['Int'];
   name: InputMaybe<Scalars['String']>;
-  programFileUrl: InputMaybe<Scalars['String']>;
+  programId: InputMaybe<Scalars['Int']>;
 };
 
 export const enum GDistrict {
@@ -263,19 +245,6 @@ export type GDistrictOperationFilterInput = {
   in: InputMaybe<Array<GDistrict>>;
   neq: InputMaybe<GDistrict>;
   nin: InputMaybe<Array<GDistrict>>;
-};
-
-export type GGroup = {
-  announcements: Array<Maybe<GAnnouncement>>;
-  course: GCourse;
-  courseId: Scalars['Int'];
-  id: Scalars['Int'];
-  lessons: Array<Maybe<GLesson>>;
-  name: Scalars['String'];
-  startDate: Scalars['Date'];
-  studentsToGroups: Array<Maybe<GStudentsToGroups>>;
-  teacher: GTeacher;
-  teacherId: Scalars['Int'];
 };
 
 export type GGroupCreateInput = {
@@ -323,8 +292,8 @@ export type GGroupUpdateInput = {
 
 export type GInfoType = {
   admissionDate: Scalars['Date'];
-  contractState: Scalars['String'];
-  contractStateId: Scalars['Int'];
+  attempt: Scalars['Int'];
+  contractState: GContractState;
   course: GCourseType;
   courseId: Scalars['Int'];
   group: Maybe<GGroupType>;
@@ -332,19 +301,6 @@ export type GInfoType = {
   isEquipmentPaid: Maybe<Scalars['Boolean']>;
   isGetRobot: Maybe<Scalars['Boolean']>;
   studentId: Scalars['Int'];
-};
-
-export type GLesson = {
-  classRoom: Scalars['String'];
-  duration: Scalars['Int'];
-  group: GGroup;
-  groupId: Scalars['Int'];
-  homework: Scalars['String'];
-  id: Scalars['Int'];
-  lessonTopic: Scalars['String'];
-  startDateTime: Scalars['DateTime'];
-  studentsToLessons: Array<Maybe<GStudentToLesson>>;
-  teacherToLessons: Array<Maybe<GTeacherToLesson>>;
 };
 
 export type GLessonType = {
@@ -382,19 +338,21 @@ export type GLessonTypeSortInput = {
 
 export type GMutation = {
   attachStudentsToCourses: Scalars['Boolean'];
-  attachStudentsToGroups: Scalars['Boolean'];
   courseCreateCourse: GCourseType;
   courseDeleteMany: Scalars['Boolean'];
   courseUpdateMany: Scalars['Boolean'];
+  createSchool: GSchoolType;
   detachStudentsToCourses: Scalars['Boolean'];
-  dettachStudentsFromGroups: Scalars['Boolean'];
   groupCreate: GGroupType;
   groupDeleteMany: Scalars['Boolean'];
   groupUpdateMany: Scalars['Boolean'];
+  login: Scalars['String'];
   parentCreate: GParentType;
   parentDeleteMany: Scalars['Boolean'];
   parentUpdateMany: Scalars['Boolean'];
-  studentCreate: GStudent;
+  schoolDeleteMany: Scalars['Boolean'];
+  schoolUpdateMany: Scalars['Boolean'];
+  studentCreate: GStudentType;
   studentDeleteMany: Scalars['Boolean'];
   studentUpdateMany: Scalars['Boolean'];
   updateFromGoogleTable: Scalars['Boolean'];
@@ -404,11 +362,6 @@ export type GMutation = {
 
 export type GMutationAttachStudentsToCoursesArgs = {
   studentsToCourses: Array<GStudentToCourseCreateInput>;
-};
-
-
-export type GMutationAttachStudentsToGroupsArgs = {
-  studentsToGroups: Array<GStudentToGroupInput>;
 };
 
 
@@ -427,13 +380,13 @@ export type GMutationCourseUpdateManyArgs = {
 };
 
 
-export type GMutationDetachStudentsToCoursesArgs = {
-  studentsToCourses: Array<GStudentToCourseDetachInput>;
+export type GMutationCreateSchoolArgs = {
+  school: GSchoolCreateInput;
 };
 
 
-export type GMutationDettachStudentsFromGroupsArgs = {
-  studentsToGroups: Array<GStudentToGroupInput>;
+export type GMutationDetachStudentsToCoursesArgs = {
+  studentsToCourses: Array<GStudentToCourseDetachInput>;
 };
 
 
@@ -452,6 +405,11 @@ export type GMutationGroupUpdateManyArgs = {
 };
 
 
+export type GMutationLoginArgs = {
+  user: GParentLoginInput;
+};
+
+
 export type GMutationParentCreateArgs = {
   parent: GParentCreateInput;
 };
@@ -464,6 +422,16 @@ export type GMutationParentDeleteManyArgs = {
 
 export type GMutationParentUpdateManyArgs = {
   parent: Array<GParentUpdateInput>;
+};
+
+
+export type GMutationSchoolDeleteManyArgs = {
+  schoolIds: Array<Scalars['Int']>;
+};
+
+
+export type GMutationSchoolUpdateManyArgs = {
+  schools: Array<GSchoolUpdateInput>;
 };
 
 
@@ -486,13 +454,11 @@ export type GMutationUpdateStudentsToCoursesArgs = {
   studentsToCourses: Array<GStudentToCourseUpdateInput>;
 };
 
-export type GParent = {
-  secondEmail: Maybe<Scalars['String']>;
-  secondPhoneNumber: Maybe<Scalars['String']>;
-  signDate: Scalars['Date'];
-  students: Array<Maybe<GStudent>>;
-  user: GUser;
-  userId: Scalars['Int'];
+export type GNullableOfRelationTypeOperationFilterInput = {
+  eq: InputMaybe<GRelationType>;
+  in: InputMaybe<Array<InputMaybe<GRelationType>>>;
+  neq: InputMaybe<GRelationType>;
+  nin: InputMaybe<Array<InputMaybe<GRelationType>>>;
 };
 
 export type GParentCreateInput = {
@@ -516,17 +482,22 @@ export type GParentCreateInput = {
   snils: InputMaybe<Scalars['String']>;
 };
 
+export type GParentLoginInput = {
+  email: Scalars['String'];
+  password: Scalars['String'];
+};
+
 export type GParentType = {
   address: Maybe<Scalars['String']>;
   applyingDate: Scalars['Date'];
   birthday: Maybe<Scalars['Date']>;
   education: Maybe<Scalars['String']>;
   email: Scalars['String'];
-  firstName: Scalars['String'];
+  firstName: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   inn: Maybe<Scalars['String']>;
   isAdmin: Scalars['Boolean'];
-  lastName: Scalars['String'];
+  lastName: Maybe<Scalars['String']>;
   passportCode: Maybe<Scalars['String']>;
   passportDate: Maybe<Scalars['Date']>;
   passportIssue: Maybe<Scalars['String']>;
@@ -537,6 +508,7 @@ export type GParentType = {
   secondEmail: Maybe<Scalars['String']>;
   secondPhoneNumber: Maybe<Scalars['String']>;
   snils: Maybe<Scalars['String']>;
+  type: Maybe<GRelationType>;
 };
 
 export type GParentTypeFilterInput = {
@@ -562,6 +534,7 @@ export type GParentTypeFilterInput = {
   secondEmail: InputMaybe<GStringOperationFilterInput>;
   secondPhoneNumber: InputMaybe<GStringOperationFilterInput>;
   snils: InputMaybe<GStringOperationFilterInput>;
+  type: InputMaybe<GNullableOfRelationTypeOperationFilterInput>;
 };
 
 export type GParentTypeSortInput = {
@@ -585,6 +558,7 @@ export type GParentTypeSortInput = {
   secondEmail: InputMaybe<GSortEnumType>;
   secondPhoneNumber: InputMaybe<GSortEnumType>;
   snils: InputMaybe<GSortEnumType>;
+  type: InputMaybe<GSortEnumType>;
 };
 
 export type GParentUpdateInput = {
@@ -607,25 +581,6 @@ export type GParentUpdateInput = {
   secondEmail: InputMaybe<Scalars['String']>;
   secondPhoneNumber: InputMaybe<Scalars['String']>;
   snils: InputMaybe<Scalars['String']>;
-};
-
-export type GPayNote = {
-  appointment: GAppointment;
-  checkURL: Scalars['String'];
-  course: GCourse;
-  courseId: Scalars['Int'];
-  date: Scalars['Date'];
-  id: Scalars['Int'];
-  student: GStudent;
-  studentId: Scalars['Int'];
-  sum: Scalars['Float'];
-  user: GUser;
-  userId: Scalars['Int'];
-};
-
-export type GPost = {
-  id: Scalars['Int'];
-  name: Scalars['String'];
 };
 
 export type GPostType = {
@@ -781,11 +736,22 @@ export type GQueryTeachersWorkTimeArgs = {
   where: InputMaybe<GTeachersWorkTimeTypeFilterInput>;
 };
 
-export type GSchool = {
+export const enum GRelationType {
+  Aunt = 'AUNT',
+  Brother = 'BROTHER',
+  Father = 'FATHER',
+  Grandma = 'GRANDMA',
+  Grandpa = 'GRANDPA',
+  Guardian = 'GUARDIAN',
+  Mother = 'MOTHER',
+  Other = 'OTHER',
+  Sister = 'SISTER',
+  Uncle = 'UNCLE'
+};
+
+export type GSchoolCreateInput = {
   district: GDistrict;
-  id: Scalars['Int'];
   name: Scalars['String'];
-  students: Array<Maybe<GStudent>>;
 };
 
 export type GSchoolType = {
@@ -807,6 +773,12 @@ export type GSchoolTypeSortInput = {
   district: InputMaybe<GSortEnumType>;
   id: InputMaybe<GSortEnumType>;
   name: InputMaybe<GSortEnumType>;
+};
+
+export type GSchoolUpdateInput = {
+  district: InputMaybe<GDistrict>;
+  id: Scalars['Int'];
+  name: InputMaybe<Scalars['String']>;
 };
 
 export const enum GSortEnumType {
@@ -842,23 +814,6 @@ export type GStringOperationFilterInput = {
   startsWith: InputMaybe<Scalars['String']>;
 };
 
-export type GStudent = {
-  birthDate: Scalars['Date'];
-  description: Maybe<Scalars['String']>;
-  firstName: Scalars['String'];
-  id: Scalars['Int'];
-  lastName: Scalars['String'];
-  parent: GParent;
-  parentId: Scalars['Int'];
-  patronymic: Maybe<Scalars['String']>;
-  payNotes: Array<Maybe<GPayNote>>;
-  school: GSchool;
-  schoolId: Scalars['Int'];
-  studentToCourses: Array<Maybe<GStudentToCourse>>;
-  studentToLessons: Array<Maybe<GStudentToLesson>>;
-  studentsToGroups: Array<Maybe<GStudentsToGroups>>;
-};
-
 export type GStudentCreateInput = {
   birthDate: Scalars['Date'];
   description: InputMaybe<Scalars['String']>;
@@ -869,22 +824,9 @@ export type GStudentCreateInput = {
   schoolId: Scalars['Int'];
 };
 
-export type GStudentToCourse = {
-  contractState: GContractState;
-  contractStateId: Scalars['Int'];
-  contractUrl: Maybe<Scalars['String']>;
-  course: GCourse;
-  courseId: Scalars['Int'];
-  debt: Maybe<Scalars['Float']>;
-  equipmentPriceWithRobot: Maybe<Scalars['Boolean']>;
-  signDate: Scalars['Date'];
-  student: GStudent;
-  studentId: Scalars['Int'];
-};
-
 export type GStudentToCourseCreateInput = {
   admissionDate: Scalars['Date'];
-  contractStateId: Scalars['Int'];
+  contractState: GContractState;
   contractUrl: InputMaybe<Scalars['String']>;
   courseId: Scalars['Int'];
   isGetRobot: InputMaybe<Scalars['Boolean']>;
@@ -898,45 +840,30 @@ export type GStudentToCourseDetachInput = {
 
 export type GStudentToCourseUpdateInput = {
   admissionDate: InputMaybe<Scalars['Date']>;
-  contractStateId: InputMaybe<Scalars['Int']>;
+  contractState: InputMaybe<GContractState>;
   contractUrl: InputMaybe<Scalars['String']>;
   courseId: Scalars['Int'];
   isGetRobot: InputMaybe<Scalars['Boolean']>;
   studentId: Scalars['Int'];
 };
 
-export type GStudentToGroupInput = {
-  groupId: Scalars['Int'];
-  studentId: Scalars['Int'];
-};
-
-export type GStudentToLesson = {
-  lesson: GLesson;
-  lessonId: Scalars['Int'];
-  mark: Scalars['Int'];
-  note: Scalars['String'];
-  status: GStatus;
-  student: GStudent;
-  studentId: Scalars['Int'];
-};
-
 export type GStudentType = {
-  birthDate: Scalars['Date'];
+  birthDate: Maybe<Scalars['Date']>;
   description: Maybe<Scalars['String']>;
-  firstName: Scalars['String'];
+  firstName: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   info: Array<GInfoType>;
-  lastName: Scalars['String'];
+  lastName: Maybe<Scalars['String']>;
   parent: GParentType;
   parentId: Scalars['Int'];
   patronymic: Maybe<Scalars['String']>;
-  school: GSchoolType;
-  schoolId: Scalars['Int'];
+  school: Maybe<GSchoolType>;
+  schoolId: Maybe<Scalars['Int']>;
 };
 
 export type GStudentTypeFilterInput = {
   and: InputMaybe<Array<GStudentTypeFilterInput>>;
-  birthDate: InputMaybe<GComparableDateOnlyOperationFilterInput>;
+  birthDate: InputMaybe<GComparableNullableOfDateOnlyOperationFilterInput>;
   description: InputMaybe<GStringOperationFilterInput>;
   firstName: InputMaybe<GStringOperationFilterInput>;
   id: InputMaybe<GComparableInt32OperationFilterInput>;
@@ -944,7 +871,7 @@ export type GStudentTypeFilterInput = {
   or: InputMaybe<Array<GStudentTypeFilterInput>>;
   parentId: InputMaybe<GComparableInt32OperationFilterInput>;
   patronymic: InputMaybe<GStringOperationFilterInput>;
-  schoolId: InputMaybe<GComparableInt32OperationFilterInput>;
+  schoolId: InputMaybe<GComparableNullableOfInt32OperationFilterInput>;
 };
 
 export type GStudentTypeSortInput = {
@@ -969,42 +896,16 @@ export type GStudentUpdateInput = {
   schoolId: InputMaybe<Scalars['Int']>;
 };
 
-export type GStudentsToGroups = {
-  group: GGroup;
-  groupId: Scalars['Int'];
-  student: GStudent;
-  studentId: Scalars['Int'];
-};
-
-export type GTeacher = {
-  courses: Array<Maybe<GCourse>>;
-  groups: Array<Maybe<GGroup>>;
-  post: GPost;
-  postId: Scalars['Int'];
-  teacherToLessons: Array<Maybe<GTeacherToLesson>>;
-  user: GUser;
-  userId: Scalars['Int'];
-  workPlace: Scalars['String'];
-};
-
-export type GTeacherToLesson = {
-  lesson: GLesson;
-  lessonId: Scalars['Int'];
-  teacher: GTeacher;
-  teacherId: Scalars['Int'];
-  workTime: Scalars['TimeSpan'];
-};
-
 export type GTeacherType = {
   address: Maybe<Scalars['String']>;
   birthday: Maybe<Scalars['Date']>;
   education: Maybe<Scalars['String']>;
   email: Scalars['String'];
-  firstName: Scalars['String'];
+  firstName: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   inn: Maybe<Scalars['String']>;
   isAdmin: Scalars['Boolean'];
-  lastName: Scalars['String'];
+  lastName: Maybe<Scalars['String']>;
   passportCode: Maybe<Scalars['String']>;
   passportDate: Maybe<Scalars['Date']>;
   passportIssue: Maybe<Scalars['String']>;
@@ -1086,24 +987,382 @@ export type GTeachersWorkTimeTypeSortInput = {
   workTime: InputMaybe<GSortEnumType>;
 };
 
-export type GUser = {
-  address: Maybe<Scalars['String']>;
-  announcements: Array<Maybe<GAnnouncement>>;
-  birthday: Maybe<Scalars['Date']>;
-  education: Maybe<Scalars['String']>;
-  email: Scalars['String'];
-  firstname: Maybe<Scalars['String']>;
+export type GGroupByIdQueryVariables = Exact<{
+  groupID: Scalars['Int'];
+}>;
+
+
+export type GGroupByIdQuery = { group: { id: number, name: string, course: { name: string }, teacher: { lastName: string | null, firstName: string | null, patronymic: string | null } }, students: Array<{ id: number, firstName: string | null, lastName: string | null, patronymic: string | null, birthDate: string | null }> };
+
+export type GGroupsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GGroupsQuery = { groups: Array<{ id: number, name: string, startDate: string, studentsCount: number, course: { name: string }, teacher: { lastName: string | null, firstName: string | null, patronymic: string | null } }> };
+
+export type GParentByIdQueryVariables = Exact<{
   id: Scalars['Int'];
-  inn: Maybe<Scalars['String']>;
-  isAdmin: Scalars['Boolean'];
-  lastname: Maybe<Scalars['String']>;
-  passportCode: Maybe<Scalars['String']>;
-  passportDate: Maybe<Scalars['Date']>;
-  passportIssue: Maybe<Scalars['String']>;
-  passportNo: Maybe<Scalars['String']>;
-  password: Scalars['String'];
-  patronymic: Maybe<Scalars['String']>;
-  payNotes: Array<Maybe<GPayNote>>;
-  phoneNumber: Maybe<Scalars['String']>;
-  snils: Maybe<Scalars['String']>;
-};
+}>;
+
+
+export type GParentByIdQuery = { parent: { id: number, lastName: string | null, firstName: string | null, patronymic: string | null, phoneNumber: string | null, secondPhoneNumber: string | null, type: GRelationType | null, email: string, secondEmail: string | null, applyingDate: string } };
+
+export type GStudentQueryVariables = Exact<{
+  studentID: Scalars['Int'];
+}>;
+
+
+export type GStudentQuery = { student: { id: number, lastName: string | null, firstName: string | null, patronymic: string | null, birthDate: string | null, description: string | null, school: { id: number, name: string, district: GDistrict } | null, parent: { id: number }, info: Array<{ admissionDate: string, contractState: GContractState, courseId: number, isCoursePaid: boolean, isEquipmentPaid: boolean | null, isGetRobot: boolean | null, course: { id: number, name: string }, group: { id: number, name: string } | null }> } };
+
+export type GStudentFormQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GStudentFormQuery = { schools: Array<{ id: number, name: string, district: GDistrict }>, courses: Array<{ id: number, name: string }> };
+
+export type GParentsListQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GParentsListQuery = { parents: Array<{ id: number, lastName: string | null, firstName: string | null, patronymic: string | null }> };
+
+export type GStudentsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GStudentsQuery = { students: Array<{ id: number, lastName: string | null, patronymic: string | null, birthDate: string | null, firstName: string | null, description: string | null, parent: { phoneNumber: string | null, secondPhoneNumber: string | null, applyingDate: string }, info: Array<{ isCoursePaid: boolean, isEquipmentPaid: boolean | null, admissionDate: string, contractState: GContractState, course: { name: string }, group: { name: string } | null }> }> };
+
+
+export const GroupByIdDocument = gql`
+    query GroupByID($groupID: Int!) {
+  group(id: $groupID) {
+    id
+    name
+    course {
+      name
+    }
+    teacher {
+      lastName
+      firstName
+      patronymic
+    }
+  }
+  students(groupId: $groupID) {
+    id
+    firstName
+    lastName
+    patronymic
+    birthDate
+  }
+}
+    `;
+
+/**
+ * __useGroupByIdQuery__
+ *
+ * To run a query within a React component, call `useGroupByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGroupByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGroupByIdQuery({
+ *   variables: {
+ *      groupID: // value for 'groupID'
+ *   },
+ * });
+ */
+export function useGroupByIdQuery(baseOptions: Apollo.QueryHookOptions<GGroupByIdQuery, GGroupByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GGroupByIdQuery, GGroupByIdQueryVariables>(GroupByIdDocument, options);
+      }
+export function useGroupByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GGroupByIdQuery, GGroupByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GGroupByIdQuery, GGroupByIdQueryVariables>(GroupByIdDocument, options);
+        }
+export type GroupByIdQueryHookResult = ReturnType<typeof useGroupByIdQuery>;
+export type GroupByIdLazyQueryHookResult = ReturnType<typeof useGroupByIdLazyQuery>;
+export type GroupByIdQueryResult = Apollo.QueryResult<GGroupByIdQuery, GGroupByIdQueryVariables>;
+export const GroupsDocument = gql`
+    query Groups {
+  groups {
+    id
+    name
+    course {
+      name
+    }
+    teacher {
+      lastName
+      firstName
+      patronymic
+    }
+    startDate
+    studentsCount
+  }
+}
+    `;
+
+/**
+ * __useGroupsQuery__
+ *
+ * To run a query within a React component, call `useGroupsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGroupsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGroupsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGroupsQuery(baseOptions?: Apollo.QueryHookOptions<GGroupsQuery, GGroupsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GGroupsQuery, GGroupsQueryVariables>(GroupsDocument, options);
+      }
+export function useGroupsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GGroupsQuery, GGroupsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GGroupsQuery, GGroupsQueryVariables>(GroupsDocument, options);
+        }
+export type GroupsQueryHookResult = ReturnType<typeof useGroupsQuery>;
+export type GroupsLazyQueryHookResult = ReturnType<typeof useGroupsLazyQuery>;
+export type GroupsQueryResult = Apollo.QueryResult<GGroupsQuery, GGroupsQueryVariables>;
+export const ParentByIdDocument = gql`
+    query ParentByID($id: Int!) {
+  parent(id: $id) {
+    id
+    lastName
+    firstName
+    patronymic
+    phoneNumber
+    secondPhoneNumber
+    type
+    email
+    secondEmail
+    applyingDate
+  }
+}
+    `;
+
+/**
+ * __useParentByIdQuery__
+ *
+ * To run a query within a React component, call `useParentByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useParentByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useParentByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useParentByIdQuery(baseOptions: Apollo.QueryHookOptions<GParentByIdQuery, GParentByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GParentByIdQuery, GParentByIdQueryVariables>(ParentByIdDocument, options);
+      }
+export function useParentByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GParentByIdQuery, GParentByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GParentByIdQuery, GParentByIdQueryVariables>(ParentByIdDocument, options);
+        }
+export type ParentByIdQueryHookResult = ReturnType<typeof useParentByIdQuery>;
+export type ParentByIdLazyQueryHookResult = ReturnType<typeof useParentByIdLazyQuery>;
+export type ParentByIdQueryResult = Apollo.QueryResult<GParentByIdQuery, GParentByIdQueryVariables>;
+export const StudentDocument = gql`
+    query Student($studentID: Int!) {
+  student(id: $studentID) {
+    id
+    lastName
+    firstName
+    patronymic
+    birthDate
+    description
+    school {
+      id
+      name
+      district
+    }
+    parent {
+      id
+    }
+    info {
+      admissionDate
+      contractState
+      courseId
+      course {
+        id
+        name
+      }
+      group {
+        id
+        name
+      }
+      isCoursePaid
+      isEquipmentPaid
+      isGetRobot
+    }
+  }
+}
+    `;
+
+/**
+ * __useStudentQuery__
+ *
+ * To run a query within a React component, call `useStudentQuery` and pass it any options that fit your needs.
+ * When your component renders, `useStudentQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useStudentQuery({
+ *   variables: {
+ *      studentID: // value for 'studentID'
+ *   },
+ * });
+ */
+export function useStudentQuery(baseOptions: Apollo.QueryHookOptions<GStudentQuery, GStudentQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GStudentQuery, GStudentQueryVariables>(StudentDocument, options);
+      }
+export function useStudentLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GStudentQuery, GStudentQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GStudentQuery, GStudentQueryVariables>(StudentDocument, options);
+        }
+export type StudentQueryHookResult = ReturnType<typeof useStudentQuery>;
+export type StudentLazyQueryHookResult = ReturnType<typeof useStudentLazyQuery>;
+export type StudentQueryResult = Apollo.QueryResult<GStudentQuery, GStudentQueryVariables>;
+export const StudentFormDocument = gql`
+    query StudentForm {
+  schools {
+    id
+    name
+    district
+  }
+  courses {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useStudentFormQuery__
+ *
+ * To run a query within a React component, call `useStudentFormQuery` and pass it any options that fit your needs.
+ * When your component renders, `useStudentFormQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useStudentFormQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useStudentFormQuery(baseOptions?: Apollo.QueryHookOptions<GStudentFormQuery, GStudentFormQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GStudentFormQuery, GStudentFormQueryVariables>(StudentFormDocument, options);
+      }
+export function useStudentFormLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GStudentFormQuery, GStudentFormQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GStudentFormQuery, GStudentFormQueryVariables>(StudentFormDocument, options);
+        }
+export type StudentFormQueryHookResult = ReturnType<typeof useStudentFormQuery>;
+export type StudentFormLazyQueryHookResult = ReturnType<typeof useStudentFormLazyQuery>;
+export type StudentFormQueryResult = Apollo.QueryResult<GStudentFormQuery, GStudentFormQueryVariables>;
+export const ParentsListDocument = gql`
+    query ParentsList {
+  parents {
+    id
+    lastName
+    firstName
+    patronymic
+  }
+}
+    `;
+
+/**
+ * __useParentsListQuery__
+ *
+ * To run a query within a React component, call `useParentsListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useParentsListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useParentsListQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useParentsListQuery(baseOptions?: Apollo.QueryHookOptions<GParentsListQuery, GParentsListQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GParentsListQuery, GParentsListQueryVariables>(ParentsListDocument, options);
+      }
+export function useParentsListLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GParentsListQuery, GParentsListQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GParentsListQuery, GParentsListQueryVariables>(ParentsListDocument, options);
+        }
+export type ParentsListQueryHookResult = ReturnType<typeof useParentsListQuery>;
+export type ParentsListLazyQueryHookResult = ReturnType<typeof useParentsListLazyQuery>;
+export type ParentsListQueryResult = Apollo.QueryResult<GParentsListQuery, GParentsListQueryVariables>;
+export const StudentsDocument = gql`
+    query Students {
+  students {
+    id
+    lastName
+    patronymic
+    birthDate
+    firstName
+    description
+    parent {
+      phoneNumber
+      secondPhoneNumber
+      applyingDate
+    }
+    info {
+      course {
+        name
+      }
+      group {
+        name
+      }
+      isCoursePaid
+      isEquipmentPaid
+      admissionDate
+      contractState
+    }
+  }
+}
+    `;
+
+/**
+ * __useStudentsQuery__
+ *
+ * To run a query within a React component, call `useStudentsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useStudentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useStudentsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useStudentsQuery(baseOptions?: Apollo.QueryHookOptions<GStudentsQuery, GStudentsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GStudentsQuery, GStudentsQueryVariables>(StudentsDocument, options);
+      }
+export function useStudentsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GStudentsQuery, GStudentsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GStudentsQuery, GStudentsQueryVariables>(StudentsDocument, options);
+        }
+export type StudentsQueryHookResult = ReturnType<typeof useStudentsQuery>;
+export type StudentsLazyQueryHookResult = ReturnType<typeof useStudentsLazyQuery>;
+export type StudentsQueryResult = Apollo.QueryResult<GStudentsQuery, GStudentsQueryVariables>;

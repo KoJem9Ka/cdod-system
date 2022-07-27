@@ -23,20 +23,6 @@ directive @stream(
   label: String
 ) on FIELD
 
-type Announcement {
-  courses: [Course]!
-  endDate: Date!
-  groups: [Group]!
-  heading: String!
-  id: Int!
-  pictureUrl: String!
-  startDate: Date!
-  text: String!
-  type: AnnouncementTypeEnum!
-  user: User!
-  userId: Int!
-}
-
 type AttendanceType {
   lesson: LessonType!
   lessonId: Int!
@@ -47,27 +33,6 @@ type AttendanceType {
   studentId: Int!
 }
 
-type ContractState {
-  id: Int!
-  name: String!
-  studentsToCourses: [StudentToCourse]!
-}
-
-type Course {
-  announcements: [Announcement]!
-  coursePrice: Float!
-  durationInMonths: Int!
-  equipmentPriceWithRobot: Float
-  equipmentPriceWithoutRobot: Float
-  groups: [Group]!
-  id: Int!
-  name: String!
-  payNotes: [PayNote!]!
-  programFileUrl: String!
-  studentToCourses: [StudentToCourse]!
-  teachers: [Teacher]!
-}
-
 type CourseType {
   durationInMonths: Int!
   equipmentPriceWithRobot: Float
@@ -75,20 +40,7 @@ type CourseType {
   id: Int!
   name: String!
   price: Float!
-  programFileUrl: String!
-}
-
-type Group {
-  announcements: [Announcement]!
-  course: Course!
-  courseId: Int!
-  id: Int!
-  lessons: [Lesson]!
-  name: String!
-  startDate: Date!
-  studentsToGroups: [StudentsToGroups]!
-  teacher: Teacher!
-  teacherId: Int!
+  programId: Int
 }
 
 type GroupType {
@@ -104,8 +56,8 @@ type GroupType {
 
 type InfoType {
   admissionDate: Date!
-  contractState: String!
-  contractStateId: Int!
+  attempt: Int!
+  contractState: ContractState!
   course: CourseType!
   courseId: Int!
   group: GroupType
@@ -113,19 +65,6 @@ type InfoType {
   isEquipmentPaid: Boolean
   isGetRobot: Boolean
   studentId: Int!
-}
-
-type Lesson {
-  classRoom: String!
-  duration: Int!
-  group: Group!
-  groupId: Int!
-  homework: String!
-  id: Int!
-  lessonTopic: String!
-  startDateTime: DateTime!
-  studentsToLessons: [StudentToLesson]!
-  teacherToLessons: [TeacherToLesson]!
 }
 
 type LessonType {
@@ -141,32 +80,25 @@ type LessonType {
 
 type Mutation {
   attachStudentsToCourses(studentsToCourses: [StudentToCourseCreateInput!]!): Boolean!
-  attachStudentsToGroups(studentsToGroups: [StudentToGroupInput!]!): Boolean!
   courseCreateCourse(course: CourseCreateInput!): CourseType!
   courseDeleteMany(courseIds: [Int!]!): Boolean!
   courseUpdateMany(courses: [CourseUpdateInput!]!): Boolean!
+  createSchool(school: SchoolCreateInput!): SchoolType!
   detachStudentsToCourses(studentsToCourses: [StudentToCourseDetachInput!]!): Boolean!
-  dettachStudentsFromGroups(studentsToGroups: [StudentToGroupInput!]!): Boolean!
   groupCreate(group: GroupCreateInput!): GroupType!
   groupDeleteMany(groupIds: [Int!]!): Boolean!
   groupUpdateMany(groups: [GroupUpdateInput!]!): Boolean!
+  login(user: ParentLoginInput!): String!
   parentCreate(parent: ParentCreateInput!): ParentType!
   parentDeleteMany(parentsIds: [Int!]!): Boolean!
   parentUpdateMany(parent: [ParentUpdateInput!]!): Boolean!
-  studentCreate(student: StudentCreateInput!): Student!
+  schoolDeleteMany(schoolIds: [Int!]!): Boolean!
+  schoolUpdateMany(schools: [SchoolUpdateInput!]!): Boolean!
+  studentCreate(student: StudentCreateInput!): StudentType!
   studentDeleteMany(studentIds: [Int!]!): Boolean!
   studentUpdateMany(students: [StudentUpdateInput!]!): Boolean!
   updateFromGoogleTable: Boolean!
   updateStudentsToCourses(studentsToCourses: [StudentToCourseUpdateInput!]!): Boolean!
-}
-
-type Parent {
-  secondEmail: String
-  secondPhoneNumber: String
-  signDate: Date!
-  students: [Student]!
-  user: User!
-  userId: Int!
 }
 
 type ParentType {
@@ -175,11 +107,11 @@ type ParentType {
   birthday: Date
   education: String
   email: String!
-  firstName: String!
+  firstName: String
   id: Int!
   inn: String
   isAdmin: Boolean!
-  lastName: String!
+  lastName: String
   passportCode: String
   passportDate: Date
   passportIssue: String
@@ -190,25 +122,7 @@ type ParentType {
   secondEmail: String
   secondPhoneNumber: String
   snils: String
-}
-
-type PayNote {
-  appointment: Appointment!
-  checkURL: String!
-  course: Course!
-  courseId: Int!
-  date: Date!
-  id: Int!
-  student: Student!
-  studentId: Int!
-  sum: Float!
-  user: User!
-  userId: Int!
-}
-
-type Post {
-  id: Int!
-  name: String!
+  type: RelationType
 }
 
 type PostType {
@@ -237,13 +151,6 @@ type Query {
   teachersWorkTime(lessonId: Int, order: [TeachersWorkTimeTypeSortInput!], teacherId: Int, where: TeachersWorkTimeTypeFilterInput): [TeachersWorkTimeType!]!
 }
 
-type School {
-  district: District!
-  id: Int!
-  name: String!
-  students: [Student]!
-}
-
 type SchoolType {
   district: District!
   id: Int!
@@ -251,84 +158,18 @@ type SchoolType {
   students: [StudentType!]!
 }
 
-type Student {
-  birthDate: Date!
-  description: String
-  firstName: String!
-  id: Int!
-  lastName: String!
-  parent: Parent!
-  parentId: Int!
-  patronymic: String
-  payNotes: [PayNote]!
-  school: School!
-  schoolId: Int!
-  studentToCourses: [StudentToCourse]!
-  studentToLessons: [StudentToLesson]!
-  studentsToGroups: [StudentsToGroups]!
-}
-
-type StudentToCourse {
-  contractState: ContractState!
-  contractStateId: Int!
-  contractUrl: String
-  course: Course!
-  courseId: Int!
-  debt: Float
-  equipmentPriceWithRobot: Boolean
-  signDate: Date!
-  student: Student!
-  studentId: Int!
-}
-
-type StudentToLesson {
-  lesson: Lesson!
-  lessonId: Int!
-  mark: Int!
-  note: String!
-  status: Status!
-  student: Student!
-  studentId: Int!
-}
-
 type StudentType {
-  birthDate: Date!
+  birthDate: Date
   description: String
-  firstName: String!
+  firstName: String
   id: Int!
   info: [InfoType!]!
-  lastName: String!
+  lastName: String
   parent: ParentType!
   parentId: Int!
   patronymic: String
-  school: SchoolType!
-  schoolId: Int!
-}
-
-type StudentsToGroups {
-  group: Group!
-  groupId: Int!
-  student: Student!
-  studentId: Int!
-}
-
-type Teacher {
-  courses: [Course]!
-  groups: [Group]!
-  post: Post!
-  postId: Int!
-  teacherToLessons: [TeacherToLesson]!
-  user: User!
-  userId: Int!
-  workPlace: String!
-}
-
-type TeacherToLesson {
-  lesson: Lesson!
-  lessonId: Int!
-  teacher: Teacher!
-  teacherId: Int!
-  workTime: TimeSpan!
+  school: SchoolType
+  schoolId: Int
 }
 
 type TeacherType {
@@ -336,11 +177,11 @@ type TeacherType {
   birthday: Date
   education: String
   email: String!
-  firstName: String!
+  firstName: String
   id: Int!
   inn: String
   isAdmin: Boolean!
-  lastName: String!
+  lastName: String
   passportCode: String
   passportDate: Date
   passportIssue: String
@@ -362,42 +203,32 @@ type TeachersWorkTimeType {
   workTime: TimeSpan!
 }
 
-type User {
-  address: String
-  announcements: [Announcement]!
-  birthday: Date
-  education: String
-  email: String!
-  firstname: String
-  id: Int!
-  inn: String
-  isAdmin: Boolean!
-  lastname: String
-  passportCode: String
-  passportDate: Date
-  passportIssue: String
-  passportNo: String
-  password: String!
-  patronymic: String
-  payNotes: [PayNote]!
-  phoneNumber: String
-  snils: String
-}
-
-enum AnnouncementTypeEnum {
-  IMPORTANT
-  UNIMPORTANT
-}
-
-enum Appointment {
-  COURSE
-  MATERIAL
+enum ContractState {
+  COMPLETED
+  CONSIDERATION
+  EXCLUDED
+  LEFT
+  REJECTED
+  STUDYING
 }
 
 enum District {
   CENTRAL
   TRACTOR
   VOROSHILOVSKIY
+}
+
+enum RelationType {
+  AUNT
+  BROTHER
+  FATHER
+  GRANDMA
+  GRANDPA
+  GUARDIAN
+  MOTHER
+  OTHER
+  SISTER
+  UNCLE
 }
 
 enum SortEnumType {
@@ -533,6 +364,21 @@ input ComparableNullableOfDoubleOperationFilterInput {
   nlte: Float
 }
 
+input ComparableNullableOfInt32OperationFilterInput {
+  eq: Int
+  gt: Int
+  gte: Int
+  in: [Int]
+  lt: Int
+  lte: Int
+  neq: Int
+  ngt: Int
+  ngte: Int
+  nin: [Int]
+  nlt: Int
+  nlte: Int
+}
+
 input ComparableTimeOnlyOperationFilterInput {
   eq: TimeSpan
   gt: TimeSpan
@@ -554,7 +400,7 @@ input CourseCreateInput {
   equipmentPriceWithRobot: Float
   equipmentPriceWithoutRobot: Float
   name: String!
-  programFileUrl: String!
+  programId: Int
 }
 
 input CourseTypeFilterInput {
@@ -566,7 +412,7 @@ input CourseTypeFilterInput {
   name: StringOperationFilterInput
   or: [CourseTypeFilterInput!]
   price: ComparableDoubleOperationFilterInput
-  programFileUrl: StringOperationFilterInput
+  programId: ComparableNullableOfInt32OperationFilterInput
 }
 
 input CourseTypeSortInput {
@@ -576,7 +422,7 @@ input CourseTypeSortInput {
   id: SortEnumType
   name: SortEnumType
   price: SortEnumType
-  programFileUrl: SortEnumType
+  programId: SortEnumType
 }
 
 input CourseUpdateInput {
@@ -586,7 +432,7 @@ input CourseUpdateInput {
   equipmentPriceWithoutRobot: Float
   id: Int!
   name: String
-  programFileUrl: String
+  programId: Int
 }
 
 input DistrictOperationFilterInput {
@@ -650,6 +496,13 @@ input LessonTypeSortInput {
   topic: SortEnumType
 }
 
+input NullableOfRelationTypeOperationFilterInput {
+  eq: RelationType
+  in: [RelationType]
+  neq: RelationType
+  nin: [RelationType]
+}
+
 input ParentCreateInput {
   address: String
   applyingDate: Date!
@@ -669,6 +522,11 @@ input ParentCreateInput {
   secondEmail: String
   secondPhoneNumber: String
   snils: String
+}
+
+input ParentLoginInput {
+  email: String!
+  password: String!
 }
 
 input ParentTypeFilterInput {
@@ -694,6 +552,7 @@ input ParentTypeFilterInput {
   secondEmail: StringOperationFilterInput
   secondPhoneNumber: StringOperationFilterInput
   snils: StringOperationFilterInput
+  type: NullableOfRelationTypeOperationFilterInput
 }
 
 input ParentTypeSortInput {
@@ -717,6 +576,7 @@ input ParentTypeSortInput {
   secondEmail: SortEnumType
   secondPhoneNumber: SortEnumType
   snils: SortEnumType
+  type: SortEnumType
 }
 
 input ParentUpdateInput {
@@ -753,6 +613,11 @@ input PostTypeSortInput {
   name: SortEnumType
 }
 
+input SchoolCreateInput {
+  district: District!
+  name: String!
+}
+
 input SchoolTypeFilterInput {
   and: [SchoolTypeFilterInput!]
   district: DistrictOperationFilterInput
@@ -765,6 +630,12 @@ input SchoolTypeSortInput {
   district: SortEnumType
   id: SortEnumType
   name: SortEnumType
+}
+
+input SchoolUpdateInput {
+  district: District
+  id: Int!
+  name: String
 }
 
 input StatusOperationFilterInput {
@@ -801,7 +672,7 @@ input StudentCreateInput {
 
 input StudentToCourseCreateInput {
   admissionDate: Date!
-  contractStateId: Int!
+  contractState: ContractState!
   contractUrl: String
   courseId: Int!
   isGetRobot: Boolean
@@ -815,21 +686,16 @@ input StudentToCourseDetachInput {
 
 input StudentToCourseUpdateInput {
   admissionDate: Date
-  contractStateId: Int
+  contractState: ContractState
   contractUrl: String
   courseId: Int!
   isGetRobot: Boolean
   studentId: Int!
 }
 
-input StudentToGroupInput {
-  groupId: Int!
-  studentId: Int!
-}
-
 input StudentTypeFilterInput {
   and: [StudentTypeFilterInput!]
-  birthDate: ComparableDateOnlyOperationFilterInput
+  birthDate: ComparableNullableOfDateOnlyOperationFilterInput
   description: StringOperationFilterInput
   firstName: StringOperationFilterInput
   id: ComparableInt32OperationFilterInput
@@ -837,7 +703,7 @@ input StudentTypeFilterInput {
   or: [StudentTypeFilterInput!]
   parentId: ComparableInt32OperationFilterInput
   patronymic: StringOperationFilterInput
-  schoolId: ComparableInt32OperationFilterInput
+  schoolId: ComparableNullableOfInt32OperationFilterInput
 }
 
 input StudentTypeSortInput {

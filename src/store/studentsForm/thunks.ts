@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion,@typescript-eslint/no-unnecessary-type-assertion */
-import { createAsyncThunk } from '@reduxjs/toolkit'
-import { TAppThunkConfig }  from '../store'
+import { createAsyncThunk }  from '@reduxjs/toolkit'
+import { TAppThunkConfig }   from '../store'
+import { client }            from '../../index'
+import { ApolloQueryResult } from '@apollo/client'
 import {
   GStudentQuery,
   GStudentQueryVariables,
   StudentDocument
-}                           from './Student.generated'
-import { client }        from '../../index'
-import { ApolloQueryResult }    from '@apollo/client'
+}                            from '../../other/generated'
 
 
 

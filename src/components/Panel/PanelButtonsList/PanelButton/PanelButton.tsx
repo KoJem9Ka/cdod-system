@@ -5,15 +5,15 @@ import {
   useMatch
 }                          from 'react-router-dom'
 import { usePanelOpening } from '../../../../store/InsteadOfContext/hook'
-import NavLinkMotioned     from '../../../MotionedCustomComponents/NavLinkMotioned'
 import IconsPanel          from '../../../../assets/icons/IconsPanel'
 import { TCRoutes }        from '../../PanelConfig'
 import {
+  AnimationProps,
   motion,
   MotionProps
 }                          from 'framer-motion'
-import { AnimationProps }  from 'framer-motion/types/motion/types'
-
+import { NavLinkMotioned } from '../../../Modified/Motioned'
+// import { AnimationProps }  from 'framer-motion/types/motion/types'
 
 
 const NavLinkMotionedProps: ( i: number )=> AnimationProps = index => ({
@@ -48,7 +48,7 @@ export const PanelButton: React.FC<TPanelButtonProps> = ( { title, route, index 
     !opened && style.collapsed
   ].join( ' ' )
 
-  //TODO: При клике на нижнюю кнопку панели, предудыщая моргает
+  //TODO: Баг: При клике на нижнюю кнопку панели, предудыщая моргает
   return (
     <NavLinkMotioned
       className={ activeClassHandler }

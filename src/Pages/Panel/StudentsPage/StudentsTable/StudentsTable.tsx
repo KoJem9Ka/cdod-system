@@ -15,8 +15,12 @@ import {
   isEqual,
   isNil
 }                          from 'lodash'
-import { formatPhone }     from '../../../../other/helpers'
-import { GStudentsQuery } from '../Students.generated'
+import {
+  formatPhone,
+  humanizeDate,
+  strCat
+}                          from '../../../../other/helpers'
+import { GStudentsQuery }  from '../../../../other/generated'
 
 
 
@@ -91,19 +95,16 @@ const StudentsTable: React.FC<Props> = memo( ( { data, onRowSelected } ) => {
         allowFiltering={ true }
         allowSearch={ true }
         allowSorting={ true }
-        calculateCellValue={ ( row: T ) => `${ row.lastName } ${ row.firstName } ${ row.patronymic }` }
+        calculateCellValue={ ( row: T ) => strCat( row.lastName, row.firstName, row.patronymic ) }
         caption='ФИО'
         dataType={ 'string' }
         name='fio'
       />
       <Column
         alignment='center'
-        calculateCellValue={ ( row: T ) => `${ row.birthDate } (${ moment( row.birthDate ).fromNow( true ) })` }
+        calculateCellValue={ ( row: T ) => (!row.birthDate ? '' : strCat( row.birthDate, `(${ humanizeDate( row.birthDate ) })` )) }
         caption='Возраст'
-        customizeText={ arg => `${ arg.valueText.match( /\d+ лет/ )![0] }` }
-        // customizeText={ arg => arg.valueText }
         dataField='birthDate'
-        // dataType='date'
         name='birthDate'
       />
       <Column
@@ -123,13 +124,16 @@ const StudentsTable: React.FC<Props> = memo( ( { data, onRowSelected } ) => {
       />
       <Column
         allowFiltering={ true }
-        calculateCellValue={ ( row: T ) => (row.info.length === 0 ? null : row.info.reduce<boolean>( ( previousValue, currentValue ) => previousValue && currentValue.isCoursePaid && (isNil( currentValue.isEquipmentPaid ) || currentValue.isEquipmentPaid), true )) }
         caption='Оплата'
         cellRender={ Paid }
         dataType='boolean'
         falseText={ 'Долг' }
         trueText={ 'Оплачено' }
         width={ 150 }
+        calculateCellValue={ ( row: T ) => (row.info.length === 0 ? null : row.info.reduce<boolean>( (
+          previousValue,
+          currentValue
+        ) => previousValue && currentValue.isCoursePaid && (isNil( currentValue.isEquipmentPaid ) || currentValue.isEquipmentPaid), true )) }
       />
       <Column
         alignment='center'
@@ -139,7 +143,7 @@ const StudentsTable: React.FC<Props> = memo( ( { data, onRowSelected } ) => {
         dataField='signDate'
         dataType='date'
         sortOrder='desc'
-        width={200}
+        width={ 200 }
       />
       {/*<Column*/ }
       {/*  alignment='center'*/ }

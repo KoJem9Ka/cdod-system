@@ -1,5 +1,10 @@
-import { motion, SVGMotionProps } from 'framer-motion'
+import {
+  motion,
+  SVGMotionProps
+}            from 'framer-motion'
 import React from 'react'
+
+
 
 const MenuIcon: React.FC<SVGMotionProps<SVGSVGElement>> = props => (
   <motion.svg
@@ -8,7 +13,7 @@ const MenuIcon: React.FC<SVGMotionProps<SVGSVGElement>> = props => (
     viewBox='0 0 161 47'
     width='161'
     xmlns='http://www.w3.org/2000/svg'
-    {...props}
+    { ...props }
   >
     <ellipse
       cx='15.0997'

@@ -20,27 +20,25 @@ import { Preloader }      from './components/Preloader/Preloader'
 
 export const client = new ApolloClient( {
   uri:               'http://localhost:5094/',
-  // uri: 'https://localhost:7094/',
-  // uri:               'http://localhost:3001',
   cache:             new InMemoryCache(),
   connectToDevTools: true,
 } )
 
 createRoot( document.getElementById( 'root' ) as HTMLElement ).render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <Provider store={ store }>
-        <ApolloProvider client={ client }>
-          <App/>
-          <ToastContainer
-            autoClose={ 2500 }
-            position={ 'bottom-left' }
-            theme={ 'light' }
-            pauseOnHover
-          />
-          <Preloader/>
-        </ApolloProvider>
-      </Provider>
-    </BrowserRouter>
-  </React.StrictMode>
+  // <React.StrictMode>
+  <BrowserRouter>
+    <Provider store={ store }>
+      <ApolloProvider client={ client }>
+        <App/>
+        <ToastContainer
+          autoClose={ 2500 }
+          position={ 'bottom-left' }
+          theme={ 'light' }
+          pauseOnHover
+        />
+        <Preloader/>
+      </ApolloProvider>
+    </Provider>
+  </BrowserRouter>
+  // </React.StrictMode>
 )
