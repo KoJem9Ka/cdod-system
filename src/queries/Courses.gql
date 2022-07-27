@@ -1,0 +1,11 @@
+query Courses{
+  courses(order: {name: ASC}){
+    id
+    name
+    price
+    programId
+    durationInMonths
+    equipmentPriceWithRobot
+    equipmentPriceWithoutRobot
+  }
+}
