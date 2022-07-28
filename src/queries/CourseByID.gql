@@ -1,0 +1,11 @@
+query CourseById($courseId: Int!){
+  course(id: $courseId) {
+    id
+    name
+    programId
+    price
+    equipmentPriceWithRobot
+    equipmentPriceWithoutRobot
+    durationInMonths
+  }
+}

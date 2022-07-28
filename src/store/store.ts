@@ -7,6 +7,7 @@ import {
 import { insteadOfContextSlice } from './InsteadOfContext/reducer'
 import logger                    from 'redux-logger'
 import { studentFormSlice }      from './studentsForm/reducer'
+import { courseFormSlice } from './courseForm/reducer'
 
 
 
@@ -14,11 +15,12 @@ export const store = configureStore( {
   reducer:    {
     insteadOfContext: insteadOfContextSlice.reducer,
     studentForm:      studentFormSlice.reducer,
+    courseForm: courseFormSlice.reducer,
   },
   devTools:   true,
   middleware: getDefaultMiddleware => getDefaultMiddleware( {
     thunk: { extraArgument: {} },
-  } ).concat( logger ),
+  } )/*.concat( logger )*/,
 } )
 
 export type TAppState = ReturnType<typeof store.getState>

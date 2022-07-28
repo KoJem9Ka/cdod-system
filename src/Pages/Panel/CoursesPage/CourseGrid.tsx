@@ -7,19 +7,18 @@ const Grid = styled.div`
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(300px, auto));
   gap: 2rem;
-  overflow-y: auto;
+  overflow-x: hidden;
 `
 
 type CourseGridProps = {
   courses: GCourseType[]
-  openModalHandler: (id: number)=> void
 }
 
-const CourseGrid: React.FC<CourseGridProps> = ({ courses, openModalHandler }) => (
+const CourseGrid: React.FC<CourseGridProps> = ({ courses }) => (
   <Grid>
     {
       courses.map(course => (
-        <CourseItem key={course.id} course={course} openModalHandler={openModalHandler}/>
+        <CourseItem key={course.id} course={course}/>
       ))
     }
   </Grid>

@@ -1,5 +1,6 @@
 import React, { PropsWithChildren } from 'react'
 import styled from 'styled-components'
+import { useCourseForm } from '../../store/courseForm/hooks'
 
 const ModalBG = styled.div`
   position: fixed;
@@ -25,14 +26,21 @@ const Modal = styled.div`
 
 type ModalWindowProps = {
   closeHanlder: ()=> void
+  isVisible: boolean
 } & PropsWithChildren
 
-const ModalWindow: React.FC <ModalWindowProps> = ({ closeHanlder, children }) => (
-  <ModalBG onClick={closeHanlder}>
-    <Modal>
+const ModalWindow: React.FC <ModalWindowProps> = ({ isVisible, children, closeHanlder }) => (
+    
+  isVisible ? <ModalBG
+    tabIndex={0}
+    onClick={closeHanlder}
+  >
+    <Modal onClick={event => event.stopPropagation()}>
+      <button onClick={closeHanlder}>X</button>
       {children}
     </Modal>
   </ModalBG>
+    : null
 )
 
 export default ModalWindow
