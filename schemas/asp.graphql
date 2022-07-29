@@ -34,6 +34,7 @@ type AttendanceType {
 }
 
 type CourseType {
+  color: String
   durationInMonths: Int!
   equipmentPriceWithRobot: Float
   equipmentPriceWithoutRobot: Float
@@ -41,6 +42,7 @@ type CourseType {
   name: String!
   price: Float!
   programId: Int
+  svgIconUrl: String
 }
 
 type GroupType {
@@ -405,6 +407,7 @@ input CourseCreateInput {
 
 input CourseTypeFilterInput {
   and: [CourseTypeFilterInput!]
+  color: StringOperationFilterInput
   durationInMonths: ComparableInt32OperationFilterInput
   equipmentPriceWithRobot: ComparableNullableOfDoubleOperationFilterInput
   equipmentPriceWithoutRobot: ComparableNullableOfDoubleOperationFilterInput
@@ -413,9 +416,11 @@ input CourseTypeFilterInput {
   or: [CourseTypeFilterInput!]
   price: ComparableDoubleOperationFilterInput
   programId: ComparableNullableOfInt32OperationFilterInput
+  svgIconUrl: StringOperationFilterInput
 }
 
 input CourseTypeSortInput {
+  color: SortEnumType
   durationInMonths: SortEnumType
   equipmentPriceWithRobot: SortEnumType
   equipmentPriceWithoutRobot: SortEnumType
@@ -423,6 +428,7 @@ input CourseTypeSortInput {
   name: SortEnumType
   price: SortEnumType
   programId: SortEnumType
+  svgIconUrl: SortEnumType
 }
 
 input CourseUpdateInput {

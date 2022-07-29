@@ -193,6 +193,7 @@ export type GCourseCreateInput = {
 };
 
 export type GCourseType = {
+  color: Maybe<Scalars['String']>;
   durationInMonths: Scalars['Int'];
   equipmentPriceWithRobot: Maybe<Scalars['Float']>;
   equipmentPriceWithoutRobot: Maybe<Scalars['Float']>;
@@ -200,10 +201,12 @@ export type GCourseType = {
   name: Scalars['String'];
   price: Scalars['Float'];
   programId: Maybe<Scalars['Int']>;
+  svgIconUrl: Maybe<Scalars['String']>;
 };
 
 export type GCourseTypeFilterInput = {
   and: InputMaybe<Array<GCourseTypeFilterInput>>;
+  color: InputMaybe<GStringOperationFilterInput>;
   durationInMonths: InputMaybe<GComparableInt32OperationFilterInput>;
   equipmentPriceWithRobot: InputMaybe<GComparableNullableOfDoubleOperationFilterInput>;
   equipmentPriceWithoutRobot: InputMaybe<GComparableNullableOfDoubleOperationFilterInput>;
@@ -212,9 +215,11 @@ export type GCourseTypeFilterInput = {
   or: InputMaybe<Array<GCourseTypeFilterInput>>;
   price: InputMaybe<GComparableDoubleOperationFilterInput>;
   programId: InputMaybe<GComparableNullableOfInt32OperationFilterInput>;
+  svgIconUrl: InputMaybe<GStringOperationFilterInput>;
 };
 
 export type GCourseTypeSortInput = {
+  color: InputMaybe<GSortEnumType>;
   durationInMonths: InputMaybe<GSortEnumType>;
   equipmentPriceWithRobot: InputMaybe<GSortEnumType>;
   equipmentPriceWithoutRobot: InputMaybe<GSortEnumType>;
@@ -222,6 +227,7 @@ export type GCourseTypeSortInput = {
   name: InputMaybe<GSortEnumType>;
   price: InputMaybe<GSortEnumType>;
   programId: InputMaybe<GSortEnumType>;
+  svgIconUrl: InputMaybe<GSortEnumType>;
 };
 
 export type GCourseUpdateInput = {
@@ -992,12 +998,12 @@ export type GCourseByIdQueryVariables = Exact<{
 }>;
 
 
-export type GCourseByIdQuery = { course: { id: number, name: string, programId: number | null, price: number, equipmentPriceWithRobot: number | null, equipmentPriceWithoutRobot: number | null, durationInMonths: number } };
+export type GCourseByIdQuery = { course: { id: number, name: string, price: number, programId: number | null, durationInMonths: number, equipmentPriceWithRobot: number | null, equipmentPriceWithoutRobot: number | null, color: string | null, svgIconUrl: string | null } };
 
 export type GCoursesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GCoursesQuery = { courses: Array<{ id: number, name: string, price: number, programId: number | null, durationInMonths: number, equipmentPriceWithRobot: number | null, equipmentPriceWithoutRobot: number | null }> };
+export type GCoursesQuery = { courses: Array<{ id: number, name: string, price: number, programId: number | null, durationInMonths: number, equipmentPriceWithRobot: number | null, equipmentPriceWithoutRobot: number | null, color: string | null, svgIconUrl: string | null }> };
 
 export type GGroupByIdQueryVariables = Exact<{
   groupID: Scalars['Int'];
@@ -1046,11 +1052,13 @@ export const CourseByIdDocument = gql`
   course(id: $courseId) {
     id
     name
-    programId
     price
+    programId
+    durationInMonths
     equipmentPriceWithRobot
     equipmentPriceWithoutRobot
-    durationInMonths
+    color
+    svgIconUrl
   }
 }
     `;
@@ -1092,6 +1100,8 @@ export const CoursesDocument = gql`
     durationInMonths
     equipmentPriceWithRobot
     equipmentPriceWithoutRobot
+    color
+    svgIconUrl
   }
 }
     `;

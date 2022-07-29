@@ -7,5 +7,7 @@ query Courses{
     durationInMonths
     equipmentPriceWithRobot
     equipmentPriceWithoutRobot
+    color
+    svgIconUrl
   }
 }

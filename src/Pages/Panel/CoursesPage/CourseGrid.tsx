@@ -8,6 +8,7 @@ const Grid = styled.div`
 	grid-template-columns: repeat(auto-fill, minmax(300px, auto));
   gap: 2rem;
   overflow-x: hidden;
+  padding: 1rem;
 `
 
 type CourseGridProps = {

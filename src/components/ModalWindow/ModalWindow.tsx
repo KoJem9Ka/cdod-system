@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react'
 import styled from 'styled-components'
-import { useCourseForm } from '../../store/courseForm/hooks'
+import { ReactComponent as IconExit } from '../../assets/icons/IconExit.svg'
 
 const ModalBG = styled.div`
   position: fixed;
@@ -17,11 +17,46 @@ const ModalBG = styled.div`
 `
 
 const Modal = styled.div`
+  display: flex;
+  position: relative;
   text-align: left;
   background-color: #fff;
   width: 50%;
-  padding: 2rem 3rem;
+  padding: 1rem;
   border-radius: 25px;
+  
+  & > div {
+    margin: 2rem 1rem;
+    width: 100%;
+  }
+`
+
+const CloseButton = styled.button`
+  display: flex;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  
+  cursor: pointer;
+  padding: 0.7rem;
+  border-radius: 100rem;
+  background-color: rgba(255, 0, 0, 0.1);
+  
+  transition: 300ms;
+  
+  & > svg {
+    fill: red;
+    transition: 300ms;
+  }
+  
+  &:hover {
+    background-color: red;
+    
+    & > svg {
+      fill: white ;
+    }
+  }
+
 `
 
 type ModalWindowProps = {
@@ -29,14 +64,16 @@ type ModalWindowProps = {
   isVisible: boolean
 } & PropsWithChildren
 
-const ModalWindow: React.FC <ModalWindowProps> = ({ isVisible, children, closeHanlder }) => (
-    
+const ModalWindow: React.FC<ModalWindowProps> = ({ isVisible, children, closeHanlder }) => (
+	
   isVisible ? <ModalBG
     tabIndex={0}
     onClick={closeHanlder}
   >
     <Modal onClick={event => event.stopPropagation()}>
-      <button onClick={closeHanlder}>X</button>
+      <CloseButton onClick={closeHanlder}>
+        <IconExit/>
+      </CloseButton>
       {children}
     </Modal>
   </ModalBG>
