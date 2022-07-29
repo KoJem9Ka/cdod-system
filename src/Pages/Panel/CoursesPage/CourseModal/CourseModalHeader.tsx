@@ -11,13 +11,15 @@ const Header = styled.div`
     height: auto;
   }
   & > p{
-    border: 1px solid black;
+    padding: 0;
+    margin: 0;
     text-align: center;
     font-size: 24px;
     font-weight: 600;
   }
   & > input{
-    border: 1px solid black;
+    padding: 0;
+    margin: 0;
     text-align: center;
     font-size: 24px;
     font-weight: 600;
