@@ -2,18 +2,27 @@ import React from 'react'
 import styled from 'styled-components'
 import { GCourseType } from '../../../other/generated'
 import { useCourseForm } from '../../../store/courseForm/hooks'
+import { hexToRgbA } from '../../../other/helpers'
 
-const Item = styled.div`
+
+// TODO: потом переделать на нормальное, а то вообще да.....
+
+
+const Item = styled.div<{ color: string }>`
   background: white;
-  border-radius: 1rem;
+  background-clip: padding-box;
+  box-sizing: content-box;
+  border-radius: 2rem;
   cursor: pointer;
   transition: 100ms;
-  &:hover{
-    transform: scale(104%);
+  border: 1rem solid transparent;
+  
+  &:hover {
+    border: 1rem solid ${props => (props.color ? hexToRgbA(props.color, 0.2) : 'white')};
   }
 `
 
-const ImgBlock = styled.div<{ color: any }>`
+const ImgBlock = styled.div<{ color: string }>`
   background: ${props => (props.color ? props.color : 'white')};
   width: 100%;
   display: flex;
@@ -42,13 +51,14 @@ type CourseItemProps = {
   course: GCourseType
 }
 
+
 const CourseItem: React.FC<CourseItemProps> = ({ course }) => {
   
   const { selectCourse } = useCourseForm()
   
   return (
-    <Item onClick={() => selectCourse(course.id)}>
-      <ImgBlock color={course.color}>
+    <Item color={course.color || 'white'} onClick={() => selectCourse(course.id)}>
+      <ImgBlock color={course.color || 'white'}>
         <img
           alt={course.name}
           height={100}

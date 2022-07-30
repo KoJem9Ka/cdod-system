@@ -6,9 +6,11 @@ import { GCourseType } from '../../../other/generated'
 const Grid = styled.div`
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(300px, auto));
-  gap: 2rem;
-  overflow-x: hidden;
-  padding: 1rem;
+  //gap: 1rem;
+  overflow: auto;
+  //padding: 1rem;
+  //margin: 0rem -1rem -1rem;
+  //margin-inline: -1rem;
 `
 
 type CourseGridProps = {

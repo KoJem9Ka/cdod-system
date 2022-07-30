@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react'
+import React, { PropsWithChildren, useCallback, useEffect } from 'react'
 import styled from 'styled-components'
 import { ReactComponent as IconExit } from '../../assets/icons/IconExit.svg'
 
@@ -24,7 +24,7 @@ const Modal = styled.div`
   width: 50%;
   padding: 1rem;
   border-radius: 25px;
-  
+
   & > div {
     margin: 2rem 1rem;
     width: 100%;
@@ -36,48 +36,59 @@ const CloseButton = styled.button`
   position: absolute;
   top: 1rem;
   right: 1rem;
-  
+
   cursor: pointer;
   padding: 0.7rem;
   border-radius: 100rem;
   background-color: rgba(255, 0, 0, 0.1);
-  
+
   transition: 300ms;
-  
+
   & > svg {
     fill: red;
     transition: 300ms;
   }
-  
+
   &:hover {
     background-color: red;
-    
+
     & > svg {
-      fill: white ;
+      fill: white;
     }
   }
 
 `
 
 type ModalWindowProps = {
-  closeHanlder: ()=> void
-  isVisible: boolean
+  closeHandler: ()=> void
 } & PropsWithChildren
 
-const ModalWindow: React.FC<ModalWindowProps> = ({ isVisible, children, closeHanlder }) => (
+const ModalWindow: React.FC<ModalWindowProps> = ({ children, closeHandler }) => {
 	
-  isVisible ? <ModalBG
-    tabIndex={0}
-    onClick={closeHanlder}
-  >
-    <Modal onClick={event => event.stopPropagation()}>
-      <CloseButton onClick={closeHanlder}>
-        <IconExit/>
-      </CloseButton>
-      {children}
-    </Modal>
-  </ModalBG>
-    : null
-)
+  const closeModal = useCallback((e: KeyboardEvent) => {
+    e.key === 'Escape' && closeHandler()
+  }, [])
+	
+  useEffect(() => {
+    window.addEventListener('keydown', closeModal)
+    return () => window.removeEventListener('keydown', closeModal)
+  }, [])
+	
+	
+  return (
+    <ModalBG
+      tabIndex={0}
+      onClick={closeHandler}
+    >
+      <Modal onClick={event => event.stopPropagation()}>
+        <CloseButton onClick={closeHandler}>
+          <IconExit/>
+        </CloseButton>
+        {children}
+      </Modal>
+    </ModalBG>
+	
+  )
+}
 
 export default ModalWindow

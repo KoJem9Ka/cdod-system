@@ -10,6 +10,7 @@
 
 # jetbrains ide folders
 /**/.idea/
+.idea/
 
 # dependencies
 /**/node_modules

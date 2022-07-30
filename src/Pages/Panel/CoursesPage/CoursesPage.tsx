@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import Workspace from '../../../HOC/Workspace/Workspace'
 import CourseGrid from './CourseGrid'
 import { useCoursesQuery } from '../../../other/generated'
@@ -10,19 +10,32 @@ import styled from 'styled-components'
 import { ReactComponent as AddIcon } from '../../../assets/icons/IconAdd.svg'
 import { usePreloader } from '../../../components/Preloader/Preloader'
 
+const WorkspaceV2 = styled(Workspace)`
+  gap: 1rem;
+  & > * + *{
+    margin-top : 0;
+  }
+
+`
 
 const EditBlock = styled.div`
+  //position: absolute;
+  //bottom: 1.5rem;
+  //right: 1.5rem;
+  align-self: flex-start;
   display: flex;
   justify-content: right;
-  & > button{
-  
-  }
+  background-color: var(--COLOR_blue);
+  border-radius: 1rem;
+  padding: 0.5rem;
+  //margin-bottom: 1rem;
+  gap: 1rem;
 `
 
 const AddButton = styled.button`
+  cursor: pointer;;
+  display: flex;
   font-size: 1.5rem;
-  border-radius: 100rem;
-  background: var(--COLOR_blue);
 `
 
 const CoursesPage: React.FC = () => {
@@ -30,37 +43,29 @@ const CoursesPage: React.FC = () => {
   
   const { courseModified, closeCourseForm, courseLoading } = useCourseForm()
   
-  const close = (e:  KeyboardEvent) => {
-    if (e.key === 'Escape') closeCourseForm()
-  }
-  
+
   usePreloader(loading || courseLoading)
   
-  useEffect(() => {
-    if (courseModified) {
-      window.addEventListener('keydown', close, { once: true })
-    }
-    return () => window.removeEventListener('keydown', close)
-  }, [ courseModified ])
+  return (
+    <WorkspaceV2>
+      <EditBlock>
+        <AddButton><AddIcon height={30} width={30}/></AddButton>
+        <AddButton><AddIcon height={30} width={30}/></AddButton>
+      </EditBlock>
   
-  return (  
-    <Workspace>
       {
         data
           ? <CourseGrid courses={data.courses}/>
           : <h2> Нет данных</h2>
       }
-      
+  
       {
-        <ModalWindow closeHanlder={closeCourseForm} isVisible={!isNil(courseModified)}>
-          <CourseModal/>
-        </ModalWindow>
+        !isNil(courseModified) &&
+      <ModalWindow closeHandler={closeCourseForm}>
+        <CourseModal/>
+      </ModalWindow>
       }
-      <EditBlock>
-        {/*<AddButton>+</AddButton>*/}
-        {/*<AddIcon height={30} width={30}/>*/}
-      </EditBlock>
-    </Workspace>
+    </WorkspaceV2>
   )
 }
 
