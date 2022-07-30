@@ -193,6 +193,7 @@ export type GCourseCreateInput = {
 };
 
 export type GCourseType = {
+  color: Maybe<Scalars['String']>;
   durationInMonths: Scalars['Int'];
   equipmentPriceWithRobot: Maybe<Scalars['Float']>;
   equipmentPriceWithoutRobot: Maybe<Scalars['Float']>;
@@ -200,10 +201,12 @@ export type GCourseType = {
   name: Scalars['String'];
   price: Scalars['Float'];
   programId: Maybe<Scalars['Int']>;
+  svgIconUrl: Maybe<Scalars['String']>;
 };
 
 export type GCourseTypeFilterInput = {
   and: InputMaybe<Array<GCourseTypeFilterInput>>;
+  color: InputMaybe<GStringOperationFilterInput>;
   durationInMonths: InputMaybe<GComparableInt32OperationFilterInput>;
   equipmentPriceWithRobot: InputMaybe<GComparableNullableOfDoubleOperationFilterInput>;
   equipmentPriceWithoutRobot: InputMaybe<GComparableNullableOfDoubleOperationFilterInput>;
@@ -212,9 +215,11 @@ export type GCourseTypeFilterInput = {
   or: InputMaybe<Array<GCourseTypeFilterInput>>;
   price: InputMaybe<GComparableDoubleOperationFilterInput>;
   programId: InputMaybe<GComparableNullableOfInt32OperationFilterInput>;
+  svgIconUrl: InputMaybe<GStringOperationFilterInput>;
 };
 
 export type GCourseTypeSortInput = {
+  color: InputMaybe<GSortEnumType>;
   durationInMonths: InputMaybe<GSortEnumType>;
   equipmentPriceWithRobot: InputMaybe<GSortEnumType>;
   equipmentPriceWithoutRobot: InputMaybe<GSortEnumType>;
@@ -222,6 +227,7 @@ export type GCourseTypeSortInput = {
   name: InputMaybe<GSortEnumType>;
   price: InputMaybe<GSortEnumType>;
   programId: InputMaybe<GSortEnumType>;
+  svgIconUrl: InputMaybe<GSortEnumType>;
 };
 
 export type GCourseUpdateInput = {
@@ -987,6 +993,18 @@ export type GTeachersWorkTimeTypeSortInput = {
   workTime: InputMaybe<GSortEnumType>;
 };
 
+export type GCourseByIdQueryVariables = Exact<{
+  courseId: Scalars['Int'];
+}>;
+
+
+export type GCourseByIdQuery = { course: { id: number, name: string, price: number, programId: number | null, durationInMonths: number, equipmentPriceWithRobot: number | null, equipmentPriceWithoutRobot: number | null, color: string | null, svgIconUrl: string | null } };
+
+export type GCoursesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GCoursesQuery = { courses: Array<{ id: number, name: string, price: number, programId: number | null, durationInMonths: number, equipmentPriceWithRobot: number | null, equipmentPriceWithoutRobot: number | null, color: string | null, svgIconUrl: string | null }> };
+
 export type GGroupByIdQueryVariables = Exact<{
   groupID: Scalars['Int'];
 }>;
@@ -1029,6 +1047,91 @@ export type GParentsListQueryVariables = Exact<{ [key: string]: never; }>;
 export type GParentsListQuery = { parents: Array<{ id: number, lastName: string | null, firstName: string | null, patronymic: string | null }> };
 
 
+export const CourseByIdDocument = gql`
+    query CourseById($courseId: Int!) {
+  course(id: $courseId) {
+    id
+    name
+    price
+    programId
+    durationInMonths
+    equipmentPriceWithRobot
+    equipmentPriceWithoutRobot
+    color
+    svgIconUrl
+  }
+}
+    `;
+
+/**
+ * __useCourseByIdQuery__
+ *
+ * To run a query within a React component, call `useCourseByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCourseByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCourseByIdQuery({
+ *   variables: {
+ *      courseId: // value for 'courseId'
+ *   },
+ * });
+ */
+export function useCourseByIdQuery(baseOptions: Apollo.QueryHookOptions<GCourseByIdQuery, GCourseByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GCourseByIdQuery, GCourseByIdQueryVariables>(CourseByIdDocument, options);
+      }
+export function useCourseByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GCourseByIdQuery, GCourseByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GCourseByIdQuery, GCourseByIdQueryVariables>(CourseByIdDocument, options);
+        }
+export type CourseByIdQueryHookResult = ReturnType<typeof useCourseByIdQuery>;
+export type CourseByIdLazyQueryHookResult = ReturnType<typeof useCourseByIdLazyQuery>;
+export type CourseByIdQueryResult = Apollo.QueryResult<GCourseByIdQuery, GCourseByIdQueryVariables>;
+export const CoursesDocument = gql`
+    query Courses {
+  courses(order: {name: ASC}) {
+    id
+    name
+    price
+    programId
+    durationInMonths
+    equipmentPriceWithRobot
+    equipmentPriceWithoutRobot
+    color
+    svgIconUrl
+  }
+}
+    `;
+
+/**
+ * __useCoursesQuery__
+ *
+ * To run a query within a React component, call `useCoursesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCoursesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCoursesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCoursesQuery(baseOptions?: Apollo.QueryHookOptions<GCoursesQuery, GCoursesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GCoursesQuery, GCoursesQueryVariables>(CoursesDocument, options);
+      }
+export function useCoursesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GCoursesQuery, GCoursesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GCoursesQuery, GCoursesQueryVariables>(CoursesDocument, options);
+        }
+export type CoursesQueryHookResult = ReturnType<typeof useCoursesQuery>;
+export type CoursesLazyQueryHookResult = ReturnType<typeof useCoursesLazyQuery>;
+export type CoursesQueryResult = Apollo.QueryResult<GCoursesQuery, GCoursesQueryVariables>;
 export const GroupByIdDocument = gql`
     query GroupByID($groupID: Int!) {
   group(id: $groupID) {

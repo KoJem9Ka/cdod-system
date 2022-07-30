@@ -13,12 +13,12 @@ type T = GGroupsQuery['groups'][number]
 
 const GroupsPage: React.FC = () => {
   const { data, loading } = useGroupsQuery()
-  // const {} = useGroupForm()
-
   usePreloader( loading )
 
   const handler = ( id: T['id'] ) => void {}/*void setChosenId( +id )*/
-
+  
+  
+  
   return (
     <Workspace>
       <FlexRow>
