@@ -6,7 +6,7 @@
 /json_data_generator/DB_Types.ts
 
 #Other Repos
-/schemas/cdod_server_scheme
+/schemas/cdod_server_scheme/
 
 # jetbrains ide folders
 /**/.idea/
