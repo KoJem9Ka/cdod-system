@@ -999,6 +999,11 @@ export type GGroupsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GGroupsQuery = { groups: Array<{ id: number, name: string, startDate: string, studentsCount: number, course: { name: string }, teacher: { lastName: string | null, firstName: string | null, patronymic: string | null } }> };
 
+export type GAllStudentsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GAllStudentsQuery = { students: Array<{ id: number, lastName: string | null, firstName: string | null, patronymic: string | null, birthDate: string | null, description: string | null, parent: { firstName: string | null, lastName: string | null, patronymic: string | null, phoneNumber: string | null, secondPhoneNumber: string | null, email: string, secondEmail: string | null, applyingDate: string }, info: Array<{ attempt: number, admissionDate: string, contractState: GContractState, isCoursePaid: boolean, isEquipmentPaid: boolean | null, course: { name: string } }> }> };
+
 export type GParentByIdQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
@@ -1022,11 +1027,6 @@ export type GParentsListQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GParentsListQuery = { parents: Array<{ id: number, lastName: string | null, firstName: string | null, patronymic: string | null }> };
-
-export type GStudentsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GStudentsQuery = { students: Array<{ id: number, lastName: string | null, patronymic: string | null, birthDate: string | null, firstName: string | null, description: string | null, parent: { phoneNumber: string | null, secondPhoneNumber: string | null, applyingDate: string }, info: Array<{ isCoursePaid: boolean, isEquipmentPaid: boolean | null, admissionDate: string, contractState: GContractState, course: { name: string }, group: { name: string } | null }> }> };
 
 
 export const GroupByIdDocument = gql`
@@ -1125,6 +1125,65 @@ export function useGroupsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GGr
 export type GroupsQueryHookResult = ReturnType<typeof useGroupsQuery>;
 export type GroupsLazyQueryHookResult = ReturnType<typeof useGroupsLazyQuery>;
 export type GroupsQueryResult = Apollo.QueryResult<GGroupsQuery, GGroupsQueryVariables>;
+export const AllStudentsDocument = gql`
+    query AllStudents {
+  students {
+    id
+    lastName
+    firstName
+    patronymic
+    birthDate
+    description
+    parent {
+      firstName
+      lastName
+      patronymic
+      phoneNumber
+      secondPhoneNumber
+      email
+      secondEmail
+      applyingDate
+    }
+    info {
+      attempt
+      course {
+        name
+      }
+      admissionDate
+      contractState
+      isCoursePaid
+      isEquipmentPaid
+    }
+  }
+}
+    `;
+
+/**
+ * __useAllStudentsQuery__
+ *
+ * To run a query within a React component, call `useAllStudentsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAllStudentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAllStudentsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAllStudentsQuery(baseOptions?: Apollo.QueryHookOptions<GAllStudentsQuery, GAllStudentsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GAllStudentsQuery, GAllStudentsQueryVariables>(AllStudentsDocument, options);
+      }
+export function useAllStudentsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GAllStudentsQuery, GAllStudentsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GAllStudentsQuery, GAllStudentsQueryVariables>(AllStudentsDocument, options);
+        }
+export type AllStudentsQueryHookResult = ReturnType<typeof useAllStudentsQuery>;
+export type AllStudentsLazyQueryHookResult = ReturnType<typeof useAllStudentsLazyQuery>;
+export type AllStudentsQueryResult = Apollo.QueryResult<GAllStudentsQuery, GAllStudentsQueryVariables>;
 export const ParentByIdDocument = gql`
     query ParentByID($id: Int!) {
   parent(id: $id) {
@@ -1310,59 +1369,3 @@ export function useParentsListLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type ParentsListQueryHookResult = ReturnType<typeof useParentsListQuery>;
 export type ParentsListLazyQueryHookResult = ReturnType<typeof useParentsListLazyQuery>;
 export type ParentsListQueryResult = Apollo.QueryResult<GParentsListQuery, GParentsListQueryVariables>;
-export const StudentsDocument = gql`
-    query Students {
-  students {
-    id
-    lastName
-    patronymic
-    birthDate
-    firstName
-    description
-    parent {
-      phoneNumber
-      secondPhoneNumber
-      applyingDate
-    }
-    info {
-      course {
-        name
-      }
-      group {
-        name
-      }
-      isCoursePaid
-      isEquipmentPaid
-      admissionDate
-      contractState
-    }
-  }
-}
-    `;
-
-/**
- * __useStudentsQuery__
- *
- * To run a query within a React component, call `useStudentsQuery` and pass it any options that fit your needs.
- * When your component renders, `useStudentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useStudentsQuery({
- *   variables: {
- *   },
- * });
- */
-export function useStudentsQuery(baseOptions?: Apollo.QueryHookOptions<GStudentsQuery, GStudentsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GStudentsQuery, GStudentsQueryVariables>(StudentsDocument, options);
-      }
-export function useStudentsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GStudentsQuery, GStudentsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GStudentsQuery, GStudentsQueryVariables>(StudentsDocument, options);
-        }
-export type StudentsQueryHookResult = ReturnType<typeof useStudentsQuery>;
-export type StudentsLazyQueryHookResult = ReturnType<typeof useStudentsLazyQuery>;
-export type StudentsQueryResult = Apollo.QueryResult<GStudentsQuery, GStudentsQueryVariables>;

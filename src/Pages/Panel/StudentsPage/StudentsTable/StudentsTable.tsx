@@ -1,175 +1,163 @@
+import React, {
+  FC,
+  useState
+}                              from 'react'
 import {
-  Column,
-  ColumnChooser,
-  DataGrid,
-  FilterRow,
-  SearchPanel
-}                          from 'devextreme-react/data-grid'
-import React, { memo }     from 'react'
-import classes             from '../../../../styles/TablesStyles.module.scss'
-import { GridBaseOptions } from 'devextreme/ui/data_grid'
-import StudyInfo           from './StudyInfo'
-import moment              from 'moment'
-import Paid                from './Paid'
+  ColumnFiltersState,
+  FilterFnOption,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  PaginationState,
+  SortingState,
+  useReactTable,
+  VisibilityState
+}                              from '@tanstack/react-table'
 import {
-  isEqual,
-  isNil
-}                          from 'lodash'
-import {
-  formatPhone,
-  humanizeDate,
-  strCat
-}                          from '../../../../other/helpers'
-import { GStudentsQuery }  from '../../../../other/generated'
+  columns,
+  T
+}                              from './columns'
+import styles                  from '../../../../styles/tableStyles.module.scss'
+import { isNil }               from 'lodash'
+import Filter                  from './components/Filter'
+import DebouncedInput          from './components/DebounceInput'
+import PaginationControls      from './components/PaginationControls'
+import ColumnVisibilityControl from './components/ColumnVisibilityControl'
+import { useAllStudentsQuery } from '../../../../other/generated'
+import { useStudentForm }      from '../../../../store/studentsForm/hooks'
 
 
 
-type T = GStudentsQuery['students'][number]
+const studentsGlobalFilterFn: FilterFnOption<T> = (
+  { original: { lastName, firstName, patronymic, birthDate, description, info, parent } },
+  columnId,
+  filterValue: string,
+  addMeta
+) => filterValue.toLowerCase().replace( /\s+/g, ' ' ).trim().split( ' ' ).every( value => (
+  [
+    lastName,
+    firstName,
+    patronymic,
+    birthDate,
+    description,
+    parent.lastName,
+    parent.firstName,
+    parent.patronymic,
+    parent.phoneNumber,
+    parent.secondPhoneNumber,
+    parent.email,
+    parent.secondEmail,
+    parent.applyingDate
+  ].some( val => !isNil( val ) && val.toLowerCase().includes( value ) )
+  ||
+  info.some( study => study.course.name.toLowerCase().includes( value ) || study.admissionDate.includes( value ) )
+) )
 
-type Props = {
-  data: T[]
-  onRowSelected: ( id: T['id'] )=> void
-}
+const StudentsTable: FC = () => {
+  const { data: { students: data } = { students: [] } } = useAllStudentsQuery()
+  const [ sorting, setSorting ] = useState<SortingState>( [] )
+  const [ columnFilters, setColumnFilters ] = useState<ColumnFiltersState>( [] )
+  const [ globalFilter, setGlobalFilter ] = useState( '' )
+  const [ pagination, setPagination ] = useState<PaginationState>( { pageSize: 25, pageIndex: 0 } )
+  const [ columnVisibility, setColumnVisibility ] = useState<VisibilityState>( {} )
+  const { selectStudent } = useStudentForm()
 
-const StudentsTable: React.FC<Props> = memo( ( { data, onRowSelected } ) => {
-  const handler: GridBaseOptions<any>['onSelectionChanged'] = ( { selectedRowKeys } ) => void onRowSelected( selectedRowKeys[0] )
+  const table = useReactTable( {
+    data,
+    columns,
+    state: {
+      sorting,
+      columnFilters,
+      globalFilter,
+      pagination,
+      columnVisibility,
+    },
 
-  if ( data.length === 0 )
-    return <h2>Таблица: Нет данных</h2>
+    getCoreRowModel:       getCoreRowModel(),
+    getSortedRowModel:     getSortedRowModel(),
+    getFilteredRowModel:   getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+
+    onSortingChange:          setSorting,
+    onColumnFiltersChange:    setColumnFilters,
+    onGlobalFilterChange:     setGlobalFilter,
+    onPaginationChange:       setPagination,
+    onColumnVisibilityChange: setColumnVisibility,
+
+    globalFilterFn: studentsGlobalFilterFn,
+  } )
 
   return (
-    <DataGrid
-      allowColumnReordering={ true }
-      allowColumnResizing={ true }
-      cellHintEnabled={ true }
-      className={ classes.grid }
-      columnAutoWidth={ true }
-      columnFixing={ { enabled: true, texts: { fix: 'Закрепить', unfix: 'Открепить', leftPosition: 'Слева', rightPosition: 'Спрева' } } }
-
-      columnHidingEnabled={ true }
-
-      columnMinWidth={ 50 }
-      columnResizingMode='widget'
-      dataSource={ data }
-      defaultPaging={ { enabled: true, pageSize: 50 } }
-
-      // focusedRowEnabled={ true }
-      hoverStateEnabled={ true }
-      keyExpr='id'
-      // errorRowEnabled={ true }
-
-      // grouping={ { autoExpandAll: false, expandMode: 'rowClick' } }
-
-      // repaintChangesOnly={ true }
-      scrolling={ { mode: 'virtual', rowRenderingMode: 'virtual', columnRenderingMode: 'virtual' } }
-      // renderAsync={ true }
-
-      selection={ { mode: 'single' } }
-      // showColumnLines={ true }
-      // paging={ { enabled: true } }
-
-      showRowLines={ true }
-      sorting={ { mode: 'multiple', clearText: 'Отмена сортировки', ascendingText: 'По возрастанию', descendingText: 'По убыванию' } }
-      wordWrapEnabled={ true }
-      pager={ {
-        // displayMode:      'compact',
-        visible:          true,
-        allowedPageSizes: [ 50, 0 ],
-        // showInfo:         true,
-        // infoText: '(Всего строк {2})'
-        showNavigationButtons: true,
-        showPageSizeSelector:  true,
-      } }
-
-      // onFocusedRowKeyChange={ onRowSelected }
-      onSelectionChanged={ handler }
-    >
-      <Column
-        caption='id'
-        dataField='id'
-        dataType={ 'number' }
-        visible={ false }
-      />
-      <Column
-        // alignment='right'
-        allowFiltering={ true }
-        allowSearch={ true }
-        allowSorting={ true }
-        calculateCellValue={ ( row: T ) => strCat( row.lastName, row.firstName, row.patronymic ) }
-        caption='ФИО'
-        dataType={ 'string' }
-        name='fio'
-      />
-      <Column
-        alignment='center'
-        calculateCellValue={ ( row: T ) => (!row.birthDate ? '' : strCat( row.birthDate, `(${ humanizeDate( row.birthDate ) })` )) }
-        caption='Возраст'
-        dataField='birthDate'
-        name='birthDate'
-      />
-      <Column
-        alignment='center'
-        calculateCellValue={ ( row: T ) => formatPhone( row.parent.phoneNumber || row.parent.secondPhoneNumber || 'Нет телефона' ) }
-        caption='Контакты'
-        name='contacts'
-      />
-      <Column
-        caption='Заметки'
-        dataField='description'
-        width={ 200 }
-      />
-      <Column
-        caption={ 'Обучение' }
-        cellComponent={ StudyInfo }
-      />
-      <Column
-        allowFiltering={ true }
-        caption='Оплата'
-        cellRender={ Paid }
-        dataType='boolean'
-        falseText={ 'Долг' }
-        trueText={ 'Оплачено' }
-        width={ 150 }
-        calculateCellValue={ ( row: T ) => (row.info.length === 0 ? null : row.info.reduce<boolean>( (
-          previousValue,
-          currentValue
-        ) => previousValue && currentValue.isCoursePaid && (isNil( currentValue.isEquipmentPaid ) || currentValue.isEquipmentPaid), true )) }
-      />
-      <Column
-        alignment='center'
-        calculateCellValue={ ( row: T ) => row.parent.applyingDate }
-        caption='Дата заявки'
-        customizeText={ arg => `${ arg.valueText } (${ moment( arg.valueText ).fromNow( true ) })` }
-        dataField='signDate'
-        dataType='date'
-        sortOrder='desc'
-        width={ 200 }
-      />
-      {/*<Column*/ }
-      {/*  alignment='center'*/ }
-      {/*  caption='Статус'*/ }
-      {/*  dataField='contract_status'*/ }
-      {/*/>*/ }
-
-      <ColumnChooser
-        allowSearch={ true }
-        emptyPanelText={ 'Перетащите сюда заголовок столбца, чтобы скрыть его' }
-        enabled={ true }
-        height={ 550 }
-        title={ 'Скрытые колонки:' }
-      />
-      {/*<GroupForm*/ }
-      {/*  emptyPanelText='Перетащите сюда заголовок столбца, чтобы сгруппировать по этому столбцу'*/ }
-      {/*  visible={ true }*/ }
-      {/*/>*/ }
-      <FilterRow visible={ true }/>
-      <SearchPanel
-        placeholder={ 'Поиск' }
-        visible={ true }
-      />
-    </DataGrid>
+    <div className={ styles.tableMainContainer }>
+      <div className={ styles.utils }>
+        <p>Всего: { table.getFilteredRowModel().rows.length } / { data.length }</p>
+        <DebouncedInput
+          placeholder={ 'Поиск' }
+          value={ globalFilter }
+          onChange={ value => setGlobalFilter( String( value ) ) }
+        />
+        <PaginationControls table={ table }/>
+        <ColumnVisibilityControl table={ table }/>
+      </div>
+      <div className={ styles.tableSizableContainer }>
+        <table>
+          <thead>
+            { table.getHeaderGroups().map( headerGroup => (
+              <tr key={ headerGroup.id }>
+                { headerGroup.headers.map( header => (
+                  <th
+                    key={ header.id }
+                    style={ header.column.getCanSort() ? { cursor: 'pointer', userSelect: 'none' } : undefined }
+                    onClick={ header.column.getToggleSortingHandler() }
+                  >
+                    { flexRender( header.column.columnDef.header, header.getContext() ) }
+                    { {
+                      asc:  ' 🔼',
+                      desc: ' 🔽',
+                    }[header.column.getIsSorted() as string] ?? null }
+                    { header.column.getCanFilter() ? (
+                      <div>
+                        <Filter column={ header.column } table={ table }/>
+                      </div>
+                    ) : null }
+                  </th>
+                ) ) }
+              </tr>
+            ) ) }
+          </thead>
+          <tbody>
+            { table.getRowModel().rows.map( row => (
+              <tr
+                key={ row.id }
+                onClick={ () => selectStudent( row.original.id ) }
+              >
+                { row.getVisibleCells().map( cell => (
+                  <td key={ cell.id }>
+                    { flexRender( cell.column.columnDef.cell, cell.getContext() ) }
+                  </td>
+                ) ) }
+              </tr>
+            ) ) }
+          </tbody>
+          {/*<tfoot>*/ }
+          {/*  { table.getFooterGroups().map( footerGroup => (*/ }
+          {/*    <tr key={ footerGroup.id }>*/ }
+          {/*      { footerGroup.headers.map( header => (*/ }
+          {/*        <th key={ header.id }>*/ }
+          {/*          { flexRender( header.column.columnDef.footer, header.getContext() ) }*/ }
+          {/*        </th>*/ }
+          {/*      ) ) }*/ }
+          {/*    </tr>*/ }
+          {/*  ) ) }*/ }
+          {/*</tfoot>*/ }
+        </table>
+      </div>
+    </div>
   )
-}, ( prevProps, nextProps ) => isEqual( prevProps.data, nextProps.data ) )
+}
 
+// StudentsTable.whyDidYouRender = true
 
 export default StudentsTable

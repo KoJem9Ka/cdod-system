@@ -1,4 +1,4 @@
-import 'devextreme/dist/css/dx.material.blue.light.compact.css'
+// import 'devextreme/dist/css/dx.material.blue.light.compact.css'
 import 'react-toastify/dist/ReactToastify.css'
 import './styles/index.scss'
 import 'moment/locale/ru'

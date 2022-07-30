@@ -1,28 +1,33 @@
-query Students {
+query AllStudents {
   students {
     id
     lastName
+    firstName
     patronymic
     birthDate
-    firstName
     description
     parent {
+      firstName
+      lastName
+      patronymic
+
       phoneNumber
       secondPhoneNumber
+
+      email
+      secondEmail
+
       applyingDate
     }
     info {
+      attempt
       course {
         name
       }
-      group {
-        name
-      }
-      isCoursePaid
-      isEquipmentPaid
       admissionDate
       contractState
+      isCoursePaid
+      isEquipmentPaid
     }
   }
 }
-

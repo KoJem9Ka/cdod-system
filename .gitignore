@@ -9,8 +9,7 @@
 /schemas/cdod_server_scheme
 
 # jetbrains ide folders
-/.idea
-/**/.idea
+/**/.idea/
 
 # dependencies
 /**/node_modules

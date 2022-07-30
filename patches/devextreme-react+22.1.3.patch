@@ -1,5 +1,5 @@
 diff --git a/node_modules/devextreme-react/data-grid.d.ts b/node_modules/devextreme-react/data-grid.d.ts
-index 2fc3e8a..c05c7fd 100644
+index 2fc3e8a..f069489 100644
 --- a/node_modules/devextreme-react/data-grid.d.ts
 +++ b/node_modules/devextreme-react/data-grid.d.ts
 @@ -12,699 +12,697 @@
@@ -714,7 +714,7 @@ index 2fc3e8a..c05c7fd 100644
 +  sortingMethod?: any;
 +  sortOrder?: any;
 +  trueText?: any;
-+  type?: any;
++  type?: 'string' | 'number' | 'date' | 'boolean' | 'object' | 'datetime';
 +  validationRules?: any;
 +  visible?: any;
 +  visibleIndex?: any;

@@ -2,7 +2,6 @@ import React            from 'react'
 import Workspace        from '../../../HOC/Workspace/Workspace'
 import { FlexRow }      from '../../../components/styledComponents'
 import { usePreloader } from '../../../components/Preloader/Preloader'
-import GroupsTable      from './GroupTable/GroupsTable'
 import {
   GGroupsQuery,
   useGroupsQuery
@@ -23,7 +22,7 @@ const GroupsPage: React.FC = () => {
   return (
     <Workspace>
       <FlexRow>
-        <GroupsTable data={ data?.groups || [] } onRowSelected={ handler }/>
+        {/*<GroupsTable data={ data?.groups || [] } onRowSelected={ handler }/>*/ }
         {/*{ !chosenId ? <></> : <GroupForm id={ chosenId }/> }*/ }
       </FlexRow>
     </Workspace>

@@ -15,6 +15,8 @@ const onCycle = () => {
 }
 export const getJSON = ( obj: object ) => JSON.stringify( obj, onCycle() )
 
+export const formatDate = ( date: string | null ) => date && moment( date ).format( 'YYYY-MM-DD' )
+
 export const humanizeDate = ( date: string | null ) => duration( moment().diff( date, 'years', false ), 'years' ).humanize()
 
 export const formatPhone = ( phone: string ): string => {
@@ -27,3 +29,5 @@ export const formatPhone = ( phone: string ): string => {
 }
 
 export const strCat = ( ...strs: (string | null | undefined)[] ) => compact( strs ).join( ' ' )
+
+export const strsNonFalsy = ( ...strings: (string | undefined)[] ): boolean => strings.every( val => val !== '' && val !== undefined )

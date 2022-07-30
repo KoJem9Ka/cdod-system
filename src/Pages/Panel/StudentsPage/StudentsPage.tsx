@@ -1,17 +1,17 @@
-import React, { useMemo }   from 'react'
-import Workspace            from '../../../HOC/Workspace/Workspace'
-import styles               from './StudentsPage.module.scss'
-import StudentsTable        from './StudentsTable/StudentsTable'
-import { usePreloader }     from '../../../components/Preloader/Preloader'
-import { useStudentForm }   from '../../../store/studentsForm/hooks'
-import StudentForm          from './StudentForm/StudentForm'
-import { FlexRow }          from '../../../components/styledComponents'
-import { useStudentsQuery } from '../../../other/generated'
+import React, { useMemo }      from 'react'
+import Workspace               from '../../../HOC/Workspace/Workspace'
+import styles                  from './StudentsPage.module.scss'
+import { usePreloader }        from '../../../components/Preloader/Preloader'
+import { useStudentForm }      from '../../../store/studentsForm/hooks'
+import StudentForm             from './StudentForm/StudentForm'
+import { FlexRow }             from '../../../components/styledComponents'
+import StudentsTable           from './StudentsTable/StudentsTable'
+import { useAllStudentsQuery } from '../../../other/generated'
 
 
 
 const StudentsPage: React.FC = () => {
-  const { loading, error: error1, data } = useStudentsQuery()
+  const { loading, error: error1, data } = useAllStudentsQuery()
   const students = useMemo( () => data?.students || [], [ loading ] )
 
   const { selectStudent, error: error2, studentLoading } = useStudentForm()
@@ -25,7 +25,8 @@ const StudentsPage: React.FC = () => {
     <>
       <Workspace className={ styles.StudentsPage }>
         <FlexRow>
-          <StudentsTable data={ students } onRowSelected={ selectStudent }/>
+          {/*<StudentsTable data={ students } onRowSelected={ selectStudent }/>*/ }
+          <StudentsTable/>
           <StudentForm/>
         </FlexRow>
         <h2>
