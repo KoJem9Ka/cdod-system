@@ -5,10 +5,10 @@ import {
   useSelector
 }                                from 'react-redux'
 import { insteadOfContextSlice } from './InsteadOfContext/reducer'
-import logger                    from 'redux-logger'
+// import logger                    from 'redux-logger'
 import { studentFormSlice }      from './studentForm/reducer'
-import { courseFormSlice } from './courseForm/reducer'
-import {groupFormSLice} from './groupForm/reducer'
+import { courseFormSlice }       from './courseForm/reducer'
+import { groupFormSLice }        from './groupForm/reducer'
 
 
 
@@ -16,8 +16,8 @@ export const store = configureStore( {
   reducer:    {
     insteadOfContext: insteadOfContextSlice.reducer,
     studentForm:      studentFormSlice.reducer,
-    courseForm: courseFormSlice.reducer,
-    groupForm: groupFormSLice.reducer,
+    courseForm:       courseFormSlice.reducer,
+    groupForm:        groupFormSLice.reducer,
   },
   devTools:   true,
   middleware: getDefaultMiddleware => getDefaultMiddleware( {
