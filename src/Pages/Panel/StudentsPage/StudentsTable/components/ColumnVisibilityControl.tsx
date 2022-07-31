@@ -18,7 +18,7 @@ const ColumnVisibilityControl: FC<Props> = ( { table } ) => (
             <input
               checked={ column.getIsVisible() }
               type='checkbox'
-              onClick={ column.getToggleVisibilityHandler() }
+              onChange={ column.getToggleVisibilityHandler() }
             />
             <span>{ header }</span>
           </CheckBoxLabel>

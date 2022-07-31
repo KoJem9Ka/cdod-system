@@ -1,16 +1,17 @@
 import {
+  TAppState,
   useAppDispatch,
-  useAppSelector
+  useAppSelector,
 }                           from '../store'
 import {
   GStudentQuery,
-  GStudentType
+  GStudentType,
 }                           from '../../other/generated'
 import { useCallback }      from 'react'
 import { thunkLoadStudent } from './thunks'
 import {
   actionChangeStudent,
-  actionToggleEdit
+  actionToggleEdit,
 }                           from './reducer'
 
 
@@ -18,9 +19,11 @@ import {
 type T = GStudentQuery['student']
 
 
+const selectStudentForm = ( state1: TAppState ) => state1.studentForm
+
 export const useStudentForm = () => {
   const dispatch = useAppDispatch()
-  const state = useAppSelector( state1 => state1.studentForm )
+  const state = useAppSelector( selectStudentForm )
 
   const selectStudent = useCallback( ( id: GStudentType['id'] ) => void dispatch( thunkLoadStudent( id ) ), [] )
   const toggleEdit = useCallback( ( value?: boolean ) => void dispatch( actionToggleEdit( value ) ), [] )

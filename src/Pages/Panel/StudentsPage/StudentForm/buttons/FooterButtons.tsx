@@ -1,5 +1,5 @@
 import React, { FC }      from 'react'
-import { useStudentForm } from '../../../../../store/studentsForm/hooks'
+import { useStudentForm } from '../../../../../store/studentForm/hooks'
 
 
 

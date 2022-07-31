@@ -4,7 +4,6 @@ import React, {
 }                              from 'react'
 import {
   ColumnFiltersState,
-  FilterFnOption,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -17,43 +16,17 @@ import {
 }                              from '@tanstack/react-table'
 import {
   columns,
-  T
-}                              from './columns'
+  studentsGlobalFilterFn
+}                              from './config'
 import styles                  from '../../../../styles/tableStyles.module.scss'
-import { isNil }               from 'lodash'
 import Filter                  from './components/Filter'
 import DebouncedInput          from './components/DebounceInput'
 import PaginationControls      from './components/PaginationControls'
 import ColumnVisibilityControl from './components/ColumnVisibilityControl'
 import { useAllStudentsQuery } from '../../../../other/generated'
-import { useStudentForm }      from '../../../../store/studentsForm/hooks'
+import { useStudentForm }      from '../../../../store/studentForm/hooks'
 
 
-
-const studentsGlobalFilterFn: FilterFnOption<T> = (
-  { original: { lastName, firstName, patronymic, birthDate, description, info, parent } },
-  columnId,
-  filterValue: string,
-  addMeta
-) => filterValue.toLowerCase().replace( /\s+/g, ' ' ).trim().split( ' ' ).every( value => (
-  [
-    lastName,
-    firstName,
-    patronymic,
-    birthDate,
-    description,
-    parent.lastName,
-    parent.firstName,
-    parent.patronymic,
-    parent.phoneNumber,
-    parent.secondPhoneNumber,
-    parent.email,
-    parent.secondEmail,
-    parent.applyingDate
-  ].some( val => !isNil( val ) && val.toLowerCase().includes( value ) )
-  ||
-  info.some( study => study.course.name.toLowerCase().includes( value ) || study.admissionDate.includes( value ) )
-) )
 
 const StudentsTable: FC = () => {
   const { data: { students: data } = { students: [] } } = useAllStudentsQuery()
@@ -141,23 +114,12 @@ const StudentsTable: FC = () => {
               </tr>
             ) ) }
           </tbody>
-          {/*<tfoot>*/ }
-          {/*  { table.getFooterGroups().map( footerGroup => (*/ }
-          {/*    <tr key={ footerGroup.id }>*/ }
-          {/*      { footerGroup.headers.map( header => (*/ }
-          {/*        <th key={ header.id }>*/ }
-          {/*          { flexRender( header.column.columnDef.footer, header.getContext() ) }*/ }
-          {/*        </th>*/ }
-          {/*      ) ) }*/ }
-          {/*    </tr>*/ }
-          {/*  ) ) }*/ }
-          {/*</tfoot>*/ }
         </table>
       </div>
     </div>
   )
 }
 
-// StudentsTable.whyDidYouRender = true
+StudentsTable.whyDidYouRender = true
 
 export default StudentsTable

@@ -4,17 +4,4 @@ query StudentForm {
     name
     district
   }
-  courses {
-    id
-    name
-  }
-}
-
-query ParentsList {
-  parents {
-    id
-    lastName
-    firstName
-    patronymic
-  }
 }

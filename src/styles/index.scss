@@ -1,9 +1,7 @@
-@import "reset";
-@import "colors";
+@import 'reset';
+@import 'colors';
 //@import '../assets/fonts/icomoon/icomoon_font';
 @import '../assets/fonts/rubik/rubik_font';
-//@import 'tables';
-//@import 'tableDiv';
 
 :root {
   //font-size : 10px;
@@ -18,5 +16,5 @@
 }
 
 code {
-  font-family : "JetBrains Mono", monospace;
+  font-family : 'JetBrains Mono', monospace;
 }

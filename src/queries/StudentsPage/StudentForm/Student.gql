@@ -15,10 +15,6 @@ query Student($studentID: Int!) {
       id
     }
     info {
-      admissionDate
-      contractState
-
-      courseId
       course {
         id
         name
@@ -27,6 +23,10 @@ query Student($studentID: Int!) {
         id
         name
       }
+      attempt
+
+      admissionDate
+      contractState
 
       isCoursePaid
       isEquipmentPaid

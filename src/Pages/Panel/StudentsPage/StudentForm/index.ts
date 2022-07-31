@@ -1,4 +1,4 @@
-export { FooterButtons }    from './buttons/FooterButtons'
-export { BirthDayField }    from './fields/BirthDayField'
-export { SchoolField }      from './fields/SchoolField'
-export { DescriptionField } from './fields/DescriptionField'
+export { FooterButtons } from './buttons/FooterButtons'
+
+export { default as ParentsFields } from './fields/ParentsFields'
+export { default as StudiesFields } from './fields/StudiesFields'

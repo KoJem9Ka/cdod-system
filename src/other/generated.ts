@@ -1020,7 +1020,7 @@ export type GGroupsQuery = { groups: Array<{ id: number, name: string, startDate
 export type GAllStudentsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GAllStudentsQuery = { students: Array<{ id: number, lastName: string | null, firstName: string | null, patronymic: string | null, birthDate: string | null, description: string | null, parent: { firstName: string | null, lastName: string | null, patronymic: string | null, phoneNumber: string | null, secondPhoneNumber: string | null, email: string, secondEmail: string | null, applyingDate: string }, info: Array<{ attempt: number, admissionDate: string, contractState: GContractState, isCoursePaid: boolean, isEquipmentPaid: boolean | null, course: { name: string } }> }> };
+export type GAllStudentsQuery = { students: Array<{ id: number, lastName: string | null, firstName: string | null, patronymic: string | null, birthDate: string | null, description: string | null, parent: { id: number, firstName: string | null, lastName: string | null, patronymic: string | null, phoneNumber: string | null, secondPhoneNumber: string | null, email: string, secondEmail: string | null, applyingDate: string }, info: Array<{ attempt: number, admissionDate: string, contractState: GContractState, isCoursePaid: boolean, isEquipmentPaid: boolean | null, course: { name: string } }> }> };
 
 export type GParentByIdQueryVariables = Exact<{
   id: Scalars['Int'];
@@ -1029,22 +1029,22 @@ export type GParentByIdQueryVariables = Exact<{
 
 export type GParentByIdQuery = { parent: { id: number, lastName: string | null, firstName: string | null, patronymic: string | null, phoneNumber: string | null, secondPhoneNumber: string | null, type: GRelationType | null, email: string, secondEmail: string | null, applyingDate: string } };
 
+export type GParentsListQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GParentsListQuery = { parents: Array<{ id: number, lastName: string | null, firstName: string | null, patronymic: string | null }> };
+
 export type GStudentQueryVariables = Exact<{
   studentID: Scalars['Int'];
 }>;
 
 
-export type GStudentQuery = { student: { id: number, lastName: string | null, firstName: string | null, patronymic: string | null, birthDate: string | null, description: string | null, school: { id: number, name: string, district: GDistrict } | null, parent: { id: number }, info: Array<{ admissionDate: string, contractState: GContractState, courseId: number, isCoursePaid: boolean, isEquipmentPaid: boolean | null, isGetRobot: boolean | null, course: { id: number, name: string }, group: { id: number, name: string } | null }> } };
+export type GStudentQuery = { student: { id: number, lastName: string | null, firstName: string | null, patronymic: string | null, birthDate: string | null, description: string | null, school: { id: number, name: string, district: GDistrict } | null, parent: { id: number }, info: Array<{ attempt: number, admissionDate: string, contractState: GContractState, isCoursePaid: boolean, isEquipmentPaid: boolean | null, isGetRobot: boolean | null, course: { id: number, name: string }, group: { id: number, name: string } | null }> } };
 
 export type GStudentFormQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GStudentFormQuery = { schools: Array<{ id: number, name: string, district: GDistrict }>, courses: Array<{ id: number, name: string }> };
-
-export type GParentsListQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GParentsListQuery = { parents: Array<{ id: number, lastName: string | null, firstName: string | null, patronymic: string | null }> };
+export type GStudentFormQuery = { schools: Array<{ id: number, name: string, district: GDistrict }> };
 
 
 export const CourseByIdDocument = gql`
@@ -1238,6 +1238,7 @@ export const AllStudentsDocument = gql`
     birthDate
     description
     parent {
+      id
       firstName
       lastName
       patronymic
@@ -1331,6 +1332,43 @@ export function useParentByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type ParentByIdQueryHookResult = ReturnType<typeof useParentByIdQuery>;
 export type ParentByIdLazyQueryHookResult = ReturnType<typeof useParentByIdLazyQuery>;
 export type ParentByIdQueryResult = Apollo.QueryResult<GParentByIdQuery, GParentByIdQueryVariables>;
+export const ParentsListDocument = gql`
+    query ParentsList {
+  parents {
+    id
+    lastName
+    firstName
+    patronymic
+  }
+}
+    `;
+
+/**
+ * __useParentsListQuery__
+ *
+ * To run a query within a React component, call `useParentsListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useParentsListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useParentsListQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useParentsListQuery(baseOptions?: Apollo.QueryHookOptions<GParentsListQuery, GParentsListQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GParentsListQuery, GParentsListQueryVariables>(ParentsListDocument, options);
+      }
+export function useParentsListLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GParentsListQuery, GParentsListQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GParentsListQuery, GParentsListQueryVariables>(ParentsListDocument, options);
+        }
+export type ParentsListQueryHookResult = ReturnType<typeof useParentsListQuery>;
+export type ParentsListLazyQueryHookResult = ReturnType<typeof useParentsListLazyQuery>;
+export type ParentsListQueryResult = Apollo.QueryResult<GParentsListQuery, GParentsListQueryVariables>;
 export const StudentDocument = gql`
     query Student($studentID: Int!) {
   student(id: $studentID) {
@@ -1349,9 +1387,6 @@ export const StudentDocument = gql`
       id
     }
     info {
-      admissionDate
-      contractState
-      courseId
       course {
         id
         name
@@ -1360,6 +1395,9 @@ export const StudentDocument = gql`
         id
         name
       }
+      attempt
+      admissionDate
+      contractState
       isCoursePaid
       isEquipmentPaid
       isGetRobot
@@ -1402,10 +1440,6 @@ export const StudentFormDocument = gql`
     name
     district
   }
-  courses {
-    id
-    name
-  }
 }
     `;
 
@@ -1435,40 +1469,3 @@ export function useStudentFormLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type StudentFormQueryHookResult = ReturnType<typeof useStudentFormQuery>;
 export type StudentFormLazyQueryHookResult = ReturnType<typeof useStudentFormLazyQuery>;
 export type StudentFormQueryResult = Apollo.QueryResult<GStudentFormQuery, GStudentFormQueryVariables>;
-export const ParentsListDocument = gql`
-    query ParentsList {
-  parents {
-    id
-    lastName
-    firstName
-    patronymic
-  }
-}
-    `;
-
-/**
- * __useParentsListQuery__
- *
- * To run a query within a React component, call `useParentsListQuery` and pass it any options that fit your needs.
- * When your component renders, `useParentsListQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useParentsListQuery({
- *   variables: {
- *   },
- * });
- */
-export function useParentsListQuery(baseOptions?: Apollo.QueryHookOptions<GParentsListQuery, GParentsListQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GParentsListQuery, GParentsListQueryVariables>(ParentsListDocument, options);
-      }
-export function useParentsListLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GParentsListQuery, GParentsListQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GParentsListQuery, GParentsListQueryVariables>(ParentsListDocument, options);
-        }
-export type ParentsListQueryHookResult = ReturnType<typeof useParentsListQuery>;
-export type ParentsListLazyQueryHookResult = ReturnType<typeof useParentsListLazyQuery>;
-export type ParentsListQueryResult = Apollo.QueryResult<GParentsListQuery, GParentsListQueryVariables>;

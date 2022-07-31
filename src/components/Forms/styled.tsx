@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components'
+import { isNil }       from 'lodash'
 
 
 
@@ -6,13 +7,14 @@ const SharedPaddings = css`
   padding : 20px;
 `
 export const Form = styled.div`
+  overflow       : hidden;
   background     : var(--COLOR_blue);
   flex           : 0 0 385px;
 
   display        : flex;
   flex-direction : column;
 
-  align-self     : flex-start;
+  //align-self     : flex-start;
   max-height     : 100%;
   color          : white;
   border-radius  : 1.25rem;
@@ -21,23 +23,39 @@ export const Form = styled.div`
 `
 export const FormHead = styled.div`
   ${ SharedPaddings };
-  width          : 100%;
-  display        : flex;
-  flex-direction : column;
-  align-items    : center;
+  width                 : 100%;
+  display               : grid;
+  grid-template-columns : auto auto;
+  //flex-direction        : column;
+  align-items           : center;
+  box-shadow            : 0 0 1rem 1rem white;
+  z-index               : 1;
+  text-align            : center;
+  grid-gap              : .5rem;
 
-  & > * + * {
-    margin-top : 20px;
+  & > svg {
+    grid-row : 1 / span 2;
+  }
+
+  & > *:nth-child(2) {
+    align-self : end;
+  }
+
+  & > *:nth-child(3) {
+    align-self : start;
   }
 `
 export const FormBody = styled.div`
   ${ SharedPaddings };
+  overflow-y : auto;
   max-height : 100%;
   color      : black;
   background : white;
+  flex-grow  : 1;
 `
 export const FormFooter = styled.div`
   ${ SharedPaddings };
+  box-shadow : 0 0 1rem 1rem white;
 `
 export const Caption = styled.p`
   color     : var(--COLOR_gray-pale-punctuated);
@@ -64,8 +82,17 @@ export const Title = styled.p`
 export const SubTitle = styled.p`
   ${ sharedFont };
 `
-export const TextLine = styled.p`
+export const TextLine = styled.p<{ isValid?: boolean }>`
+  min-width     : 100%;
+  resize        : block;
+  max-width     : 100%;
   background    : var(--COLOR_gray-background);
   border-radius : 0.625rem /* 10/16 */;
-  padding       : 0.375rem /* 6/16 */ 0.625rem /* 10/16 */;
+  padding       : 6px 10px;
+
+  ${ ( { isValid } ) => !(isNil( isValid ) || isValid) && css`
+    padding : 4px 8px;
+    border  : 2px solid red;
+  `
+}
 `

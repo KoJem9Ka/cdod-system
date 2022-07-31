@@ -1,0 +1,8 @@
+query ParentsList {
+  parents {
+    id
+    lastName
+    firstName
+    patronymic
+  }
+}

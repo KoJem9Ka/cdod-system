@@ -23,6 +23,7 @@ export const studentFormSlice = createSlice( {
   initialState,
   reducers:      {
     actionToggleEdit:    ( state, action: PayloadAction<boolean | undefined> ) => {
+      state.studentModified = state.studentOriginal
       state.isEdit = action.payload !== undefined ? action.payload : !state.isEdit
     },
     actionChangeStudent: ( state, action: PayloadAction<Partial<Omit<T, 'id'>>> ) => {
@@ -36,6 +37,7 @@ export const studentFormSlice = createSlice( {
         state.error = null
         state.studentOriginal = null
         state.studentModified = null
+        state.isEdit = false
       } )
       .addCase( thunkLoadStudent.rejected, ( state, action ) => {
         state.studentLoading = false

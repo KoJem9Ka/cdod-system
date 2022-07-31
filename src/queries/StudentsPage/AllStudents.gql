@@ -7,6 +7,8 @@ query AllStudents {
     birthDate
     description
     parent {
+      id
+      
       firstName
       lastName
       patronymic

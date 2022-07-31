@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.6.9",
+    "@formkit/auto-animate": "^1.0.0-beta.1",
     "@reduxjs/toolkit": "^1.8.3",
     "@tanstack/react-table": "^8.5.2",
     "@testing-library/jest-dom": "^5.16.4",
@@ -36,9 +37,7 @@
     "generateWatch": "graphql-codegen -w",
     "generate": "graphql-codegen",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "postinstall": "patch-package",
-    "create-patch": "patch-package devextreme-react"
+    "test": "react-scripts test"
   },
   "eslintConfig": {
     "extends": [
@@ -71,6 +70,7 @@
     "@types/styled-components": "^5.1.25",
     "@typescript-eslint/eslint-plugin": "^5.30.7",
     "@typescript-eslint/parser": "^5.30.7",
+    "@welldone-software/why-did-you-render": "^7.0.1",
     "concurrently": "^7.3.0",
     "eslint": "^8.20.0",
     "eslint-plugin-react": "^7.30.1",
