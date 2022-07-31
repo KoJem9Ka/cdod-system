@@ -12,7 +12,7 @@ import {
 
 type AGroup = GGroupByIdQuery['group']
 
-export const thunkLoadGroupByID = createAsyncThunk<AGroup, AGroup['id'], TAppThunkConfig>( 'groupForm/load',
+export const thunkLoadGroupByID = createAsyncThunk<GGroupByIdQuery, AGroup['id'], TAppThunkConfig>( 'groupForm/load',
   async ( groupID, { rejectWithValue } ) => {
     let queryResult: ApolloQueryResult<GGroupByIdQuery>
     try {
@@ -21,7 +21,6 @@ export const thunkLoadGroupByID = createAsyncThunk<AGroup, AGroup['id'], TAppThu
     catch ( e ) {
       return rejectWithValue( `Произошла ошибка при загрузке группы с id = ${ groupID }, error: ${ e }` )
     }
-    return queryResult.data.group
+    return queryResult.data
   }
 )
-export {}
