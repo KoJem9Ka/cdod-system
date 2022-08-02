@@ -1,6 +1,6 @@
 import React            from 'react'
 import Workspace        from '../../../HOC/Workspace/Workspace'
-import { FlexRow }      from '../../../components/styledComponents'
+import { FlexRow }      from '../../../components/UIKit/otherStyled'
 import { usePreloader } from '../../../components/Preloader/Preloader'
 import {
   GGroupsQuery,
@@ -16,9 +16,8 @@ const GroupsPage: React.FC = () => {
   usePreloader( loading )
 
   const handler = ( id: T['id'] ) => void {}/*void setChosenId( +id )*/
-  
-  
-  
+
+
   return (
     <Workspace>
       <FlexRow>

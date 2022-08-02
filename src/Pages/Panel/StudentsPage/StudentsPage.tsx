@@ -2,7 +2,7 @@ import React                   from 'react'
 import Workspace               from '../../../HOC/Workspace/Workspace'
 import styles                  from './StudentsPage.module.scss'
 import StudentForm             from './StudentForm/StudentForm'
-import { FlexRow }             from '../../../components/styledComponents'
+import { FlexRow }             from '../../../components/UIKit/otherStyled'
 import StudentsTable           from './StudentsTable/StudentsTable'
 import { useAllStudentsQuery } from '../../../other/generated'
 

@@ -46,7 +46,7 @@ const Study = styled.div<{ contractState: GContractState }>`
   color                 : ${ p => (hexIsDark( contractStateParse( p.contractState, 'color' ) ) ? 'white' : 'black') };
   border-radius         : 5px;
   grid-gap              : 5px;
-  padding               : 2px 5px;
+  padding               : 4px 8px;
 
 
   p {

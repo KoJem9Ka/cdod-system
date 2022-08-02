@@ -16,15 +16,19 @@ type Props = {
 const DebouncedInput: FC<Props> = ( { value: initialValue, onChange, debounce = 500, ...props } ) => {
   const [ value, setValue ] = useState( initialValue )
 
-  // useEffect( () => void setValue( initialValue ), [ initialValue ] )
-
+  useEffect( () => void setValue( initialValue ), [ initialValue ] )
   useEffect( () => {
     const timeout = setTimeout( () => onChange( value ), debounce )
     return () => clearTimeout( timeout )
   }, [ value, debounce, onChange ] )
 
   return (
-    <input { ...props } value={ value } onChange={ e => setValue( e.target.value ) }/>
+    <input
+      { ...props }
+      type='text'
+      value={ value }
+      onChange={ e => setValue( e.target.value ) }
+    />
   )
 }
 

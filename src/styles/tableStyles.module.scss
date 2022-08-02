@@ -5,20 +5,22 @@
   flex-grow      : 1;
   height         : 100%;
   border-radius  : 1rem;
-  //background : var(--серая-линия);
 }
 
 .utils {
   display     : flex;
-  align-items : stretch;
-  padding     : 1rem;
+  align-items : center;
+  padding     : .5rem 1rem;
   color       : var(--COLOR_white);
   background  : var(--COLOR_dark);
+  gap         : 10px;
 
-  & > * {
-    position    : relative;
-    margin-left : 2rem;
-  }
+  //.search {
+  //  //padding       : 0.2rem .8rem;
+  //  border-radius : 10px;
+  //  background    : var(--COLOR_gray-background);
+  //  color         : var(--COLOR_dark-gray-text);
+  //}
 }
 
 .tableSizableContainer {
@@ -44,7 +46,7 @@
     background : var(--COLOR_dark);
 
     th {
-
+      padding : .5rem 1rem;
     }
   }
 
@@ -57,7 +59,12 @@
         background : var(--COLOR_gray-background);
       }
 
-      &:hover {
+      &:hover:not(.selected) {
+        background : var(--COLOR_gray-line);
+        filter     : brightness(1.1) contrast(1.1);
+      }
+
+      &.selected {
         color      : white;
         background : var(--COLOR_blue);
       }

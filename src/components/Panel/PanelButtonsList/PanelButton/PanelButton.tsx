@@ -12,7 +12,7 @@ import {
   motion,
   MotionProps
 }                          from 'framer-motion'
-import { NavLinkMotioned } from '../../../Modified/Motioned'
+import { NavLinkMotioned } from '../../../UnstyledSkeletons/motionedComponents'
 // import { AnimationProps }  from 'framer-motion/types/motion/types'
 
 

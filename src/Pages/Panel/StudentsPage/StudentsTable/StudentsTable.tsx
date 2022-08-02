@@ -20,11 +20,13 @@ import {
 }                              from './config'
 import styles                  from '../../../../styles/tableStyles.module.scss'
 import Filter                  from './components/Filter'
-import DebouncedInput          from './components/DebounceInput'
-import PaginationControls      from './components/PaginationControls'
-import ColumnVisibilityControl from './components/ColumnVisibilityControl'
 import { useAllStudentsQuery } from '../../../../other/generated'
 import { useStudentForm }      from '../../../../store/studentForm/hooks'
+import TableColumnHider        from '../../../../components/UIKit/Tables/TableColumnHider'
+import TablePageSizer          from '../../../../components/UIKit/Tables/TablePageSizer'
+import PaginationControls      from './components/PaginationControls'
+import { TableControl }        from '../../../../components/UIKit/Tables/subcomponents/TableControl'
+import { TableHeadSeparator }  from '../../../../components/UIKit/Tables/subcomponents/TableHeadSeparator'
 
 
 
@@ -35,7 +37,7 @@ const StudentsTable: FC = () => {
   const [ globalFilter, setGlobalFilter ] = useState( '' )
   const [ pagination, setPagination ] = useState<PaginationState>( { pageSize: 25, pageIndex: 0 } )
   const [ columnVisibility, setColumnVisibility ] = useState<VisibilityState>( {} )
-  const { selectStudent } = useStudentForm()
+  const { selectStudent, studentOriginal } = useStudentForm()
 
   const table = useReactTable( {
     data,
@@ -65,14 +67,20 @@ const StudentsTable: FC = () => {
   return (
     <div className={ styles.tableMainContainer }>
       <div className={ styles.utils }>
-        <p>Всего: { table.getFilteredRowModel().rows.length } / { data.length }</p>
-        <DebouncedInput
-          placeholder={ 'Поиск' }
+        <p>Показано: <b>{ table.getFilteredRowModel().rows.length }</b> / <b>{ data.length }</b></p>
+        <TableHeadSeparator/>
+        <TableControl
+          placeholder='🔍 Поиск...'
+          style={ { flexGrow: 1, width: '10ch', textAlign: 'left' } }
           value={ globalFilter }
+          variant='textInput'
           onChange={ value => setGlobalFilter( String( value ) ) }
         />
+        <TableHeadSeparator/>
+        <TablePageSizer table={ table }/>
+        <TableColumnHider table={ table }/>
+        <TableHeadSeparator/>
         <PaginationControls table={ table }/>
-        <ColumnVisibilityControl table={ table }/>
       </div>
       <div className={ styles.tableSizableContainer }>
         <table>
@@ -104,6 +112,7 @@ const StudentsTable: FC = () => {
             { table.getRowModel().rows.map( row => (
               <tr
                 key={ row.id }
+                className={ row.original.id === studentOriginal?.id ? styles.selected : undefined }
                 onClick={ () => selectStudent( row.original.id ) }
               >
                 { row.getVisibleCells().map( cell => (
