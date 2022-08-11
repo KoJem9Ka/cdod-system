@@ -9,8 +9,6 @@ const Grid = styled.div`
   gap: 1rem;
   overflow: auto;
   padding: 1rem 0;
-  //margin: 0rem -1rem -1rem;
-  //margin-inline: -1rem;
 `
 
 type CourseGridProps = {

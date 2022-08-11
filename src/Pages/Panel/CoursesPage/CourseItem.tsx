@@ -4,10 +4,6 @@ import { GCourseType } from '../../../other/generated'
 import { useCourseForm } from '../../../store/courseForm/hooks'
 import { hexToRgbA } from '../../../other/helpers'
 
-
-// TODO: потом переделать на нормальное, а то вообще да.....
-
-
 const Item = styled.div<{ color: string }>`
   font-family: Rubik, serif;
   font-weight: 600;
@@ -55,11 +51,9 @@ const TextBlock = styled.div`
   grid-template-columns: 1fr 1fr 1fr;
 `
 
-
 type CourseItemProps = {
   course: GCourseType
 }
-
 
 const CourseItem: React.FC<CourseItemProps> = ({ course }) => {
 	
