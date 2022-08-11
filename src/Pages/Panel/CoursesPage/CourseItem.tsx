@@ -9,68 +9,78 @@ import { hexToRgbA } from '../../../other/helpers'
 
 
 const Item = styled.div<{ color: string }>`
-  background: white;
-  background-clip: padding-box;
-  box-sizing: content-box;
-  border-radius: 2rem;
-  cursor: pointer;
-  transition: 100ms;
-  border: 1rem solid transparent;
-  
-  &:hover {
-    border: 1rem solid ${props => (props.color ? hexToRgbA(props.color, 0.2) : 'white')};
-  }
-`
-
-const ImgBlock = styled.div<{ color: string }>`
-  background: ${props => (props.color ? props.color : 'white')};
-  width: 100%;
+  font-family: Rubik, serif;
+  font-weight: 600;
+  color: white;
   display: flex;
-  justify-content: center;
-  padding:  1rem 0;
-  border-radius: 1rem;
-  & > img{
-    border-radius: 100rem;
-  }
-`
-
-const TxtBlock = styled.div`
-  & > h2{
-    font-size: 1.5rem;
-  }
-  font-size: 1.2rem;
-  display: flex;
-  gap: 1.2rem;
-  padding: 2rem 1rem;
-  text-align: center;
-  align-items: center;
   flex-direction: column;
+  padding: 1.25rem;
+  gap: 1.25rem;
+  border-radius: 1.25rem;
+  background-color: ${props => props.color};
+  width: calc(100%);
+
+  &:hover {
+    cursor: pointer;
+    box-shadow: 0.3rem 0.3rem 1rem ${props => hexToRgbA(props.color, 0.3)};
+  }
 `
 
-type CourseItemProps = { 
+const ImgBlock = styled.div`
+  display: grid;
+  grid-template-columns: auto 3fr;
+  gap: 1rem;
+`
+
+const Img = styled.div`
+  padding: 0.625rem;
+  background: #ffffff;
+  border-radius: 0.625rem;
+`
+
+const Title = styled.div`
+  display: flex;
+  font-size: 24px;
+	line-height: 2rem;
+  align-items: center;
+  text-align: center;
+  gap: 1.25rem;
+  word-break: break-all;
+`
+
+const TextBlock = styled.div`
+  font-size: 16px;
+  display: grid;
+  text-align: center;
+  grid-template-columns: 1fr 1fr 1fr;
+`
+
+
+type CourseItemProps = {
   course: GCourseType
 }
 
 
 const CourseItem: React.FC<CourseItemProps> = ({ course }) => {
-  
+	
   const { selectCourse } = useCourseForm()
-  
+	
   return (
-    <Item color={course.color || 'white'} onClick={() => selectCourse(course.id)}>
-      <ImgBlock color={course.color || 'white'}>
-        <img
-          alt={course.name}
-          height={100}
-          src='https://klike.net/uploads/posts/2019-07/1564314090_3.jpg'
-          width={100}
-        />
+    <Item color={course.color || 'beige'} onClick={() => selectCourse(course.id)}>
+      <ImgBlock>
+        <Img>
+          {/*<img alt='' src={course.svgIconUrl as string}/>*/}
+          <img alt='' src='https://placekitten.com/50/50'/>
+        </Img>
+        <Title>
+          {course.name}
+        </Title>
       </ImgBlock>
-      <TxtBlock>
-        <h2>{course.name}</h2>
-        <p>Стоимость: {course.price}</p>
-        <p>Длительность: {course.durationInMonths}</p>
-      </TxtBlock>
+      <TextBlock>
+        <span>132 чел.</span>
+        <span>14 200p</span>
+        <span>c 8 лет</span>
+      </TextBlock>
     </Item>
   )
 }
