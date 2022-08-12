@@ -5,12 +5,10 @@ import { GCourseType } from '../../../other/generated'
 
 const Grid = styled.div`
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(300px, auto));
-  //gap: 1rem;
+	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
   overflow: auto;
-  //padding: 1rem;
-  //margin: 0rem -1rem -1rem;
-  //margin-inline: -1rem;
+  padding: 1rem 0;
 `
 
 type CourseGridProps = {
