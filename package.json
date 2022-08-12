@@ -15,8 +15,10 @@
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",
     "axios": "^0.27.2",
+    "bcryptjs": "^2.4.3",
     "csstype": "^3.1.0",
     "date-fns": "^2.29.0",
+    "dotenv": "^16.0.1",
     "framer-motion": "^6.5.1",
     "graphql": "^16.5.0",
     "lodash": "^4.17.21",
@@ -38,7 +40,8 @@
     "generateWatch": "graphql-codegen -w",
     "generate": "graphql-codegen",
     "build": "react-scripts build",
-    "test": "react-scripts test"
+    "test": "react-scripts test",
+    "postinstall": "npm run generate"
   },
   "eslintConfig": {
     "extends": [
@@ -66,6 +69,7 @@
     "@graphql-codegen/typescript": "2.7.2",
     "@graphql-codegen/typescript-operations": "2.5.2",
     "@graphql-codegen/typescript-react-apollo": "3.3.2",
+    "@types/bcryptjs": "^2.4.2",
     "@types/lodash": "^4.14.182",
     "@types/redux-logger": "^3.0.9",
     "@types/styled-components": "^5.1.25",

@@ -1,43 +1,58 @@
 import {
   createSlice,
   PayloadAction
-}                           from '@reduxjs/toolkit'
-import { thunkLoadStudent } from './thunks'
-import { ApolloError }      from '@apollo/client'
-import { GStudentQuery }    from '../../other/generated'
+}                            from '@reduxjs/toolkit'
+import {
+  thunkLoadStudent,
+  thunkStudentCommit
+}                            from './thunks'
+import { ApolloError }       from '@apollo/client'
+import { GStudentByIdQuery } from '../../other/generated'
+import {
+  isNil,
+  merge
+}                            from 'lodash'
+import { DeepPartial }       from '../../other/typing'
+import { newStudent }        from '../../other/helpers'
 
 
 
-type T = GStudentQuery['student']
+type T = GStudentByIdQuery['student']
 
 const initialState = {
   studentLoading:  false as boolean,
   error:           null as ApolloError['message'] | null | undefined,
   studentOriginal: null as T | null,
   studentModified: null as T | null,
-  isEdit:          false as boolean,
+  studentIsEdit:   false as boolean,
 }
 
 export const studentFormSlice = createSlice( {
   name:          'studentForm',
   initialState,
   reducers:      {
-    actionToggleEdit:    ( state, action: PayloadAction<boolean | undefined> ) => {
-      state.studentModified = state.studentOriginal
-      state.isEdit = action.payload !== undefined ? action.payload : !state.isEdit
+    actionStudentCreate( state ) {
+      state.studentModified = state.studentOriginal = newStudent()
+      state.studentIsEdit = true
     },
-    actionChangeStudent: ( state, action: PayloadAction<Partial<Omit<T, 'id'>>> ) => {
-      // @ts-ignore
-      state.studentModified = { ...state.studentModified, ...action.payload }
+    actionStudentClose( state ) {
+      state.studentModified = state.studentOriginal = null
+      state.studentIsEdit = false
+    },
+    actionStudentToggleEdit( state, action: PayloadAction<boolean | undefined> ) {
+      state.studentModified = state.studentOriginal
+      state.studentIsEdit = isNil( action.payload ) ? !state.studentIsEdit : action.payload
+    },
+    actionStudentChange( state, action: PayloadAction<DeepPartial<Omit<T, 'id'>>> ) {
+      merge( state.studentModified, action.payload )
     },
   },
   extraReducers: builder => builder
-      .addCase( thunkLoadStudent.pending, ( state, action ) => {
+      .addCase( thunkLoadStudent.pending, state => {
         state.studentLoading = true
         state.error = null
-        state.studentOriginal = null
-        state.studentModified = null
-        state.isEdit = false
+        state.studentModified = state.studentOriginal = null
+        state.studentIsEdit = false
       } )
       .addCase( thunkLoadStudent.rejected, ( state, action ) => {
         state.studentLoading = false
@@ -45,9 +60,25 @@ export const studentFormSlice = createSlice( {
       } )
       .addCase( thunkLoadStudent.fulfilled, ( state, action ) => {
         state.studentLoading = false
-        state.studentOriginal = action.payload
-        state.studentModified = action.payload
+        state.studentModified = state.studentOriginal = action.payload
+      } )
+      .addCase( thunkStudentCommit.pending, state => {
+        state.studentLoading = true
+        state.studentIsEdit = false
+      } )
+      .addCase( thunkStudentCommit.rejected, ( state, action ) => {
+        state.studentLoading = false
+        state.error = `${ action.error.message }: ${ action.payload }`
+      } )
+      .addCase( thunkStudentCommit.fulfilled, state => {
+        state.studentLoading = false
+        state.studentOriginal = state.studentModified
       } ),
 } )
 
-export const { actionToggleEdit, actionChangeStudent } = studentFormSlice.actions
+export const {
+  actionStudentToggleEdit,
+  actionStudentChange,
+  actionStudentCreate,
+  actionStudentClose,
+} = studentFormSlice.actions

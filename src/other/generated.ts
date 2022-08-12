@@ -21,6 +21,11 @@ export type Scalars = {
   TimeSpan: string;
 };
 
+export const enum GApplyPolicy {
+  AfterResolver = 'AFTER_RESOLVER',
+  BeforeResolver = 'BEFORE_RESOLVER'
+};
+
 export type GAttendanceType = {
   lesson: GLessonType;
   lessonId: Scalars['Int'];
@@ -82,21 +87,6 @@ export type GComparableDateTimeOperationFilterInput = {
   nin: InputMaybe<Array<Scalars['DateTime']>>;
   nlt: InputMaybe<Scalars['DateTime']>;
   nlte: InputMaybe<Scalars['DateTime']>;
-};
-
-export type GComparableDoubleOperationFilterInput = {
-  eq: InputMaybe<Scalars['Float']>;
-  gt: InputMaybe<Scalars['Float']>;
-  gte: InputMaybe<Scalars['Float']>;
-  in: InputMaybe<Array<Scalars['Float']>>;
-  lt: InputMaybe<Scalars['Float']>;
-  lte: InputMaybe<Scalars['Float']>;
-  neq: InputMaybe<Scalars['Float']>;
-  ngt: InputMaybe<Scalars['Float']>;
-  ngte: InputMaybe<Scalars['Float']>;
-  nin: InputMaybe<Array<Scalars['Float']>>;
-  nlt: InputMaybe<Scalars['Float']>;
-  nlte: InputMaybe<Scalars['Float']>;
 };
 
 export type GComparableInt32OperationFilterInput = {
@@ -184,22 +174,24 @@ export const enum GContractState {
 };
 
 export type GCourseCreateInput = {
-  coursePrice: Scalars['Float'];
-  durationInMonths: Scalars['Int'];
+  color: InputMaybe<Scalars['String']>;
+  coursePrice: InputMaybe<Scalars['Float']>;
+  durationInMonths: InputMaybe<Scalars['Int']>;
   equipmentPriceWithRobot: InputMaybe<Scalars['Float']>;
   equipmentPriceWithoutRobot: InputMaybe<Scalars['Float']>;
   name: Scalars['String'];
   programId: InputMaybe<Scalars['Int']>;
+  svgIconColor: InputMaybe<Scalars['String']>;
 };
 
 export type GCourseType = {
   color: Maybe<Scalars['String']>;
-  durationInMonths: Scalars['Int'];
+  durationInMonths: Maybe<Scalars['Int']>;
   equipmentPriceWithRobot: Maybe<Scalars['Float']>;
   equipmentPriceWithoutRobot: Maybe<Scalars['Float']>;
   id: Scalars['Int'];
   name: Scalars['String'];
-  price: Scalars['Float'];
+  price: Maybe<Scalars['Float']>;
   programId: Maybe<Scalars['Int']>;
   svgIconUrl: Maybe<Scalars['String']>;
 };
@@ -207,13 +199,13 @@ export type GCourseType = {
 export type GCourseTypeFilterInput = {
   and: InputMaybe<Array<GCourseTypeFilterInput>>;
   color: InputMaybe<GStringOperationFilterInput>;
-  durationInMonths: InputMaybe<GComparableInt32OperationFilterInput>;
+  durationInMonths: InputMaybe<GComparableNullableOfInt32OperationFilterInput>;
   equipmentPriceWithRobot: InputMaybe<GComparableNullableOfDoubleOperationFilterInput>;
   equipmentPriceWithoutRobot: InputMaybe<GComparableNullableOfDoubleOperationFilterInput>;
   id: InputMaybe<GComparableInt32OperationFilterInput>;
   name: InputMaybe<GStringOperationFilterInput>;
   or: InputMaybe<Array<GCourseTypeFilterInput>>;
-  price: InputMaybe<GComparableDoubleOperationFilterInput>;
+  price: InputMaybe<GComparableNullableOfDoubleOperationFilterInput>;
   programId: InputMaybe<GComparableNullableOfInt32OperationFilterInput>;
   svgIconUrl: InputMaybe<GStringOperationFilterInput>;
 };
@@ -231,6 +223,7 @@ export type GCourseTypeSortInput = {
 };
 
 export type GCourseUpdateInput = {
+  color: InputMaybe<Scalars['String']>;
   coursePrice: InputMaybe<Scalars['Float']>;
   durationInMonths: InputMaybe<Scalars['Int']>;
   equipmentPriceWithRobot: InputMaybe<Scalars['Float']>;
@@ -238,26 +231,13 @@ export type GCourseUpdateInput = {
   id: Scalars['Int'];
   name: InputMaybe<Scalars['String']>;
   programId: InputMaybe<Scalars['Int']>;
+  svgIconColor: InputMaybe<Scalars['String']>;
 };
 
 export const enum GDistrict {
   Central = 'CENTRAL',
   Tractor = 'TRACTOR',
   Voroshilovskiy = 'VOROSHILOVSKIY'
-};
-
-export type GDistrictOperationFilterInput = {
-  eq: InputMaybe<GDistrict>;
-  in: InputMaybe<Array<GDistrict>>;
-  neq: InputMaybe<GDistrict>;
-  nin: InputMaybe<Array<GDistrict>>;
-};
-
-export type GGroupCreateInput = {
-  courseId: Scalars['Int'];
-  name: Scalars['String'];
-  startDate: Scalars['Date'];
-  teacherId: Scalars['Int'];
 };
 
 export type GGroupType = {
@@ -287,13 +267,6 @@ export type GGroupTypeSortInput = {
   name: InputMaybe<GSortEnumType>;
   startDate: InputMaybe<GSortEnumType>;
   teacherId: InputMaybe<GSortEnumType>;
-};
-
-export type GGroupUpdateInput = {
-  id: Scalars['Int'];
-  name: InputMaybe<Scalars['String']>;
-  startDate: InputMaybe<Scalars['Date']>;
-  teacherId: InputMaybe<Scalars['Int']>;
 };
 
 export type GInfoType = {
@@ -342,42 +315,30 @@ export type GLessonTypeSortInput = {
   topic: InputMaybe<GSortEnumType>;
 };
 
+export type GLoginInput = {
+  email: Scalars['String'];
+  password: Scalars['String'];
+};
+
 export type GMutation = {
-  attachStudentsToCourses: Scalars['Boolean'];
   courseCreateCourse: GCourseType;
-  courseDeleteMany: Scalars['Boolean'];
   courseUpdateMany: Scalars['Boolean'];
   createSchool: GSchoolType;
-  detachStudentsToCourses: Scalars['Boolean'];
-  groupCreate: GGroupType;
-  groupDeleteMany: Scalars['Boolean'];
-  groupUpdateMany: Scalars['Boolean'];
   login: Scalars['String'];
   parentCreate: GParentType;
   parentDeleteMany: Scalars['Boolean'];
-  parentUpdateMany: Scalars['Boolean'];
+  parentUpdate: GParentType;
   schoolDeleteMany: Scalars['Boolean'];
   schoolUpdateMany: Scalars['Boolean'];
   studentCreate: GStudentType;
   studentDeleteMany: Scalars['Boolean'];
   studentUpdateMany: Scalars['Boolean'];
   updateFromGoogleTable: Scalars['Boolean'];
-  updateStudentsToCourses: Scalars['Boolean'];
-};
-
-
-export type GMutationAttachStudentsToCoursesArgs = {
-  studentsToCourses: Array<GStudentToCourseCreateInput>;
 };
 
 
 export type GMutationCourseCreateCourseArgs = {
   course: GCourseCreateInput;
-};
-
-
-export type GMutationCourseDeleteManyArgs = {
-  courseIds: Array<Scalars['Int']>;
 };
 
 
@@ -391,33 +352,13 @@ export type GMutationCreateSchoolArgs = {
 };
 
 
-export type GMutationDetachStudentsToCoursesArgs = {
-  studentsToCourses: Array<GStudentToCourseDetachInput>;
-};
-
-
-export type GMutationGroupCreateArgs = {
-  group: GGroupCreateInput;
-};
-
-
-export type GMutationGroupDeleteManyArgs = {
-  groupIds: Array<Scalars['Int']>;
-};
-
-
-export type GMutationGroupUpdateManyArgs = {
-  groups: Array<GGroupUpdateInput>;
-};
-
-
 export type GMutationLoginArgs = {
-  user: GParentLoginInput;
+  user: GLoginInput;
 };
 
 
 export type GMutationParentCreateArgs = {
-  parent: GParentCreateInput;
+  parent: GParentInput;
 };
 
 
@@ -426,8 +367,9 @@ export type GMutationParentDeleteManyArgs = {
 };
 
 
-export type GMutationParentUpdateManyArgs = {
-  parent: Array<GParentUpdateInput>;
+export type GMutationParentUpdateArgs = {
+  id: Scalars['Int'];
+  parent: GParentInput;
 };
 
 
@@ -455,9 +397,11 @@ export type GMutationStudentUpdateManyArgs = {
   students: Array<GStudentUpdateInput>;
 };
 
-
-export type GMutationUpdateStudentsToCoursesArgs = {
-  studentsToCourses: Array<GStudentToCourseUpdateInput>;
+export type GNullableOfDistrictOperationFilterInput = {
+  eq: InputMaybe<GDistrict>;
+  in: InputMaybe<Array<InputMaybe<GDistrict>>>;
+  neq: InputMaybe<GDistrict>;
+  nin: InputMaybe<Array<InputMaybe<GDistrict>>>;
 };
 
 export type GNullableOfRelationTypeOperationFilterInput = {
@@ -467,38 +411,34 @@ export type GNullableOfRelationTypeOperationFilterInput = {
   nin: InputMaybe<Array<InputMaybe<GRelationType>>>;
 };
 
-export type GParentCreateInput = {
+export type GParentInput = {
   address: InputMaybe<Scalars['String']>;
-  applyingDate: Scalars['Date'];
-  birthday: Scalars['Date'];
+  applyingDate: InputMaybe<Scalars['Date']>;
+  birthday: InputMaybe<Scalars['Date']>;
   education: InputMaybe<Scalars['String']>;
-  email: Scalars['String'];
-  firstname: Scalars['String'];
+  email: InputMaybe<Scalars['String']>;
+  firstname: InputMaybe<Scalars['String']>;
   inn: InputMaybe<Scalars['String']>;
-  lastname: Scalars['String'];
+  lastname: InputMaybe<Scalars['String']>;
   passportCode: InputMaybe<Scalars['String']>;
   passportDate: InputMaybe<Scalars['Date']>;
   passportIssue: InputMaybe<Scalars['String']>;
   passportNo: InputMaybe<Scalars['String']>;
-  password: Scalars['String'];
+  password: InputMaybe<Scalars['String']>;
   patronymic: InputMaybe<Scalars['String']>;
-  phoneNumber: Scalars['String'];
+  phoneNumber: InputMaybe<Scalars['String']>;
+  relationType: InputMaybe<GRelationType>;
   secondEmail: InputMaybe<Scalars['String']>;
   secondPhoneNumber: InputMaybe<Scalars['String']>;
   snils: InputMaybe<Scalars['String']>;
 };
 
-export type GParentLoginInput = {
-  email: Scalars['String'];
-  password: Scalars['String'];
-};
-
 export type GParentType = {
   address: Maybe<Scalars['String']>;
-  applyingDate: Scalars['Date'];
+  applyingDate: Maybe<Scalars['Date']>;
   birthday: Maybe<Scalars['Date']>;
   education: Maybe<Scalars['String']>;
-  email: Scalars['String'];
+  email: Maybe<Scalars['String']>;
   firstName: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   inn: Maybe<Scalars['String']>;
@@ -508,7 +448,7 @@ export type GParentType = {
   passportDate: Maybe<Scalars['Date']>;
   passportIssue: Maybe<Scalars['String']>;
   passportNo: Maybe<Scalars['String']>;
-  password: Scalars['String'];
+  password: Maybe<Scalars['String']>;
   patronymic: Maybe<Scalars['String']>;
   phoneNumber: Maybe<Scalars['String']>;
   secondEmail: Maybe<Scalars['String']>;
@@ -520,7 +460,7 @@ export type GParentType = {
 export type GParentTypeFilterInput = {
   address: InputMaybe<GStringOperationFilterInput>;
   and: InputMaybe<Array<GParentTypeFilterInput>>;
-  applyingDate: InputMaybe<GComparableDateOnlyOperationFilterInput>;
+  applyingDate: InputMaybe<GComparableNullableOfDateOnlyOperationFilterInput>;
   birthday: InputMaybe<GComparableNullableOfDateOnlyOperationFilterInput>;
   education: InputMaybe<GStringOperationFilterInput>;
   email: InputMaybe<GStringOperationFilterInput>;
@@ -565,28 +505,6 @@ export type GParentTypeSortInput = {
   secondPhoneNumber: InputMaybe<GSortEnumType>;
   snils: InputMaybe<GSortEnumType>;
   type: InputMaybe<GSortEnumType>;
-};
-
-export type GParentUpdateInput = {
-  address: InputMaybe<Scalars['String']>;
-  applyingDate: InputMaybe<Scalars['Date']>;
-  birthday: InputMaybe<Scalars['Date']>;
-  education: InputMaybe<Scalars['String']>;
-  email: InputMaybe<Scalars['String']>;
-  firstname: InputMaybe<Scalars['String']>;
-  id: Scalars['Int'];
-  inn: InputMaybe<Scalars['String']>;
-  lastname: InputMaybe<Scalars['String']>;
-  passportCode: InputMaybe<Scalars['String']>;
-  passportDate: InputMaybe<Scalars['Date']>;
-  passportIssue: InputMaybe<Scalars['String']>;
-  passportNo: InputMaybe<Scalars['String']>;
-  password: InputMaybe<Scalars['String']>;
-  patronymic: InputMaybe<Scalars['String']>;
-  phoneNumber: InputMaybe<Scalars['String']>;
-  secondEmail: InputMaybe<Scalars['String']>;
-  secondPhoneNumber: InputMaybe<Scalars['String']>;
-  snils: InputMaybe<Scalars['String']>;
 };
 
 export type GPostType = {
@@ -746,6 +664,7 @@ export const enum GRelationType {
   Aunt = 'AUNT',
   Brother = 'BROTHER',
   Father = 'FATHER',
+  Godparent = 'GODPARENT',
   Grandma = 'GRANDMA',
   Grandpa = 'GRANDPA',
   Guardian = 'GUARDIAN',
@@ -756,12 +675,12 @@ export const enum GRelationType {
 };
 
 export type GSchoolCreateInput = {
-  district: GDistrict;
+  district: InputMaybe<GDistrict>;
   name: Scalars['String'];
 };
 
 export type GSchoolType = {
-  district: GDistrict;
+  district: Maybe<GDistrict>;
   id: Scalars['Int'];
   name: Scalars['String'];
   students: Array<GStudentType>;
@@ -769,7 +688,7 @@ export type GSchoolType = {
 
 export type GSchoolTypeFilterInput = {
   and: InputMaybe<Array<GSchoolTypeFilterInput>>;
-  district: InputMaybe<GDistrictOperationFilterInput>;
+  district: InputMaybe<GNullableOfDistrictOperationFilterInput>;
   id: InputMaybe<GComparableInt32OperationFilterInput>;
   name: InputMaybe<GStringOperationFilterInput>;
   or: InputMaybe<Array<GSchoolTypeFilterInput>>;
@@ -821,36 +740,13 @@ export type GStringOperationFilterInput = {
 };
 
 export type GStudentCreateInput = {
-  birthDate: Scalars['Date'];
+  birthDate: InputMaybe<Scalars['Date']>;
   description: InputMaybe<Scalars['String']>;
-  firstName: Scalars['String'];
-  lastName: Scalars['String'];
+  firstName: InputMaybe<Scalars['String']>;
+  lastName: InputMaybe<Scalars['String']>;
   parentId: Scalars['Int'];
   patronymic: InputMaybe<Scalars['String']>;
-  schoolId: Scalars['Int'];
-};
-
-export type GStudentToCourseCreateInput = {
-  admissionDate: Scalars['Date'];
-  contractState: GContractState;
-  contractUrl: InputMaybe<Scalars['String']>;
-  courseId: Scalars['Int'];
-  isGetRobot: InputMaybe<Scalars['Boolean']>;
-  studentId: Scalars['Int'];
-};
-
-export type GStudentToCourseDetachInput = {
-  courseId: Scalars['Int'];
-  studentId: Scalars['Int'];
-};
-
-export type GStudentToCourseUpdateInput = {
-  admissionDate: InputMaybe<Scalars['Date']>;
-  contractState: InputMaybe<GContractState>;
-  contractUrl: InputMaybe<Scalars['String']>;
-  courseId: Scalars['Int'];
-  isGetRobot: InputMaybe<Scalars['Boolean']>;
-  studentId: Scalars['Int'];
+  schoolId: InputMaybe<Scalars['Int']>;
 };
 
 export type GStudentType = {
@@ -919,8 +815,8 @@ export type GTeacherType = {
   password: Scalars['String'];
   patronymic: Maybe<Scalars['String']>;
   phoneNumber: Maybe<Scalars['String']>;
-  post: Scalars['String'];
-  postId: Scalars['Int'];
+  post: Maybe<Scalars['String']>;
+  postId: Maybe<Scalars['Int']>;
   snils: Maybe<Scalars['String']>;
   workPlace: Scalars['String'];
 };
@@ -944,7 +840,7 @@ export type GTeacherTypeFilterInput = {
   password: InputMaybe<GStringOperationFilterInput>;
   patronymic: InputMaybe<GStringOperationFilterInput>;
   phoneNumber: InputMaybe<GStringOperationFilterInput>;
-  postId: InputMaybe<GComparableInt32OperationFilterInput>;
+  postId: InputMaybe<GComparableNullableOfInt32OperationFilterInput>;
   snils: InputMaybe<GStringOperationFilterInput>;
   workPlace: InputMaybe<GStringOperationFilterInput>;
 };
@@ -998,12 +894,12 @@ export type GCourseByIdQueryVariables = Exact<{
 }>;
 
 
-export type GCourseByIdQuery = { course: { id: number, name: string, price: number, programId: number | null, durationInMonths: number, equipmentPriceWithRobot: number | null, equipmentPriceWithoutRobot: number | null, color: string | null, svgIconUrl: string | null } };
+export type GCourseByIdQuery = { course: { id: number, name: string, price: number | null, programId: number | null, durationInMonths: number | null, equipmentPriceWithRobot: number | null, equipmentPriceWithoutRobot: number | null, color: string | null, svgIconUrl: string | null } };
 
 export type GCoursesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GCoursesQuery = { courses: Array<{ id: number, name: string, price: number, programId: number | null, durationInMonths: number, equipmentPriceWithRobot: number | null, equipmentPriceWithoutRobot: number | null, color: string | null, svgIconUrl: string | null }> };
+export type GCoursesQuery = { courses: Array<{ id: number, name: string, price: number | null, programId: number | null, durationInMonths: number | null, equipmentPriceWithRobot: number | null, equipmentPriceWithoutRobot: number | null, color: string | null, svgIconUrl: string | null }> };
 
 export type GGroupByIdQueryVariables = Exact<{
   groupID: Scalars['Int'];
@@ -1020,31 +916,55 @@ export type GGroupsQuery = { groups: Array<{ id: number, name: string, startDate
 export type GAllStudentsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GAllStudentsQuery = { students: Array<{ id: number, lastName: string | null, firstName: string | null, patronymic: string | null, birthDate: string | null, description: string | null, parent: { id: number, firstName: string | null, lastName: string | null, patronymic: string | null, phoneNumber: string | null, secondPhoneNumber: string | null, email: string, secondEmail: string | null, applyingDate: string }, info: Array<{ attempt: number, admissionDate: string, contractState: GContractState, isCoursePaid: boolean, isEquipmentPaid: boolean | null, course: { name: string } }> }> };
+export type GAllStudentsQuery = { students: Array<{ id: number, lastName: string | null, firstName: string | null, patronymic: string | null, birthDate: string | null, description: string | null, parent: { id: number, firstName: string | null, lastName: string | null, patronymic: string | null, phoneNumber: string | null, secondPhoneNumber: string | null, email: string | null, secondEmail: string | null, applyingDate: string | null }, info: Array<{ attempt: number, admissionDate: string, contractState: GContractState, isCoursePaid: boolean, isEquipmentPaid: boolean | null, course: { name: string } }> }> };
 
 export type GParentByIdQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type GParentByIdQuery = { parent: { id: number, lastName: string | null, firstName: string | null, patronymic: string | null, phoneNumber: string | null, secondPhoneNumber: string | null, type: GRelationType | null, email: string, secondEmail: string | null, applyingDate: string } };
+export type GParentByIdQuery = { parent: { id: number, lastName: string | null, firstName: string | null, patronymic: string | null, phoneNumber: string | null, secondPhoneNumber: string | null, type: GRelationType | null, email: string | null, secondEmail: string | null, applyingDate: string | null } };
 
 export type GParentsListQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GParentsListQuery = { parents: Array<{ id: number, lastName: string | null, firstName: string | null, patronymic: string | null }> };
 
-export type GStudentQueryVariables = Exact<{
+export type GStudentByIdQueryVariables = Exact<{
   studentID: Scalars['Int'];
 }>;
 
 
-export type GStudentQuery = { student: { id: number, lastName: string | null, firstName: string | null, patronymic: string | null, birthDate: string | null, description: string | null, school: { id: number, name: string, district: GDistrict } | null, parent: { id: number }, info: Array<{ attempt: number, admissionDate: string, contractState: GContractState, isCoursePaid: boolean, isEquipmentPaid: boolean | null, isGetRobot: boolean | null, course: { id: number, name: string }, group: { id: number, name: string } | null }> } };
+export type GStudentByIdQuery = { student: { id: number, lastName: string | null, firstName: string | null, patronymic: string | null, birthDate: string | null, description: string | null, school: { id: number, name: string, district: GDistrict | null } | null, parent: { id: number, lastName: string | null, firstName: string | null, patronymic: string | null, phoneNumber: string | null, secondPhoneNumber: string | null, email: string | null, secondEmail: string | null, applyingDate: string | null, relationType: GRelationType | null }, info: Array<{ attempt: number, admissionDate: string, contractState: GContractState, isCoursePaid: boolean, isEquipmentPaid: boolean | null, isGetRobot: boolean | null, course: { id: number, name: string }, group: { id: number, name: string } | null }> } };
+
+export type GStudentWithParentCreateCommitMutationVariables = Exact<{
+  student: GStudentCreateInput;
+  parent: GParentInput;
+}>;
+
+
+export type GStudentWithParentCreateCommitMutation = { studentCreate: { id: number }, parentCreate: { id: number } };
+
+export type GStudentWithParentUpdateCommitMutationVariables = Exact<{
+  student: GStudentUpdateInput;
+  parentId: Scalars['Int'];
+  parent: GParentInput;
+}>;
+
+
+export type GStudentWithParentUpdateCommitMutation = { studentUpdateMany: boolean, parentUpdate: { id: number } };
 
 export type GStudentFormQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GStudentFormQuery = { schools: Array<{ id: number, name: string, district: GDistrict }> };
+export type GStudentFormQuery = { schools: Array<{ id: number, name: string, district: GDistrict | null }> };
+
+export type GLoginMutationVariables = Exact<{
+  user: GLoginInput;
+}>;
+
+
+export type GLoginMutation = { login: string };
 
 
 export const CourseByIdDocument = gql`
@@ -1369,8 +1289,8 @@ export function useParentsListLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type ParentsListQueryHookResult = ReturnType<typeof useParentsListQuery>;
 export type ParentsListLazyQueryHookResult = ReturnType<typeof useParentsListLazyQuery>;
 export type ParentsListQueryResult = Apollo.QueryResult<GParentsListQuery, GParentsListQueryVariables>;
-export const StudentDocument = gql`
-    query Student($studentID: Int!) {
+export const StudentByIdDocument = gql`
+    query StudentById($studentID: Int!) {
   student(id: $studentID) {
     id
     lastName
@@ -1385,6 +1305,15 @@ export const StudentDocument = gql`
     }
     parent {
       id
+      lastName
+      firstName
+      patronymic
+      relationType: type
+      phoneNumber
+      secondPhoneNumber
+      email
+      secondEmail
+      applyingDate
     }
     info {
       course {
@@ -1407,32 +1336,105 @@ export const StudentDocument = gql`
     `;
 
 /**
- * __useStudentQuery__
+ * __useStudentByIdQuery__
  *
- * To run a query within a React component, call `useStudentQuery` and pass it any options that fit your needs.
- * When your component renders, `useStudentQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useStudentByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useStudentByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useStudentQuery({
+ * const { data, loading, error } = useStudentByIdQuery({
  *   variables: {
  *      studentID: // value for 'studentID'
  *   },
  * });
  */
-export function useStudentQuery(baseOptions: Apollo.QueryHookOptions<GStudentQuery, GStudentQueryVariables>) {
+export function useStudentByIdQuery(baseOptions: Apollo.QueryHookOptions<GStudentByIdQuery, GStudentByIdQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GStudentQuery, GStudentQueryVariables>(StudentDocument, options);
+        return Apollo.useQuery<GStudentByIdQuery, GStudentByIdQueryVariables>(StudentByIdDocument, options);
       }
-export function useStudentLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GStudentQuery, GStudentQueryVariables>) {
+export function useStudentByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GStudentByIdQuery, GStudentByIdQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GStudentQuery, GStudentQueryVariables>(StudentDocument, options);
+          return Apollo.useLazyQuery<GStudentByIdQuery, GStudentByIdQueryVariables>(StudentByIdDocument, options);
         }
-export type StudentQueryHookResult = ReturnType<typeof useStudentQuery>;
-export type StudentLazyQueryHookResult = ReturnType<typeof useStudentLazyQuery>;
-export type StudentQueryResult = Apollo.QueryResult<GStudentQuery, GStudentQueryVariables>;
+export type StudentByIdQueryHookResult = ReturnType<typeof useStudentByIdQuery>;
+export type StudentByIdLazyQueryHookResult = ReturnType<typeof useStudentByIdLazyQuery>;
+export type StudentByIdQueryResult = Apollo.QueryResult<GStudentByIdQuery, GStudentByIdQueryVariables>;
+export const StudentWithParentCreateCommitDocument = gql`
+    mutation StudentWithParentCreateCommit($student: StudentCreateInput!, $parent: ParentInput!) {
+  studentCreate(student: $student) {
+    id
+  }
+  parentCreate(parent: $parent) {
+    id
+  }
+}
+    `;
+export type GStudentWithParentCreateCommitMutationFn = Apollo.MutationFunction<GStudentWithParentCreateCommitMutation, GStudentWithParentCreateCommitMutationVariables>;
+
+/**
+ * __useStudentWithParentCreateCommitMutation__
+ *
+ * To run a mutation, you first call `useStudentWithParentCreateCommitMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useStudentWithParentCreateCommitMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [studentWithParentCreateCommitMutation, { data, loading, error }] = useStudentWithParentCreateCommitMutation({
+ *   variables: {
+ *      student: // value for 'student'
+ *      parent: // value for 'parent'
+ *   },
+ * });
+ */
+export function useStudentWithParentCreateCommitMutation(baseOptions?: Apollo.MutationHookOptions<GStudentWithParentCreateCommitMutation, GStudentWithParentCreateCommitMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<GStudentWithParentCreateCommitMutation, GStudentWithParentCreateCommitMutationVariables>(StudentWithParentCreateCommitDocument, options);
+      }
+export type StudentWithParentCreateCommitMutationHookResult = ReturnType<typeof useStudentWithParentCreateCommitMutation>;
+export type StudentWithParentCreateCommitMutationResult = Apollo.MutationResult<GStudentWithParentCreateCommitMutation>;
+export type StudentWithParentCreateCommitMutationOptions = Apollo.BaseMutationOptions<GStudentWithParentCreateCommitMutation, GStudentWithParentCreateCommitMutationVariables>;
+export const StudentWithParentUpdateCommitDocument = gql`
+    mutation StudentWithParentUpdateCommit($student: StudentUpdateInput!, $parentId: Int!, $parent: ParentInput!) {
+  studentUpdateMany(students: [$student])
+  parentUpdate(id: $parentId, parent: $parent) {
+    id
+  }
+}
+    `;
+export type GStudentWithParentUpdateCommitMutationFn = Apollo.MutationFunction<GStudentWithParentUpdateCommitMutation, GStudentWithParentUpdateCommitMutationVariables>;
+
+/**
+ * __useStudentWithParentUpdateCommitMutation__
+ *
+ * To run a mutation, you first call `useStudentWithParentUpdateCommitMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useStudentWithParentUpdateCommitMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [studentWithParentUpdateCommitMutation, { data, loading, error }] = useStudentWithParentUpdateCommitMutation({
+ *   variables: {
+ *      student: // value for 'student'
+ *      parentId: // value for 'parentId'
+ *      parent: // value for 'parent'
+ *   },
+ * });
+ */
+export function useStudentWithParentUpdateCommitMutation(baseOptions?: Apollo.MutationHookOptions<GStudentWithParentUpdateCommitMutation, GStudentWithParentUpdateCommitMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<GStudentWithParentUpdateCommitMutation, GStudentWithParentUpdateCommitMutationVariables>(StudentWithParentUpdateCommitDocument, options);
+      }
+export type StudentWithParentUpdateCommitMutationHookResult = ReturnType<typeof useStudentWithParentUpdateCommitMutation>;
+export type StudentWithParentUpdateCommitMutationResult = Apollo.MutationResult<GStudentWithParentUpdateCommitMutation>;
+export type StudentWithParentUpdateCommitMutationOptions = Apollo.BaseMutationOptions<GStudentWithParentUpdateCommitMutation, GStudentWithParentUpdateCommitMutationVariables>;
 export const StudentFormDocument = gql`
     query StudentForm {
   schools {
@@ -1469,3 +1471,34 @@ export function useStudentFormLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type StudentFormQueryHookResult = ReturnType<typeof useStudentFormQuery>;
 export type StudentFormLazyQueryHookResult = ReturnType<typeof useStudentFormLazyQuery>;
 export type StudentFormQueryResult = Apollo.QueryResult<GStudentFormQuery, GStudentFormQueryVariables>;
+export const LoginDocument = gql`
+    mutation login($user: LoginInput!) {
+  login(user: $user)
+}
+    `;
+export type GLoginMutationFn = Apollo.MutationFunction<GLoginMutation, GLoginMutationVariables>;
+
+/**
+ * __useLoginMutation__
+ *
+ * To run a mutation, you first call `useLoginMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLoginMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [loginMutation, { data, loading, error }] = useLoginMutation({
+ *   variables: {
+ *      user: // value for 'user'
+ *   },
+ * });
+ */
+export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<GLoginMutation, GLoginMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<GLoginMutation, GLoginMutationVariables>(LoginDocument, options);
+      }
+export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
+export type LoginMutationResult = Apollo.MutationResult<GLoginMutation>;
+export type LoginMutationOptions = Apollo.BaseMutationOptions<GLoginMutation, GLoginMutationVariables>;

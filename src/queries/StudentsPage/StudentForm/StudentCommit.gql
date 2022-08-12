@@ -1,0 +1,9 @@
+mutation StudentWithParentCreateCommit($student: StudentCreateInput!, $parent: ParentInput!) {
+  studentCreate(student: $student) { id }
+  parentCreate(parent: $parent) { id }
+}
+
+mutation StudentWithParentUpdateCommit($student: StudentUpdateInput!,$parentId: Int!, $parent: ParentInput!) {
+  studentUpdateMany(students: [$student])
+  parentUpdate(id: $parentId, parent: $parent) { id }
+}

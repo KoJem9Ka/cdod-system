@@ -1,18 +1,18 @@
 import {
   FlatBox,
   FlatBoxProps
-}                     from '../../FlatBox'
+}                            from '../../FlatBox'
 import React, {
   ButtonHTMLAttributes,
   ComponentProps,
   FC,
   MouseEventHandler
-}                     from 'react'
-import { AtLeastOne } from '../../../../other/typing'
-import IconsTable     from '../../../../assets/icons/IconsTable'
-import InputNumber    from '../../../UnstyledSkeletons/SpecialInputs/InputNumber'
-import styled         from 'styled-components'
-import DebouncedInput from '../../../UnstyledSkeletons/SpecialInputs/DebouncedInput'
+}                            from 'react'
+import { AtLeastOne }        from '../../../../other/typing'
+import InputNumber           from '../../../UnstyledSkeletons/SpecialInputs/InputNumber'
+import styled                from 'styled-components'
+import DebouncedInput        from '../../../UnstyledSkeletons/SpecialInputs/DebouncedInput'
+import Icons, { Thumbnails } from '../../../../assets/icons/Icons'
 
 
 
@@ -21,7 +21,7 @@ type TableControlProps = {
   hoverable?: FlatBoxProps['hoverable']
   onClick?: MouseEventHandler<HTMLButtonElement>
 } & AtLeastOne<{
-  icon: ComponentProps<typeof IconsTable>['icon']
+  thumb: Thumbnails
   text?: string
 }> & ButtonHTMLAttributes<HTMLButtonElement>
 | {
@@ -42,7 +42,7 @@ export const TableControl: FC<TableControlProps> = props => {
         onClick={ props.onClick }
         { ...props }
       >
-        { props.icon && <IconsTable icon={ props.icon }/> }
+        { props.thumb && <Icons thumb={ props.thumb }/> }
         { props.text }
         { props.children }
       </FlatBox>

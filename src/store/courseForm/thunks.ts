@@ -1,28 +1,31 @@
-import { createAsyncThunk } from '@reduxjs/toolkit'
-import { TAppThunkConfig } from '../store'
+import { createAsyncThunk }  from '@reduxjs/toolkit'
+import { TAppThunkConfig }   from '../store'
 import {
   CourseByIdDocument,
   GCourseByIdQuery,
-  GCourseByIdQueryVariables,
-  GCourseUpdateInput
-} from '../../other/generated'
+  GCourseByIdQueryVariables
+}                            from '../../other/generated'
 import { ApolloQueryResult } from '@apollo/client'
-import { client } from '../../index'
+import { client }            from '../../queries/client'
+
 
 
 type TCourseObjFromQuery = GCourseByIdQuery['course']
 type TVariableCourseID = GCourseByIdQueryVariables['courseId']
 
-export const thunkLoadCourseById = createAsyncThunk<TCourseObjFromQuery, TVariableCourseID, TAppThunkConfig>('courseForm/load', async (id, { rejectWithValue }) => {
+export const thunkLoadCourseById = createAsyncThunk<TCourseObjFromQuery, TVariableCourseID, TAppThunkConfig>( 'courseForm/load', async (
+  id,
+  { rejectWithValue }
+) => {
   let queryResult: ApolloQueryResult<GCourseByIdQuery>
-  try{
-    queryResult = await client.query<GCourseByIdQuery, GCourseByIdQueryVariables>({ query: CourseByIdDocument, variables: { courseId: id } })
+  try {
+    queryResult = await client.query<GCourseByIdQuery, GCourseByIdQueryVariables>( { query: CourseByIdDocument, variables: { courseId: id } } )
   }
-  catch (e) {
-    return rejectWithValue(`Произошла ошибка при загрузке курса с id = ${ id }, error: ${ e }`)
+  catch ( e ) {
+    return rejectWithValue( `Произошла ошибка при загрузке курса с id = ${ id }, error: ${ e }` )
   }
   return queryResult.data.course
-})
+} )
 
 // export const thunkUpdateCourseForm = createAsyncThunk<TCourseObjFromQuery, GCourseUpdateInput, TAppThunkConfig>('courseForm/close', async (course, { rejectWithValue }) => {
 //   let mutationResult: ApolloQueryResult<GCourseByIdQuery>

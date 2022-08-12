@@ -12,21 +12,18 @@ import { CRoutesTest }     from './components/Panel/PanelConfig'
 
 
 const App: React.FC = () => (
-  <>
-    <Routes>
-      <Route element={ <Navigate to='/students'/> } path='/'/>
+  <Routes>
+    <Route element={ <Navigate to='/students'/> } path='/'/>
 
+    <Route element={ <UserLayoutWithPanel/> } path='/'>
+      { CRoutesTest.map( page => (
+        <Route key={ page.route } element={ page.element } path={ page.route }/>
+      ) ) }
+    </Route>
 
-      <Route element={ <UserLayoutWithPanel/> } path='/'>
-        { CRoutesTest.map( page => (
-          <Route key={ page.route } element={ page.element } path={ page.route }/>
-        ) ) }
-      </Route>
-
-      <Route element={ <LoginPage/> } path='login'/>
-      <Route element={ <NotFoundPage/> } path='*'/>
-    </Routes>
-  </>
+    <Route element={ <LoginPage/> } path='login'/>
+    <Route element={ <NotFoundPage/> } path='*'/>
+  </Routes>
 )
 
 export default App

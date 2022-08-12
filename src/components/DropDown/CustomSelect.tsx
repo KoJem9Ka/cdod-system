@@ -4,7 +4,7 @@ import StateManagedSelect from 'react-select/dist/declarations/src/stateManager'
 
 
 
-const CustomSelect: StateManagedSelect = ( props ) => (
+const CustomSelect: StateManagedSelect = props => (
   <Select
     { ...props }
     noOptionsMessage={ () => 'Пусто' }

@@ -1,37 +1,42 @@
 import React, {
   FC,
   useId
-}                from 'react'
-import { Table } from '@tanstack/react-table'
+}                          from 'react'
+import { PaginationState } from '@tanstack/react-table'
 import {
   CheckRadioLabel,
   ListPosAbsolute,
   TableControl
-}                from './subcomponents/TableControl'
-import { uniq }  from 'lodash'
+}                          from './subcomponents/TableControl'
+import { uniq }            from 'lodash'
 
 
 
-export const TablePageSizer: FC<{ table: Table<any> }> = ( { table } ) => {
-  const dataCount = table.getPreFilteredRowModel().rows.length
+type Props = {
+  totalCount: number
+  pagination: PaginationState
+  setPagination: ( pagination: PaginationState )=> void
+}
+export const TablePageSizer: FC<Props> = ( { totalCount, pagination, setPagination } ) => {
+  const dataCount = totalCount
   const name = useId()
 
   return (
     <TableControl
       hoverable={ { elem: ListPosAbsolute, display: 'flex' } }
-      icon='paging_page_size'
-      text={ `${ table.getState().pagination.pageSize }` }
+      text={ `${ pagination.pageSize }` }
+      thumb='tableRows'
       title='Строк на страницу'
     >
       <ListPosAbsolute>
         { uniq( [ 10, 25, 50, 100, dataCount ] ).map( pageSize => (
           <CheckRadioLabel key={ pageSize }>
             <input
-              checked={ table.getState().pagination.pageSize === pageSize }
+              checked={ pagination.pageSize === pageSize }
               name={ name }
               type='radio'
               value={ pageSize }
-              onChange={ e => table.setPageSize( Number( e.target.value ) ) }
+              onChange={ e => setPagination( { ...pagination, pageSize: Number( e.target.value ) } ) }
             />
             <span>Отображать { pageSize }</span>
           </CheckRadioLabel>

@@ -1,7 +1,8 @@
 import {
   createSlice,
   PayloadAction
-} from '@reduxjs/toolkit'
+}                       from '@reduxjs/toolkit'
+import { actionLogout } from '../globalActions'
 
 
 
@@ -11,12 +12,18 @@ const initialState = {
 }
 
 export const insteadOfContextSlice = createSlice( {
-  name:     'InsteadOfContext',
+  name:          'InsteadOfContext',
   initialState,
-  reducers: {
-    actionTogglePanel:  state => void (state.panelOpened = !state.panelOpened),
-    actionSetPreloader: ( state, action: PayloadAction<boolean> ) => void (state.isPreloader = action.payload),
+  reducers:      {
+    actionTogglePanel:  state => {
+      state.panelOpened = !state.panelOpened
+    },
+    actionSetPreloader: ( state, action: PayloadAction<boolean> ) => {
+      state.isPreloader = action.payload
+    },
   },
+  extraReducers: builder => builder
+      .addCase( actionLogout, () => initialState ),
 } )
 
 export const { actionTogglePanel, actionSetPreloader } = insteadOfContextSlice.actions

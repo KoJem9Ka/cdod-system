@@ -9,36 +9,27 @@ import { BrowserRouter }  from 'react-router-dom'
 import { store }          from './store/store'
 import { Provider }       from 'react-redux'
 import { ToastContainer } from 'react-toastify'
-import {
-  ApolloClient,
-  ApolloProvider,
-  InMemoryCache
-}                         from '@apollo/client'
+import { ApolloProvider } from '@apollo/client'
 import { Preloader }      from './components/Preloader/Preloader'
+import { client }         from './queries/client'
 
 
-
-export const client = new ApolloClient( {
-  uri:               'http://localhost:5094/',
-  cache:             new InMemoryCache(),
-  connectToDevTools: true,
-} )
 
 createRoot( document.getElementById( 'root' ) as HTMLElement ).render(
-  // <React.StrictMode>
-  <BrowserRouter>
+  <React.StrictMode>
     <Provider store={ store }>
       <ApolloProvider client={ client }>
-        <App/>
-        <ToastContainer
-          autoClose={ 2500 }
-          position={ 'bottom-left' }
-          theme={ 'light' }
-          pauseOnHover
-        />
-        <Preloader/>
+        <BrowserRouter>
+          <App/>
+          <ToastContainer
+            autoClose={ 2500 }
+            position={ 'bottom-left' }
+            theme={ 'light' }
+            pauseOnHover
+          />
+          <Preloader/>
+        </BrowserRouter>
       </ApolloProvider>
     </Provider>
-  </BrowserRouter>
-  // </React.StrictMode>
+  </React.StrictMode>
 )

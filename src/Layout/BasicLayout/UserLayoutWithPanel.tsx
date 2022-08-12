@@ -12,9 +12,7 @@ const UserLayoutWithPanel: React.FC = () => (
     <CheckAuth>
       <div className={ styles.BasicLayout }>
         <Panel/>
-        {/*<Workspace>*/ }
         <Outlet/>
-        {/*</Workspace>*/ }
       </div>
     </CheckAuth>
   </LayoutGroup>

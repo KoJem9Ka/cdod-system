@@ -11,7 +11,7 @@ import {
 export const TableColumnHider: FC<{ table: Table<any> }> = ( { table } ) => (
   <TableControl
     hoverable={ { elem: ListPosAbsolute, display: 'flex' } }
-    icon={ 'column_hider' }
+    thumb='tableColumns'
     title='Скрытие колонок'
   >
     <ListPosAbsolute>

@@ -1,0 +1,47 @@
+query StudentById($studentID: Int!) {
+  student(id: $studentID) {
+    id
+    lastName
+    firstName
+    patronymic
+    birthDate
+    description
+    school {
+      id
+      name
+      district
+    }
+    parent {
+      id
+      lastName
+      firstName
+      patronymic
+      relationType: type
+
+      phoneNumber
+      secondPhoneNumber
+      email
+      secondEmail
+
+      applyingDate
+    }
+    info {
+      course {
+        id
+        name
+      }
+      group {
+        id
+        name
+      }
+      attempt
+
+      admissionDate
+      contractState
+
+      isCoursePaid
+      isEquipmentPaid
+      isGetRobot
+    }
+  }
+}

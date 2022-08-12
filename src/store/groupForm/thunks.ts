@@ -1,12 +1,12 @@
 import { createAsyncThunk }  from '@reduxjs/toolkit'
 import { TAppThunkConfig }   from '../store'
-import { client }            from '../../index'
 import { ApolloQueryResult } from '@apollo/client'
 import {
   GGroupByIdQuery,
   GGroupByIdQueryVariables,
   GroupByIdDocument
 }                            from '../../other/generated'
+import { client }            from '../../queries/client'
 
 
 

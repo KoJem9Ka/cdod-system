@@ -1,12 +1,16 @@
-export const PathRoot = '/'
-export const PathLogin = `${PathRoot}login`
+class PathClass {
+  readonly Root = '/'
+  readonly Login = `${ this.Root }login`
 
-export const PathStudents = `${PathRoot}students`
-export const PathSchedule = `${PathRoot}schedule`
-export const PathCourses = `${PathRoot}courses`
-export const PathGroups = `${PathRoot}groups`
-export const PathNotifications = `${PathRoot}notifications`
-export const PathTeachers = `${PathRoot}teachers`
-export const PathPayment = `${PathRoot}payment`
+  readonly Students = `${ this.Root }students`
+  readonly Schedule = `${ this.Root }schedule`
+  readonly Courses = `${ this.Root }courses`
+  readonly Groups = `${ this.Root }groups`
+  readonly Notifications = `${ this.Root }notifications`
+  readonly Teachers = `${ this.Root }teachers`
+  readonly Payment = `${ this.Root }payment`
 
-export const PathDefault = PathStudents
+  readonly Default = this.Students
+}
+
+export const AbsolutePath = new PathClass()

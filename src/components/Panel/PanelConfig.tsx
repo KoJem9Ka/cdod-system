@@ -1,11 +1,11 @@
 import React             from 'react'
-import StudentsPage      from '../../Pages/Panel/StudentsPage/StudentsPage'
-import TeachersPage      from '../../Pages/Panel/TeachersPage/TeachersPage'
-import PaymentPage       from '../../Pages/Panel/PaymentPage/PaymentPage'
-import CoursesPage       from '../../Pages/Panel/CoursesPage/CoursesPage'
-import SchedulePage      from '../../Pages/Panel/SchedulePage/SchedulePage'
-import GroupsPage        from '../../Pages/Panel/GroupsPage/GroupsPage'
-import NotificationsPage from '../../Pages/Panel/NotificationsPage/NotificationsPage'
+import StudentsPage      from '../../Pages/AdminPages/StudentsPage/StudentsPage'
+import TeachersPage      from '../../Pages/AdminPages/TeachersPage/TeachersPage'
+import PaymentPage       from '../../Pages/AdminPages/PaymentPage/PaymentPage'
+import CoursesPage       from '../../Pages/AdminPages/CoursesPage/CoursesPage'
+import SchedulePage      from '../../Pages/AdminPages/SchedulePage/SchedulePage'
+import GroupsPage        from '../../Pages/AdminPages/GroupsPage/GroupsPage'
+import NotificationsPage from '../../Pages/AdminPages/NotificationsPage/NotificationsPage'
 
 
 

@@ -1,6 +1,6 @@
 import React               from 'react'
 import style               from './PanelHeader.module.scss'
-import { PathDefault }     from '../../../other/PathConfig'
+import { AbsolutePath }   from '../../../other/PathConfig'
 import { useNavigate }     from 'react-router-dom'
 import { usePanelOpening } from '../../../store/InsteadOfContext/hook'
 import IconMenu            from '../../../assets/icons/IconMenu'
@@ -32,7 +32,7 @@ export const PanelHeader: React.FC = () => {
 
   return (
     <div className={ [ style.PanelHeader, !opened && style.hidden ].join( ' ' ) }>
-      { opened && <IconLogo { ...IconLogoProps } onClick={ () => navigate( PathDefault ) }/> }
+      { opened && <IconLogo { ...IconLogoProps } onClick={ () => navigate( AbsolutePath.Default ) }/> }
       <IconMenu layout onClick={ toggleOpened }/>
     </div>
   )
