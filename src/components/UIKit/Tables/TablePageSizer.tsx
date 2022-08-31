@@ -4,7 +4,7 @@ import React, {
 }                          from 'react'
 import { PaginationState } from '@tanstack/react-table'
 import {
-  CheckRadioLabel,
+  CheckOrRadioLabel,
   ListPosAbsolute,
   TableControl
 }                          from './subcomponents/TableControl'
@@ -30,7 +30,7 @@ export const TablePageSizer: FC<Props> = ( { totalCount, pagination, setPaginati
     >
       <ListPosAbsolute>
         { uniq( [ 10, 25, 50, 100, dataCount ] ).map( pageSize => (
-          <CheckRadioLabel key={ pageSize }>
+          <CheckOrRadioLabel key={ pageSize }>
             <input
               checked={ pagination.pageSize === pageSize }
               name={ name }
@@ -39,7 +39,7 @@ export const TablePageSizer: FC<Props> = ( { totalCount, pagination, setPaginati
               onChange={ e => setPagination( { ...pagination, pageSize: Number( e.target.value ) } ) }
             />
             <span>Отображать { pageSize }</span>
-          </CheckRadioLabel>
+          </CheckOrRadioLabel>
         ) ) }
       </ListPosAbsolute>
     </TableControl>

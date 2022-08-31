@@ -44,7 +44,7 @@ export const formatPhone = ( phone: string ): string => {
   const matching = phone.match( /(\d)(\d{3})(\d{3})(\d{2})(\d{2})/ )
   if ( matching?.length === 6 ) {
     const [ , , bbb, ccc, dd, ee ] = matching
-    return `+7(${ bbb })${ ccc }-${ dd }-${ ee }`
+    return `+7(${bbb})${ccc}-${dd}-${ee}`
   }
   return phone
 }
@@ -66,7 +66,7 @@ const hexToRGB = ( hex: string ) => {
   throw new Error( 'Bad Hex' )
 }
 
-export const hexToRgbA = ( hex: string, opacity: number ) => `rgba(${ [ ...hexToRGB( hex ), opacity || 1 ].join( ',' ) })`
+export const hexToRgbA = ( hex: string, opacity: number ) => `rgba(${[ ...hexToRGB( hex ), opacity || 1 ].join( ',' )})`
 
 export const hexIsDark = ( hex: string ) => mean( uniq( hexToRGB( hex ) ) ) < (255 * 0.65)
 
@@ -109,7 +109,7 @@ const contractStateColorizer = {
   [GContractState.Left]:          '#CCCCCC',
   [GContractState.Excluded]:      '#FFDBDD',
 }
-export const contractStateParse = ( contractState1: GInfoType['contractState'], who: 'text' | 'color' = 'text' ): string => (who === 'text'
+export const parseContractState = ( contractState1: GInfoType['contractState'], who: 'text' | 'color' = 'text' ): string => (who === 'text'
   ? contractStateDecoder[contractState1]
   : contractStateColorizer[contractState1])
 
@@ -144,3 +144,5 @@ export const parseJwt = ( token: string ) => {
   const jsonPayload = decodeURIComponent( window.atob( base64 ).split( '' ).map( c => '%' + ('00' + c.charCodeAt( 0 ).toString( 16 )).slice( -2 ) ).join( '' ) )
   return JSON.parse( jsonPayload )
 }
+
+

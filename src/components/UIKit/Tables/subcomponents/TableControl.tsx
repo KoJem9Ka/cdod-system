@@ -38,24 +38,24 @@ export const TableControl: FC<TableControlProps> = props => {
     return (
       <FlatBox
         as='button'
-        clickable={ !!props.onClick }
-        onClick={ props.onClick }
-        { ...props }
+        clickable={ !!props.onClick}
+        onClick={props.onClick}
+        {...props}
       >
-        { props.thumb && <Icons thumb={ props.thumb }/> }
-        { props.text }
-        { props.children }
+        {props.thumb && <Icons thumb={props.thumb}/>}
+        {props.text}
+        {props.children}
       </FlatBox>
     )
   case 'numberInput':
-    return <FlatBox as={ InputNumber } style={ { width: '5ch' } } { ...props }/>
+    return <FlatBox as={InputNumber} style={{ width: '5ch' }} {...props}/>
   case 'textInput':
-    return <FlatBox as={ DebouncedInput } { ...props }/>
+    return <FlatBox as={DebouncedInput} {...props}/>
   }
 }
 
 
-export const CheckRadioLabel = styled.label`
+export const CheckOrRadioLabel = styled.label`
   cursor : pointer;
 
   *:not(:last-child) {

@@ -1,3 +1,7 @@
 mutation login($user: LoginInput!) {
-  login(user: $user)
+  login(loginInput: $user) {
+    accessToken
+    message
+    refreshToken
+  }
 }

@@ -18,7 +18,7 @@ import {
 import {
   columns,
   studentsGlobalFilterFn
-}                              from './config'
+}                              from './configColumns'
 import styles                  from '../../../../styles/tableStyles.module.scss'
 import { useAllStudentsQuery } from '../../../../other/generated'
 import { useStudentForm }      from '../../../../store/studentForm/hooks'
@@ -27,7 +27,6 @@ import { TableHeadSeparator }  from '../../../../components/UIKit/Tables/subcomp
 import TablePageSizer          from '../../../../components/UIKit/Tables/TablePageSizer'
 import TableColumnHider        from '../../../../components/UIKit/Tables/TableColumnHider'
 import PaginationControls      from './components/PaginationControls'
-import Filter                  from './components/Filter'
 import { isEmpty }             from 'lodash'
 
 
@@ -38,10 +37,13 @@ const StudentsTable: FC = () => {
   const [ columnFilters, setColumnFilters ] = useState<ColumnFiltersState>( [] )
   const [ globalFilter, setGlobalFilter ] = useState( '' )
   const [ pagination, setPagination ] = useState<PaginationState>( { pageSize: 25, pageIndex: 0 } )
-  const [ columnVisibility, setColumnVisibility ] = useState<VisibilityState>( {} )
+  const [ columnVisibility, setColumnVisibility ] = useState<VisibilityState>( {
+    parentFio: false,
+    phone:     false,
+    email:     false,
+    Оплата:    false,
+  } )
   const { studentSelect, studentOriginal, studentCreate } = useStudentForm()
-
-  console.log( 'table render' )
 
   const table = useReactTable( {
     data,
@@ -75,65 +77,63 @@ const StudentsTable: FC = () => {
     return <></>
 
   return (
-    <div className={ styles.tableMainContainer }>
-      <div className={ styles.utils }>
-        <TableControl thumb='add' onClick={ studentCreate }/>
+    <div className={styles.tableMainContainer}>
+      <div className={styles.utils}>
+        <TableControl thumb='add' onClick={studentCreate}/>
         <TableHeadSeparator/>
-        <p>Показано: <b>{ dataFilteredCount }</b> / <b>{ data.length }</b></p>
+        <p>Показано: <b>{dataFilteredCount}</b> / <b>{data.length}</b></p>
         <TableHeadSeparator/>
         <TableControl
           placeholder='🔍 Поиск...'
-          style={ { flexGrow: 1, width: '10ch', textAlign: 'left' } }
-          value={ globalFilter }
+          style={{ flexGrow: 1, width: '10ch', textAlign: 'left' }}
+          value={globalFilter}
           variant='textInput'
-          onChange={ value => setGlobalFilter( String( value ) ) }
+          onChange={value => setGlobalFilter( String( value ) )}
         />
         <TableHeadSeparator/>
-        <TablePageSizer pagination={ pagination } setPagination={ setPagination } totalCount={ data.length }/>
-        <TableColumnHider table={ table }/>
+        <TablePageSizer pagination={pagination} setPagination={setPagination} totalCount={data.length}/>
+        <TableColumnHider table={table}/>
         <TableHeadSeparator/>
-        <PaginationControls table={ table }/>
+        <PaginationControls table={table}/>
       </div>
-      <div className={ styles.tableSizableContainer }>
+      <div className={styles.tableSizableContainer}>
         <table>
           <thead>
-            { table.getHeaderGroups().map( headerGroup => (
-              <tr key={ headerGroup.id }>
-                { headerGroup.headers.map( header => (
+            {table.getHeaderGroups().map( headerGroup => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map( header => (
                   <th
-                    key={ header.id }
-                    style={ header.column.getCanSort() ? { cursor: 'pointer', userSelect: 'none' } : undefined }
-                    onClick={ header.column.getToggleSortingHandler() }
+                    key={header.id}
+                    style={header.column.getCanSort() ? { cursor: 'pointer', userSelect: 'none' } : undefined}
+                    onClick={header.column.getToggleSortingHandler()}
                   >
-                    { flexRender( header.column.columnDef.header, header.getContext() ) }
-                    { {
+                    {flexRender( header.column.columnDef.header, header.getContext() )}
+                    {{
                       asc:  ' 🔼',
                       desc: ' 🔽',
-                    }[header.column.getIsSorted() as string] ?? null }
-                    { header.column.getCanFilter() ? (
-                      <div>
-                        <Filter column={ header.column } table={ table }/>
-                      </div>
-                    ) : null }
+                    }[header.column.getIsSorted() as string] ?? null}
+                    {/*{header.column.getCanFilter() && (*/}
+                    {/*  <StudentsTableFilter column={header.column} table={table}/>*/}
+                    {/*)}*/}
                   </th>
-                ) ) }
+                ) )}
               </tr>
-            ) ) }
+            ) )}
           </thead>
           <tbody>
-            { table.getRowModel().rows.map( row => (
+            {table.getRowModel().rows.map( row => (
               <tr
-                key={ row.id }
-                className={ row.original.id === studentOriginal?.id ? styles.selected : undefined }
-                onClick={ () => studentSelect( row.original.id ) }
+                key={row.id}
+                className={row.original.id === studentOriginal?.id ? styles.selected : undefined}
+                onClick={() => studentSelect( row.original.id )}
               >
-                { row.getVisibleCells().map( cell => (
-                  <td key={ cell.id }>
-                    { flexRender( cell.column.columnDef.cell, cell.getContext() ) }
+                {row.getVisibleCells().map( cell => (
+                  <td key={cell.id}>
+                    {flexRender( cell.column.columnDef.cell, cell.getContext() )}
                   </td>
-                ) ) }
+                ) )}
               </tr>
-            ) ) }
+            ) )}
           </tbody>
         </table>
       </div>

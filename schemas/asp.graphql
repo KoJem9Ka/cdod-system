@@ -93,10 +93,11 @@ type Mutation {
   courseCreateCourse(course: CourseCreateInput!): CourseType!
   courseUpdateMany(courses: [CourseUpdateInput!]!): Boolean!
   createSchool(school: SchoolCreateInput!): SchoolType!
-  login(user: LoginInput!): String!
+  login(loginInput: LoginInput!): TokenResponseType!
   parentCreate(parent: ParentInput!): ParentType!
   parentDeleteMany(parentsIds: [Int!]!): Boolean!
   parentUpdate(id: Int!, parent: ParentInput!): ParentType!
+  renewAccessToken(renewToken: RenewTokenInput!): TokenResponseType!
   schoolDeleteMany(schoolIds: [Int!]!): Boolean!
   schoolUpdateMany(schools: [SchoolUpdateInput!]!): Boolean!
   studentCreate(student: StudentCreateInput!): StudentType!
@@ -205,6 +206,12 @@ type TeachersWorkTimeType {
   teacher: TeacherType!
   teacherId: Int!
   workTime: TimeSpan!
+}
+
+type TokenResponseType {
+  accessToken: String
+  message: String
+  refreshToken: String
 }
 
 enum ApplyPolicy {
@@ -579,6 +586,11 @@ input PostTypeFilterInput {
 input PostTypeSortInput {
   id: SortEnumType
   name: SortEnumType
+}
+
+input RenewTokenInput {
+  accessToken: String!
+  refreshToken: String!
 }
 
 input SchoolCreateInput {

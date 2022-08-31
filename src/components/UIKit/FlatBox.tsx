@@ -12,7 +12,7 @@ export type FlatBoxProps = {
   }
 }
 
-export const FlatBox = styled.div<FlatBoxProps>`
+export const FlatBox = styled.span<FlatBoxProps>`
   background    : rgba(255, 255, 255, 0.2);
   border-radius : 10px;
   display       : flex;
@@ -29,14 +29,14 @@ export const FlatBox = styled.div<FlatBoxProps>`
     padding : .3rem .9rem;
   }
 
-  ${ p => p.hoverable && css`
+  ${p => p.hoverable && css`
     position : relative;
 
-    &:hover ${ p.hoverable.elem as any } {
-      display : ${ p.hoverable.display };
+    &:hover ${p.hoverable.elem as any} {
+      display : ${p.hoverable.display};
     }
-  ` }
-  ${ p => p.clickable && css`
+  `}
+  ${p => p.clickable && css`
     cursor : pointer;
 
     &:hover {
@@ -46,7 +46,7 @@ export const FlatBox = styled.div<FlatBoxProps>`
     &:active {
       background : rgba(255, 255, 255, 0.6);
     }
-  ` }
+  `}
   &:disabled {
     cursor     : default;
     filter     : brightness(0.5);

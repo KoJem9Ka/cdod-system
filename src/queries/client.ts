@@ -15,32 +15,39 @@ import {
   LoginDocument
 }                       from '../other/generated'
 import { toast }        from 'react-toastify'
-import { parseJwt }     from '../other/helpers'
+import { getJSON }      from '../other/helpers'
 
 
-
+// Нужно доделать рефреш токен
 export const Application = {
   async login( { email, password }: GLoginInput ) {
+    const startFetch = (client.mutate as GLoginMutationFn)( { mutation: LoginDocument, variables: { user: { email, password } } } )
 
-    const startFetch = async () => (client.mutate as GLoginMutationFn)( { mutation: LoginDocument, variables: { user: { email, password } } } )
-    const { data } = await toast.promise( startFetch(), {
+    const { data } = await toast.promise( startFetch, {
       pending: 'Авторизация...',
       error:   'Ошибка запроса авторизации',
     } )
+
     if ( !data?.login ) {
       toast.error( 'Ошибка запроса авторизации' )
       return
     }
+
     switch ( data.login ) {
-    case 'Not found':
-      toast.error( 'Пользователь не найден' )
-      break
+
+    // case 'Not found':
+    //   toast.error( 'Пользователь не найден' )
+    //   return
+
     default:
-      const jwtObject = parseJwt( data.login )
-      console.log( jwtObject )
-      localStorage.setItem( 'Authorization', data.login )
+      console.log( getJSON( data ) )
+      // console.log( jwtObject )
+      // const jwtObject = parseJwt( data.login )
+
+      localStorage.setItem( 'Authorization', data.login.accessToken! )
       document.location.href = AbsolutePath.Root
     }
+
   },
   logout() {
     localStorage.removeItem( 'Authorization' )
@@ -54,7 +61,7 @@ const serverDomainLink = new HttpLink( { uri: 'https://localhost:7094' } )
 
 const authMiddleware = new ApolloLink( ( operation, forward ) => {
   const token = localStorage.getItem( 'Authorization' )
-  operation.setContext( { headers: { authorization: token ? `Bearer ${ token }` : '' } } )
+  operation.setContext( { headers: { authorization: token ? `Bearer ${token}` : '' } } )
   return forward( operation )
 } )
 

@@ -4,8 +4,8 @@ import { useStudentForm } from '../../../../../store/studentForm/hooks'
 import { GContractState } from '../../../../../other/generated'
 import styled             from 'styled-components'
 import {
-  contractStateParse,
-  hexIsDark
+  hexIsDark,
+  parseContractState
 }                         from '../../../../../other/helpers'
 
 
@@ -13,8 +13,8 @@ import {
 const StudyCardStyled = styled.div<{ contractState: GContractState }>`
   width         : 100%;
   padding       : 10px;
-  background    : ${ p => contractStateParse( p.contractState, 'color' ) };
-  color         : ${ p => (hexIsDark( contractStateParse( p.contractState, 'color' ) ) ? 'white' : 'black') };
+  background    : ${p => parseContractState( p.contractState, 'color' )};
+  color         : ${p => (hexIsDark( parseContractState( p.contractState, 'color' ) ) ? 'white' : 'black')};
   border-radius : 10px;
 
   div {
@@ -38,14 +38,14 @@ type StudyCardProps = {
   admissionDate: string
 }
 const StudyCard: FC<StudyCardProps> = ( { courseName, groupName, admissionDate, contractState } ) => (
-  <StudyCardStyled contractState={ contractState }>
+  <StudyCardStyled contractState={contractState}>
     <div>
-      <span style={ { fontWeight: 600 } }>{ courseName }</span>
-      <span>{ groupName || 'Без группы' }</span>
+      <span style={{ fontWeight: 600 }}>{courseName}</span>
+      <span>{groupName || 'Без группы'}</span>
     </div>
     <div>
-      <span>{ contractStateParse( contractState ) }</span>
-      <span>{ admissionDate }</span>
+      <span>{parseContractState( contractState )}</span>
+      <span>{admissionDate}</span>
     </div>
   </StudyCardStyled>
 )
@@ -58,15 +58,15 @@ export const StudiesFields: FC = () => {
   return (
     <>
       <Title>Обучение</Title>
-      { studentModified.info.map( study => (
+      {studentModified.info.map( study => (
         <StudyCard
-          key={ `${ study.course.id }_${ study.attempt }` }
-          admissionDate={ study.admissionDate }
-          contractState={ study.contractState }
-          courseName={ study.course.name }
-          groupName={ study.group?.name }
+          key={`${study.course.id}_${study.attempt}`}
+          admissionDate={study.admissionDate}
+          contractState={study.contractState}
+          courseName={study.course.name}
+          groupName={study.group?.name}
         />
-      ) ) }
+      ) )}
     </>
   )
 }

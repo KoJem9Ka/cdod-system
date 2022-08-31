@@ -8,8 +8,8 @@ import {
   GContractState
 }                            from '../../../../../other/generated'
 import {
-  contractStateParse,
-  hexIsDark
+  hexIsDark,
+  parseContractState
 }                            from '../../../../../other/helpers'
 
 
@@ -23,16 +23,16 @@ const ColumnStudies: ColumnDefTemplate<CellContext<T, any>> = ( { row: { origina
 
   return (
     <Col>
-      { filterd.map( study => (
+      {info.map( study => (
         <Study
-          key={ `${ study.course.name } ${ study.attempt }` }
-          contractState={ study.contractState }
+          key={`${study.course.name} ${study.attempt}`}
+          contractState={study.contractState}
         >
-          <p>{ moment( study.admissionDate ).year() }</p>
-          <p>{ study.course.name }</p>
-          <p>{ contractStateParse( study.contractState ) }</p>
+          <p>{moment( study.admissionDate ).year()}</p>
+          <p>{study.course.name}</p>
+          <p>{parseContractState( study.contractState )}</p>
         </Study>
-      ) ) }
+      ) )}
     </Col>
   )
 }
@@ -42,8 +42,8 @@ export default ColumnStudies
 const Study = styled.div<{ contractState: GContractState }>`
   display               : grid;
   grid-template-columns : repeat(3, auto);
-  background            : ${ p => contractStateParse( p.contractState, 'color' ) };
-  color                 : ${ p => (hexIsDark( contractStateParse( p.contractState, 'color' ) ) ? 'white' : 'black') };
+  background            : ${p => parseContractState( p.contractState, 'color' )};
+  color                 : ${p => (hexIsDark( parseContractState( p.contractState, 'color' ) ) ? 'white' : 'black')};
   border-radius         : 5px;
   grid-gap              : 5px;
   padding               : 4px 8px;

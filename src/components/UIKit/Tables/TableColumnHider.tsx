@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { Table }     from '@tanstack/react-table'
 import {
-  CheckRadioLabel,
+  CheckOrRadioLabel,
   ListPosAbsolute,
   TableControl
 }                    from './subcomponents/TableControl'
@@ -16,14 +16,14 @@ export const TableColumnHider: FC<{ table: Table<any> }> = ( { table } ) => (
   >
     <ListPosAbsolute>
       { table.getAllLeafColumns().map( column => (
-        <CheckRadioLabel key={ column.id }>
+        <CheckOrRadioLabel key={ column.id }>
           <input
             checked={ column.getIsVisible() }
             type='checkbox'
             onChange={ column.getToggleVisibilityHandler() }
           />
           <span>{ column.columnDef.header as string }</span>
-        </CheckRadioLabel>
+        </CheckOrRadioLabel>
       ) ) }
     </ListPosAbsolute>
   </TableControl>

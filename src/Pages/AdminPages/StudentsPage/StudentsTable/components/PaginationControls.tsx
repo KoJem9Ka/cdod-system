@@ -4,10 +4,11 @@ import React, {
 }                       from 'react'
 import { Table }        from '@tanstack/react-table'
 import { TableControl } from '../../../../../components/UIKit/Tables/subcomponents/TableControl'
+import { isEqual }      from 'lodash'
 
 
 
-const PaginationControls: FC<{ table: Table<any> }> = memo( ( { table } ) => {
+const PaginationControls: FC<{ table: Table<any> }> = ( { table } ) => {
   const pagesCount = table.getPageCount()
 
   return (
@@ -28,7 +29,7 @@ const PaginationControls: FC<{ table: Table<any> }> = memo( ( { table } ) => {
       <TableControl disabled={ !table.getCanNextPage() } thumb='goEnd' onClick={ () => table.setPageIndex( pagesCount - 1 ) }/>
     </>
   )
-} )
+}
 
 export default PaginationControls
 
