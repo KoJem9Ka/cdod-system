@@ -5,3 +5,11 @@ mutation login($user: LoginInput!) {
     refreshToken
   }
 }
+
+mutation renewToken($tokens: RenewTokenInput!){
+  relogin: renewAccessToken(renewToken: $tokens) {
+    accessToken
+    message
+    refreshToken
+  }
+}

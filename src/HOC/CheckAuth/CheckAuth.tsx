@@ -19,7 +19,7 @@ type CheckAuthProps = PropsWithChildren<{
 //  Надо будет из хранилища проверять а не через useState
 const CheckAuth: React.FC<CheckAuthProps> = ( { children, anonymous = true } ) => {
   const navigate = useNavigate()
-  const noToken = isEmpty( localStorage.getItem( 'Authorization' ) )
+  const noToken = isEmpty( localStorage.getItem( 'AccessToken' ) )
   const hasToken = !noToken
 
   useEffect( () => {
@@ -32,7 +32,7 @@ const CheckAuth: React.FC<CheckAuthProps> = ( { children, anonymous = true } ) =
   if ( noToken ) return <></>
   else return (
     <>
-      { children }
+      {children}
     </>
   )
 }

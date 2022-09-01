@@ -17,14 +17,14 @@ import { client }         from './queries/client'
 
 createRoot( document.getElementById( 'root' ) as HTMLElement ).render(
   <React.StrictMode>
-    <Provider store={ store }>
-      <ApolloProvider client={ client }>
+    <Provider store={store}>
+      <ApolloProvider client={client}>
         <BrowserRouter>
           <App/>
           <ToastContainer
-            autoClose={ 2500 }
-            position={ 'bottom-left' }
-            theme={ 'light' }
+            autoClose={2500}
+            position={'bottom-left'}
+            theme={'light'}
             pauseOnHover
           />
           <Preloader/>

@@ -9,6 +9,7 @@ import { insteadOfContextSlice } from './InsteadOfContext/reducer'
 import { studentFormSlice }      from './studentForm/reducer'
 import { courseFormSlice }       from './courseForm/reducer'
 import { groupFormSlice }        from './groupForm/reducer'
+import { IS_DEV }                from '../other/helpers'
 
 
 
@@ -19,7 +20,7 @@ export const store = configureStore( {
     courseForm:       courseFormSlice.reducer,
     groupForm:        groupFormSlice.reducer,
   },
-  devTools:   true,
+  devTools:   IS_DEV,
   middleware: getDefaultMiddleware => getDefaultMiddleware( {
     thunk: { extraArgument: {} },
   } )/*.concat( logger )*/,

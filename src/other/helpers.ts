@@ -18,6 +18,8 @@ import {
 
 
 
+export const IS_DEV = process.env.NODE_ENV === 'development'
+
 export const mergeState = <A, B>( a: A, b: B ): A & B => merge( cloneDeep( a ), b )
 
 const onCycle = () => {
@@ -138,10 +140,19 @@ export const newStudent = (): GStudentByIdQuery['student'] => ({
   },
 })
 
-export const parseJwt = ( token: string ) => {
+type TJwt = {
+  'emailaddress': string
+  'role': string
+  'exp': 1662018919
+  'iss': string
+  'aud': string
+}
+export const parseJwt = <T extends string | null>( token: T ): T extends string ? TJwt : null => {
+  if ( token === null ) return null as any
   const base64Url = token.split( '.' )[1]
   const base64 = base64Url.replace( /-/g, '+' ).replace( /_/g, '/' )
-  const jsonPayload = decodeURIComponent( window.atob( base64 ).split( '' ).map( c => '%' + ('00' + c.charCodeAt( 0 ).toString( 16 )).slice( -2 ) ).join( '' ) )
+  let jsonPayload = decodeURIComponent( window.atob( base64 ).split( '' ).map( c => '%' + ('00' + c.charCodeAt( 0 ).toString( 16 )).slice( -2 ) ).join( '' ) )
+  jsonPayload = jsonPayload.replace( /(?<=(,|{)").+?\/(?=[a-z]+")/g, '' )
   return JSON.parse( jsonPayload )
 }
 
