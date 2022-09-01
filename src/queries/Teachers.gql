@@ -1,0 +1,13 @@
+query Teachers{
+  teachers{
+    id
+    lastName
+    firstName
+    patronymic
+    birthday
+    post
+    email
+    phoneNumber
+    workPlace
+  }
+}
