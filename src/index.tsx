@@ -3,7 +3,6 @@ import 'react-toastify/dist/ReactToastify.css'
 import './styles/index.scss'
 import 'moment/locale/ru'
 import React              from 'react'
-import { createRoot }     from 'react-dom/client'
 import App                from './App'
 import { BrowserRouter }  from 'react-router-dom'
 import { store }          from './store/store'
@@ -12,6 +11,7 @@ import { ToastContainer } from 'react-toastify'
 import { ApolloProvider } from '@apollo/client'
 import { Preloader }      from './components/Preloader/Preloader'
 import { client }         from './queries/client'
+import { createRoot }     from 'react-dom/client'
 
 
 

@@ -2,7 +2,7 @@
 
 
 #Generated Files
-/src/**/generated.ts
+src/**/generated.ts
 
 #Other Repos
 /schemas/cdod_server_scheme/

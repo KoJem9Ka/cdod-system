@@ -1,36 +1,26 @@
-import React, { useEffect }    from 'react'
-import Workspace               from '../../../HOC/Workspace/Workspace'
-import styles                  from './StudentsPage.module.scss'
-import StudentForm             from './StudentForm/StudentForm'
-import { FlexRow }             from '../../../components/UIKit/otherStyled'
-import StudentsTable           from './StudentsTable/StudentsTable'
-import { useAllStudentsQuery } from '../../../other/generated'
-import { usePreloader }        from '../../../components/Preloader/Preloader'
-import { toast }               from 'react-toastify'
+import React         from 'react'
+import Workspace     from '../../../HOC/Workspace/Workspace'
+import StudentForm   from './StudentForm/StudentForm'
+import { FlexRow }   from '../../../components/UIKit/otherStyled'
+import StudentsTable from './StudentsTable/StudentsTable'
+import styled        from 'styled-components'
 
 
 
-const StudentsPage: React.FC = () => {
+const WorkspacePage = styled( Workspace )`
+  display        : flex;
+  flex-direction : column;
+`
 
-  const { data, loading, error } = useAllStudentsQuery()
 
-  usePreloader( loading )
-
-  useEffect( () => {
-    error && toast.error( `Ошибка: ${ error }` )
-  }, [ error ] )
-
-  return (
-    <>
-      <Workspace className={ styles.StudentsPage }>
-        <FlexRow>
-          <StudentsTable/>
-          <StudentForm/>
-        </FlexRow>
-      </Workspace>
-    </>
-  )
-}
+const StudentsPage: React.FC = () => (
+  <WorkspacePage>
+    <FlexRow>
+      <StudentsTable/>
+      <StudentForm/>
+    </FlexRow>
+  </WorkspacePage>
+)
 
 StudentsPage.whyDidYouRender = true
 

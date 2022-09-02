@@ -11,16 +11,20 @@ import {
   GStudentByIdQueryVariables,
   GStudentCreateInput,
   GStudentUpdateInput,
-  GStudentWithParentCreateCommitMutation,
-  GStudentWithParentCreateCommitMutationVariables,
-  GStudentWithParentUpdateCommitMutation,
-  GStudentWithParentUpdateCommitMutationVariables,
+  GStudentWithParentCreateCommitMutationFn,
+  GStudentWithParentUpdateCommitMutationFn,
   StudentByIdDocument,
   StudentWithParentCreateCommitDocument,
   StudentWithParentUpdateCommitDocument
 }                            from '../../other/generated'
-import { isNil }             from 'lodash'
-import { CNonExistingID }    from '../../other/helpers'
+import {
+  isNil,
+  merge
+}                            from 'lodash'
+import {
+  newParent,
+  NonExistingID
+}                            from '../../other/helpers'
 import { toast }             from 'react-toastify'
 import { client }            from '../../queries/client'
 
@@ -29,14 +33,14 @@ import { client }            from '../../queries/client'
 type TStudentObjFromQuery = GStudentByIdQuery['student']
 type TVariableStudentID = GStudentByIdQueryVariables['studentID']
 
-export const thunkLoadStudent = createAsyncThunk<TStudentObjFromQuery, TVariableStudentID, TAppThunkConfig>( 'studentForm/load',
+export const thunkStudentLoad = createAsyncThunk<TStudentObjFromQuery, TVariableStudentID, TAppThunkConfig>( 'studentForm/load',
   async ( id, { rejectWithValue } ) => {
     let queryResult: ApolloQueryResult<GStudentByIdQuery>
     try {
       queryResult = await client.query<GStudentByIdQuery, GStudentByIdQueryVariables>( { query: StudentByIdDocument, variables: { studentID: id } } )
     }
     catch ( e ) {
-      return rejectWithValue( `Произошла ошибка при загрузке студента с id = ${ id }, error: ${ e }` )
+      return rejectWithValue( `Произошла ошибка при загрузке студента с id = ${id}, error: ${e}` )
     }
     return queryResult.data.student
   }
@@ -46,60 +50,53 @@ export const thunkStudentCommit = createAsyncThunk( 'studentForm/commit',
   async ( _, { rejectWithValue, getState } ) => {
     console.log( 'commiting' )
     try {
-      const { studentForm: { studentModified } } = getState() as TAppState
-      if ( isNil( studentModified ) ) throw new TypeError( 'studentModified равен null, нечего отправлять на сервер.' )
-      const isCreated = studentModified.id === CNonExistingID
+      const { studentForm: { studentModified: student } } = getState() as TAppState
+      if ( isNil( student ) ) throw new TypeError( 'studentModified равен null, нечего отправлять на сервер.' )
+      const isCreated = student.id === NonExistingID
 
       const StudentCreateInput: GStudentCreateInput = {
-        lastName:    studentModified.lastName,
-        firstName:   studentModified.firstName,
-        patronymic:  studentModified.patronymic,
-        birthDate:   studentModified.birthDate,
-        description: studentModified.description,
-        parentId:    studentModified.parent.id,
-        schoolId:    studentModified.school?.id ?? null,
+        lastName:   student.lastName,
+        firstName:  student.firstName,
+        patronymic: student.patronymic,
+
+        birthDate:   student.birthDate,
+        description: student.description,
+        parentId:    student.parent.id,
+        schoolId:    student.school?.id,
       }
-      const StudentUpdateInput: GStudentUpdateInput = { id: studentModified.id, ...StudentCreateInput }
-      const ParentInput: GParentInput = {
-        lastname:   studentModified.parent.lastName,
-        firstname:  studentModified.parent.firstName,
-        patronymic: studentModified.parent.patronymic,
+      const StudentUpdateInput: GStudentUpdateInput = { id: student.id, ...StudentCreateInput }
 
-        email:             studentModified.parent.email,
-        secondEmail:       studentModified.parent.secondEmail,
-        phoneNumber:       studentModified.parent.phoneNumber,
-        secondPhoneNumber: studentModified.parent.secondPhoneNumber,
+      const ParentInput: GParentInput = merge( newParent(), {
+        lastname:   student.parent.lastName,
+        firstname:  student.parent.firstName,
+        patronymic: student.parent.patronymic,
 
-        applyingDate: studentModified.parent.applyingDate,
-        relationType: studentModified.parent.relationType,
+        email:       student.parent.email,
+        secondEmail: student.parent.secondEmail,
 
-        address:       null,
-        birthday:      null,
-        education:     null,
-        inn:           null,
-        passportCode:  null,
-        passportDate:  null,
-        passportIssue: null,
-        passportNo:    null,
-        password:      null,
-        snils:         null,
-      }
+        phoneNumber:       student.parent.phoneNumber,
+        secondPhoneNumber: student.parent.secondPhoneNumber,
+
+        applyingDate: student.parent.applyingDate,
+        relationType: student.parent.relationType,
+      } )
 
       const { data, errors } = isCreated
-        ? await client.mutate<GStudentWithParentCreateCommitMutation, GStudentWithParentCreateCommitMutationVariables>( {
+        ? await (client.mutate as GStudentWithParentCreateCommitMutationFn)( {
           mutation:  StudentWithParentCreateCommitDocument,
           variables: { student: StudentCreateInput, parent: ParentInput },
         } )
-        : await client.mutate<GStudentWithParentUpdateCommitMutation, GStudentWithParentUpdateCommitMutationVariables>( {
+        : await (client.mutate as GStudentWithParentUpdateCommitMutationFn)( {
           mutation:  StudentWithParentUpdateCommitDocument,
-          variables: { student: StudentUpdateInput, parent: ParentInput, parentId: studentModified.parent.id },
+          variables: { student: StudentUpdateInput, parent: ParentInput, parentId: student.parent.id },
         } )
 
+      toast( 'Успешная отправка!' )
     }
     catch ( err ) {
       console.log( JSON.stringify( err ) )
-      toast( JSON.stringify( err ) )
-      rejectWithValue( `Ошибка при сохранении студента на сервер, error: ${ err }` )
+      toast.error( JSON.stringify( err ) )
+      rejectWithValue( `Ошибка при сохранении студента на сервер: ${err}` )
     }
   }
 )

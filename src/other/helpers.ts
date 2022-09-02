@@ -11,6 +11,7 @@ import moment, { duration } from 'moment/moment'
 import {
   GContractState,
   GInfoType,
+  GParentInput,
   GParentType,
   GRelationType,
   GStudentByIdQuery
@@ -115,10 +116,11 @@ export const parseContractState = ( contractState1: GInfoType['contractState'], 
   ? contractStateDecoder[contractState1]
   : contractStateColorizer[contractState1])
 
-export const CNonExistingID = -1
+export const NonExistingID = -1
+
 
 export const newStudent = (): GStudentByIdQuery['student'] => ({
-  id:          CNonExistingID,
+  id:          NonExistingID,
   lastName:    null,
   firstName:   null,
   patronymic:  null,
@@ -138,6 +140,32 @@ export const newStudent = (): GStudentByIdQuery['student'] => ({
     secondEmail:       null,
     secondPhoneNumber: null,
   },
+})
+
+export const newParent = (): GParentInput => ({
+  lastname:   undefined,
+  firstname:  undefined,
+  patronymic: undefined,
+  birthday:   undefined,
+
+  relationType: undefined,
+  applyingDate: undefined,
+
+  email:       undefined,
+  secondEmail: undefined,
+
+  phoneNumber:       undefined,
+  secondPhoneNumber: undefined,
+
+  address:       undefined,
+  inn:           undefined,
+  education:     undefined,
+  passportCode:  undefined,
+  passportDate:  undefined,
+  passportIssue: undefined,
+  passportNo:    undefined,
+  password:      undefined,
+  snils:         undefined,
 })
 
 type TJwt = {

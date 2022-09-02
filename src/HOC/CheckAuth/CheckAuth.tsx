@@ -11,16 +11,9 @@ import { isEmpty }      from 'lodash'
 
 
 
-type CheckAuthProps = PropsWithChildren<{
-  anonymous?: boolean
-}>
-
-//TODO: Что то проверку какую то для авторизации сделать
-//  Надо будет из хранилища проверять а не через useState
-const CheckAuth: React.FC<CheckAuthProps> = ( { children, anonymous = true } ) => {
+const CheckAuth: React.FC<PropsWithChildren> = ( { children } ) => {
   const navigate = useNavigate()
-  const noToken = isEmpty( localStorage.getItem( 'AccessToken' ) )
-  const hasToken = !noToken
+  const noToken  = isEmpty( localStorage.getItem( 'AccessToken' ) )
 
   useEffect( () => {
     if ( noToken ) {

@@ -31,19 +31,20 @@ import { isEmpty }             from 'lodash'
 
 
 
-const StudentsTable: FC = () => {
-  const { data: { students: data } = { students: [] } } = useAllStudentsQuery()
-  const [ sorting, setSorting ] = useState<SortingState>( [] )
-  const [ columnFilters, setColumnFilters ] = useState<ColumnFiltersState>( [] )
-  const [ globalFilter, setGlobalFilter ] = useState( '' )
-  const [ pagination, setPagination ] = useState<PaginationState>( { pageSize: 25, pageIndex: 0 } )
-  const [ columnVisibility, setColumnVisibility ] = useState<VisibilityState>( {
+const StudentsTable: FC       = () => {
+  const { data: { students: data } = { students: [] } }   = useAllStudentsQuery()
+  const [ sorting, setSorting ]                           = useState<SortingState>( [] )
+  const [ columnFilters, setColumnFilters ]               = useState<ColumnFiltersState>( [] )
+  const [ globalFilter, setGlobalFilter ]                 = useState( '' )
+  const [ pagination, setPagination ]                     = useState<PaginationState>( { pageSize: 25, pageIndex: 0 } )
+  const [ columnVisibility, setColumnVisibility ]         = useState<VisibilityState>( {
     parentFio: false,
     phone:     false,
     email:     false,
     Оплата:    false,
   } )
   const { studentSelect, studentOriginal, studentCreate } = useStudentForm()
+
 
   const table = useReactTable( {
     data,
@@ -75,6 +76,7 @@ const StudentsTable: FC = () => {
 
   if ( isEmpty( data ) )
     return <></>
+
 
   return (
     <div className={styles.tableMainContainer}>

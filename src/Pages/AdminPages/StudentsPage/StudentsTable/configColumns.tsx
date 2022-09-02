@@ -16,7 +16,7 @@ import { isNil }             from 'lodash'
 
 
 
-export type T = GAllStudentsQuery['students'][number]
+type T = GAllStudentsQuery['students'][number]
 
 // declare module '@tanstack/table-core' {
 //   interface FilterFns {
@@ -83,7 +83,7 @@ export const columns: ColumnDef<T, any>[] = [
   {
     header:             'Первое обращение',
     accessorKey:        'parent.applyingDate',
-    accessorFn:         ( { parent: { applyingDate } } ) => `${applyingDate} (${humanizeDate( applyingDate )})`,
+    accessorFn:         ( { parent: { applyingDate } } ) => `${applyingDate} (${humanizeDate( applyingDate ?? null )})`, //TODO
     enableColumnFilter: false,
   }
 ]

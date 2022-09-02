@@ -3,8 +3,8 @@ import {
   PayloadAction
 }                            from '@reduxjs/toolkit'
 import {
-  thunkLoadStudent,
-  thunkStudentCommit
+  thunkStudentCommit,
+  thunkStudentLoad
 }                            from './thunks'
 import { ApolloError }       from '@apollo/client'
 import { GStudentByIdQuery } from '../../other/generated'
@@ -48,17 +48,17 @@ export const studentFormSlice = createSlice( {
     },
   },
   extraReducers: builder => builder
-      .addCase( thunkLoadStudent.pending, state => {
+      .addCase( thunkStudentLoad.pending, state => {
         state.studentLoading = true
         state.error = null
         state.studentModified = state.studentOriginal = null
         state.studentIsEdit = false
       } )
-      .addCase( thunkLoadStudent.rejected, ( state, action ) => {
+      .addCase( thunkStudentLoad.rejected, ( state, action ) => {
         state.studentLoading = false
-        state.error = `${ action.error.message }: ${ action.payload }`
+        state.error = `${action.error.message}: ${action.payload}`
       } )
-      .addCase( thunkLoadStudent.fulfilled, ( state, action ) => {
+      .addCase( thunkStudentLoad.fulfilled, ( state, action ) => {
         state.studentLoading = false
         state.studentModified = state.studentOriginal = action.payload
       } )
@@ -68,7 +68,7 @@ export const studentFormSlice = createSlice( {
       } )
       .addCase( thunkStudentCommit.rejected, ( state, action ) => {
         state.studentLoading = false
-        state.error = `${ action.error.message }: ${ action.payload }`
+        state.error = `${action.error.message}: ${action.payload}`
       } )
       .addCase( thunkStudentCommit.fulfilled, state => {
         state.studentLoading = false

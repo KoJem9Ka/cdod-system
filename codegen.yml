@@ -2,17 +2,19 @@ overwrite: true
 schema   : schemas/asp.graphql
 documents: src/queries/**/*.gql
 config   :
-  constEnums    : true
-  typesPrefix   : G
-  skipTypename  : true
-  strictScalars : true
-  scalars       :
+  constEnums   : true
+  typesPrefix  : G
+  skipTypename : true
+  strictScalars: true
+  scalars      :
     Date    : string
     TimeSpan: string
     DateTime: string
-  #  defaultScalarType: unknown
-  avoidOptionals: true
-#  maybeValue       : T # | null | undefined
+  #defaultScalarType: unknown
+  #avoidOptionals : true
+  #maybeValue       : T # | null | undefined
+  #inputMaybeValue: T | undefined
+
 generates:
   src/other/generated.ts:
     plugins:

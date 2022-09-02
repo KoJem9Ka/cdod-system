@@ -9,10 +9,7 @@ import {
   FormHead
 }                                     from '../../../../components/UIKit/Forms'
 import { useStudentFormQuery }        from '../../../../other/generated'
-import {
-  humanizeDate,
-  strJoinSpace
-}                                     from '../../../../other/helpers'
+import { humanizeDate }              from '../../../../other/helpers'
 import {
   FooterButtons,
   StudiesFields
@@ -37,44 +34,43 @@ const StudentForm: FC = () => {
   if ( studentLoading ) return (<Form><h2>Loading</h2></Form>)
   if ( studentModified === null || studentOriginal === null ) return <></>
 
-  const fio = strJoinSpace( studentModified.lastName, studentModified.firstName, studentModified.patronymic )
 
   return (
     <Form>
       <FormHead>
         <UserLogo/>
-        {/*{ !isEdit && fio && <HeadTitle>{ fio }</HeadTitle> }*/ }
+        {/*{ !isEdit && fio && <HeadTitle>{ fio }</HeadTitle> }*/}
         <EditableFIO
-          isEdit={ studentIsEdit }
-          setValues={ studentChange }
-          values={ { lastName: studentModified.lastName, firstName: studentModified.firstName, patronymic: studentModified.patronymic } }
+          isEdit={studentIsEdit}
+          setValues={studentChange}
+          values={{ lastName: studentModified.lastName, firstName: studentModified.firstName, patronymic: studentModified.patronymic }}
         />
-        { studentModified.birthDate && <p style={ { fontSize: 18 } }>{ humanizeDate( studentModified.birthDate, 'floor' ) }</p> }
+        {studentModified.birthDate && <p style={{ fontSize: 18 }}>{humanizeDate( studentModified.birthDate, 'floor' )}</p>}
       </FormHead>
       <FormBody>
         <FormField
           caption='Дата рождения'
-          isEdit={ studentIsEdit }
-          value={ studentModified.birthDate as string }
+          isEdit={studentIsEdit}
+          value={studentModified.birthDate as string}
           valueType='date'
-          onChange={ value => void studentChange( { birthDate: value } ) }
+          onChange={value => void studentChange( { birthDate: value } )}
         />
         <FormField
           caption='Школа'
-          getId={ val => val.id }
-          getText={ val => val.name }
-          isEdit={ studentIsEdit }
-          value={ studentModified.school }
-          values={ schools }
+          getId={val => val.id}
+          getText={val => val.name}
+          isEdit={studentIsEdit}
+          value={studentModified.school}
+          values={schools}
           valueType='select'
-          onChange={ school => studentChange( { school } ) }
+          onChange={school => studentChange( { school } )}
         />
         <FormField
-          caption={ 'Заметки' }
-          isEdit={ studentIsEdit }
-          value={ studentModified.description }
+          caption={'Заметки'}
+          isEdit={studentIsEdit}
+          value={studentModified.description}
           valueType='textarea'
-          onChange={ description => studentChange( { description } ) }
+          onChange={description => studentChange( { description } )}
         />
         <ParentField/>
         <StudiesFields/>
