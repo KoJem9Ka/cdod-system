@@ -48,10 +48,9 @@ const CoursesPage: React.FC = () => {
   
   return (
     <WorkspaceV2>
-      <EditBlock>
-        <AddButton><AddIcon height={30} width={30}/></AddButton>
-        <AddButton><AddIcon height={30} width={30}/></AddButton>
-      </EditBlock>
+      {/*<EditBlock>*/}
+      {/*  <AddButton><AddIcon height={30} width={30}/></AddButton>*/}
+      {/*</EditBlock>*/}
   
       {
         data

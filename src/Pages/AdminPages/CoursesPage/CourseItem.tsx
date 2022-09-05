@@ -37,7 +37,7 @@ const Img = styled.div`
 const Title = styled.div`
   display: flex;
   font-size: 24px;
-	line-height: 2rem;
+  line-height: 2rem;
   align-items: center;
   text-align: center;
   gap: 1.25rem;
@@ -51,6 +51,21 @@ const TextBlock = styled.div`
   grid-template-columns: 1fr 1fr 1fr;
 `
 
+const ThemesBlock = styled.div<{ color: string }>`
+  background: ${props => hexToRgbA(props.color, 0.1)};
+  max-height: 300px;
+  padding: 1.5rem 1.25rem 1.25rem;
+	margin-top: -1rem;
+  border-radius: 0 0 1.25rem 1.25rem;
+`
+
+const toRub = new Intl.NumberFormat('ru-RU', {
+  style: 'currency',
+  currency: 'rub',
+  currencyDisplay: 'code',
+  minimumFractionDigits: 0,
+})
+
 type CourseItemProps = {
   course: GCourseType
 }
@@ -60,22 +75,29 @@ const CourseItem: React.FC<CourseItemProps> = ({ course }) => {
   const { selectCourse } = useCourseForm()
 	
   return (
-    <Item color={course.color || 'beige'} onClick={() => selectCourse(course.id)}>
-      <ImgBlock>
-        <Img>
-          {/*<img alt='' src={course.svgIconUrl as string}/>*/}
-          <img alt='' src='https://placekitten.com/50/50'/>
-        </Img>
-        <Title>
-          {course.name}
-        </Title>
-      </ImgBlock>
-      <TextBlock>
-        <span>132 чел.</span>
-        <span>14 200p</span>
-        <span>c 8 лет</span>
-      </TextBlock>
-    </Item>
+    <div>
+      <Item color={course.color || 'beige'} onClick={() => selectCourse(course.id)}>
+        <ImgBlock>
+          <Img>
+            {/*<img alt='' src={course.svgIconUrl as string}/>*/}
+            <img alt='' src='https://placekitten.com/50/50'/>
+          </Img>
+          <Title>
+            {course.name}
+          </Title>
+        </ImgBlock>
+        <TextBlock>
+          {/*<span>132 чел.</span>*/}
+          <span>{course.price ? toRub.format(course.price) : '-'}</span>
+          <span>c 8 лет</span>
+        </TextBlock>
+      </Item>
+      <ThemesBlock color={course.color || 'beige'}>
+        <span>Темы:</span>
+				
+      </ThemesBlock>
+    </div>
+	
   )
 }
 
