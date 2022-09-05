@@ -6,7 +6,8 @@ import {
   GGroupsQuery,
   useGroupsQuery
 }                       from '../../../other/generated'
-
+import GroupsTable from './GroupTable/GroupsTable';
+import GroupForm from './GroupForm/GroupForm';
 
 
 type T = GGroupsQuery['groups'][number]
@@ -21,8 +22,8 @@ const GroupsPage: React.FC = () => {
   return (
     <Workspace>
       <FlexRow>
-        {/*<GroupsTable data={ data?.groups || [] } onRowSelected={ handler }/>*/ }
-        {/*{ !chosenId ? <></> : <GroupForm id={ chosenId }/> }*/ }
+        <GroupsTable/>
+        <GroupForm/>
       </FlexRow>
     </Workspace>
   )

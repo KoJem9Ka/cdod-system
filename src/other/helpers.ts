@@ -52,6 +52,8 @@ export const formatPhone = ( phone: string ): string => {
   return phone
 }
 
+export const shortFIOFormatter = (lastname: string, firstname: string, patronymic?: string) => (patronymic ? `${lastname} ${firstname[0]}. ${patronymic[0]}.` : `${lastname} ${firstname[0]}.`)
+
 export const strJoinSpace = ( ...strs: (string | null | undefined)[] ) => compact( strs ).join( ' ' )
 
 export const strsNonFalsy = ( ...strings: (string | undefined)[] ): boolean => strings.every( val => val !== '' && val !== undefined )

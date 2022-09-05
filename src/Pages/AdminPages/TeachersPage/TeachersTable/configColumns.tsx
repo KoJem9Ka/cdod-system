@@ -1,6 +1,7 @@
 import { ColumnDef } from '@tanstack/react-table'
-import { GTeachersQuery } from '../../../../other/generated'
+
 import { formatPhone, humanizeDate, strJoinSpace } from '../../../../other/helpers'
+import {GTeachersQuery} from '../../../../other/generated';
 
 type T = GTeachersQuery['teachers'][number]
 

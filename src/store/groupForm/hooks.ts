@@ -27,7 +27,7 @@ export const useGroupForm = () => {
   return {
     ...state,
     selectGroup,
-    studentToggleEdit: toggleEdit,
+    toggleEdit,
     changeGroup,
     isModified,
   }

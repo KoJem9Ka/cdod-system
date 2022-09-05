@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components'
 import { isNil }       from 'lodash'
+import { hexToRgbA } from '../../../other/helpers'
 
 
 
@@ -110,4 +111,9 @@ export const TextLine = styled.p<{ isValid?: boolean }>`
     border  : 2px solid red;
   `
 }
+`
+
+//TODO: убрать изменение фона, если кнопка неактивна
+export const FooterButton = styled.button`
+  opacity: ${props => (props.disabled ? 0.5 : 1)};
 `
