@@ -21,14 +21,14 @@ export const useCourseForm = () => {
   const state = useAppSelector( state1 => state1.courseForm )
 
   const selectCourse = ( id: T['id'] ) => void dispatch( thunkLoadCourseById( id ) )
-  const toggleEdit = ( value?: boolean ) => void dispatch( actionCourseToggleEdit( value ) )
+  const courseToggleEdit = ( value?: boolean ) => void dispatch( actionCourseToggleEdit( value ) )
   const changeCourse = ( value: Partial<Omit<T, 'id'>> ) => void dispatch( actionCourseChange( value ) )
   const closeCourseForm = () => void dispatch( actionCourseClose() )
   const isModified = () => !isEqual( state.courseOriginal, state.courseModified )
 
   return {
     ...state,
-    studentToggleEdit: toggleEdit,
+    courseToggleEdit,
     selectCourse,
     changeCourse,
     closeCourseForm,

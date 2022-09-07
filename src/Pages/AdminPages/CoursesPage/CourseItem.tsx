@@ -1,10 +1,17 @@
 import React from 'react'
 import styled from 'styled-components'
-import { GCourseType } from '../../../other/generated'
+import { GCourseType, useCourseProgramByIdQuery } from '../../../other/generated'
 import { useCourseForm } from '../../../store/courseForm/hooks'
 import { hexToRgbA } from '../../../other/helpers'
+import CourseTopicsBlock from './CourseTopicsBlock'
 
 const Item = styled.div<{ color: string }>`
+  background: ${props => hexToRgbA(props.color, 0.1)};
+  align-self: start;
+  border-radius: 1.25rem;
+`
+
+const Header = styled.div<{ color: string }>`
   font-family: Rubik, serif;
   font-weight: 600;
   color: white;
@@ -51,14 +58,6 @@ const TextBlock = styled.div`
   grid-template-columns: 1fr 1fr 1fr;
 `
 
-const ThemesBlock = styled.div<{ color: string }>`
-  background: ${props => hexToRgbA(props.color, 0.1)};
-  max-height: 300px;
-  padding: 1.5rem 1.25rem 1.25rem;
-	margin-top: -1rem;
-  border-radius: 0 0 1.25rem 1.25rem;
-`
-
 const toRub = new Intl.NumberFormat('ru-RU', {
   style: 'currency',
   currency: 'rub',
@@ -73,10 +72,12 @@ type CourseItemProps = {
 const CourseItem: React.FC<CourseItemProps> = ({ course }) => {
 	
   const { selectCourse } = useCourseForm()
-	
+  
+  const color = course.color || '#57BDDB'
+  
   return (
-    <div>
-      <Item color={course.color || 'beige'} onClick={() => selectCourse(course.id)}>
+    <Item color={color}>
+      <Header color={color} onClick={() => selectCourse(course.id)}>
         <ImgBlock>
           <Img>
             {/*<img alt='' src={course.svgIconUrl as string}/>*/}
@@ -87,16 +88,12 @@ const CourseItem: React.FC<CourseItemProps> = ({ course }) => {
           </Title>
         </ImgBlock>
         <TextBlock>
-          {/*<span>132 чел.</span>*/}
           <span>{course.price ? toRub.format(course.price) : '-'}</span>
           <span>c 8 лет</span>
         </TextBlock>
-      </Item>
-      <ThemesBlock color={course.color || 'beige'}>
-        <span>Темы:</span>
-				
-      </ThemesBlock>
-    </div>
+      </Header>
+      <CourseTopicsBlock color={course.color || 'beige'} programId={course.programId}/>
+    </Item>
 	
   )
 }

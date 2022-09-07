@@ -135,6 +135,14 @@ type PostType {
   name: String!
 }
 
+type ProgramType {
+  hours: Int!
+  id: Int!
+  name: String!
+  programFileUrl: String
+  topics: String
+}
+
 type Query {
   attendances(courseId: Int, lessonId: Int, order: [AttendanceTypeSortInput!], studentId: Int, where: AttendanceTypeFilterInput): [AttendanceType!]!
   course(id: Int!): CourseType!
@@ -147,6 +155,8 @@ type Query {
   parents(order: [ParentTypeSortInput!], where: ParentTypeFilterInput): [ParentType!]!
   post(id: Int!): PostType!
   posts(order: [PostTypeSortInput!], where: PostTypeFilterInput): [PostType!]!
+  program(id: Int!): ProgramType!
+  programs(order: [ProgramTypeSortInput!], where: ProgramTypeFilterInput): [ProgramType!]!
   school(id: Int!): SchoolType!
   schools(order: [SchoolTypeSortInput!], where: SchoolTypeFilterInput): [SchoolType!]!
   student(id: Int!): StudentType!
@@ -586,6 +596,24 @@ input PostTypeFilterInput {
 input PostTypeSortInput {
   id: SortEnumType
   name: SortEnumType
+}
+
+input ProgramTypeFilterInput {
+  and: [ProgramTypeFilterInput!]
+  hours: ComparableInt32OperationFilterInput
+  id: ComparableInt32OperationFilterInput
+  name: StringOperationFilterInput
+  or: [ProgramTypeFilterInput!]
+  programFileUrl: StringOperationFilterInput
+  topics: StringOperationFilterInput
+}
+
+input ProgramTypeSortInput {
+  hours: SortEnumType
+  id: SortEnumType
+  name: SortEnumType
+  programFileUrl: SortEnumType
+  topics: SortEnumType
 }
 
 input RenewTokenInput {

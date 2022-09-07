@@ -1,0 +1,9 @@
+query CourseProgramByID($programId: Int!){
+  program(id: $programId){
+    id
+    hours
+    name
+    topics
+    programFileUrl
+  }
+}

@@ -24,18 +24,18 @@ const CourseButton = styled.button<CourseButtonProps>`
 
 const CourseModalFooter: React.FC = () => {
 
-  const { isEdit, isModified, studentToggleEdit } = useCourseForm()
+  const { isEdit, isModified, courseToggleEdit } = useCourseForm()
 
   return (
     <Footer>
       {
         isEdit
           ? <>
-            <CourseButton onClick={ () => studentToggleEdit() }>Отмена</CourseButton>
+            <CourseButton onClick={ () => courseToggleEdit() }>Отмена</CourseButton>
             <CourseButton disabled={ !isModified() }>Сохранить</CourseButton>
           </>
           : <>
-            <CourseButton onClick={ () => studentToggleEdit() }>Изменить</CourseButton>
+            <CourseButton onClick={ () => courseToggleEdit() }>Изменить</CourseButton>
           </>
       }
     </Footer>

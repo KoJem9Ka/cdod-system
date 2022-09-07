@@ -19,7 +19,7 @@ export const useGroupForm = () => {
   const state = useAppSelector( state1 => state1.groupForm )
 
   const selectGroup = ( id: AGroup['id'] ) => void dispatch( thunkLoadGroupByID( id ) )
-  const toggleEdit = ( value?: boolean ) => void dispatch( actionGroupToggleEdit( value ) )
+  const groupToggleEdit = (value?: boolean ) => void dispatch( actionGroupToggleEdit( value ) )
   const changeGroup = ( value: Partial<Omit<AGroup, 'id'>> ) => void dispatch( actionGroupChange( value ) )
 
   const isModified = () => !isEqual( state.groupModified, state.groupOriginal ) && state.removedIds.length === 0 && state.addedIds.length === 0
@@ -27,7 +27,7 @@ export const useGroupForm = () => {
   return {
     ...state,
     selectGroup,
-    toggleEdit,
+    groupToggleEdit,
     changeGroup,
     isModified,
   }

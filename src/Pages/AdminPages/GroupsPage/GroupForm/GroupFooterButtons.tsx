@@ -3,7 +3,7 @@ import { useGroupForm } from '../../../../store/groupForm/hooks'
 import {FooterButton} from '../../../../components/UIKit/Forms/styled';
 
 const GroupFooterButtons: React.FC = () => {
-  const { isEdit, isModified, toggleEdit } = useGroupForm()
+  const { isEdit, isModified, groupToggleEdit } = useGroupForm()
 	
   return (
     <>
@@ -11,9 +11,9 @@ const GroupFooterButtons: React.FC = () => {
         isEdit ?
           <>
             <FooterButton disabled={!isModified()} onClick={() => alert('Сохранено!')}>Сохранить</FooterButton>
-            <button data-cancel onClick={() => toggleEdit()}>Отмена</button>
+            <button data-cancel onClick={() => groupToggleEdit()}>Отмена</button>
           </>
-          : <button onClick={() => toggleEdit()}>Редактировать</button>
+          : <button onClick={() => groupToggleEdit()}>Редактировать</button>
       }
     </>
   )

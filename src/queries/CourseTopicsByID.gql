@@ -1,9 +1,0 @@
-#query CourseTopicsByID($programId: Int!){
-#  program(id: $programId){
-#    id
-#    hours
-#    name
-#    programFileUrl
-#    topics
-#  }
-#}
