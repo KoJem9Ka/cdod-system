@@ -34,7 +34,6 @@ export const Application = {
       return
     }
     if ( data.login.message === 'Success' && data.login.accessToken && data.login.refreshToken ) {
-      toast.success( 'Добро пожаловать!' )
       localStorage.setItem( 'AccessToken', data.login.accessToken )
       localStorage.setItem( 'RefreshToken', data.login.refreshToken )
       document.location.href = AbsolutePath.Root
@@ -63,7 +62,7 @@ export const Application = {
       toast.error( 'Ошибка в ответе запроса обновления токена' )
       return
     }
-    toast.success( 'Рефреш токен обновлён!' )
+    IS_DEV && toast.success( 'Рефреш токен обновлён!' )
     localStorage.setItem( 'AccessToken', data.relogin.accessToken )
     localStorage.setItem( 'RefreshToken', data.relogin.refreshToken )
     return data.relogin.accessToken
@@ -85,7 +84,6 @@ const errorMiddleware = onError( ( { graphQLErrors, networkError, operation, for
   if ( !graphQLErrors ) return
   for ( const err1 of graphQLErrors ) {
     if ( err1.extensions.code === 'AUTH_NOT_AUTHENTICATED' ) {
-      console.log( 'error' )
       return fromPromise(
         refreshPromise || (refreshPromise = Application
             .renewToken()
