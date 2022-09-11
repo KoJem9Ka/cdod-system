@@ -9,13 +9,14 @@ import React, {
 
 
 
-type Props = {
+export type InputNumberProps = {
   value: number | '' | '-'
   handler: ( value: number )=> void
   min?: number
   max?: number
 } & Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'value' | 'onChange' | 'min' | 'max'>
-const InputNumber: FC<Props> = ( { value, handler, min = -Infinity, max = Infinity, ...props } ) => {
+
+const InputNumber: FC<InputNumberProps> = ( { value, handler, min = -Infinity, max = Infinity, ...props } ) => {
   const [ value1, setValue1 ] = useState( value )
   const inputRef = useRef<HTMLInputElement>( null )
 

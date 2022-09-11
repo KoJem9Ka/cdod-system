@@ -4,7 +4,7 @@ import {
   from,
   fromPromise,
   HttpLink,
-  InMemoryCache,
+  InMemoryCache
 }                       from '@apollo/client'
 import { onError }      from '@apollo/client/link/error'
 import { AbsolutePath } from '../other/PathConfig'
@@ -13,7 +13,7 @@ import {
   GLoginMutationFn,
   GRenewTokenMutationFn,
   LoginDocument,
-  RenewTokenDocument,
+  RenewTokenDocument
 }                       from '../other/generated'
 import { toast }        from 'react-toastify'
 import { IS_DEV }       from '../other/helpers'

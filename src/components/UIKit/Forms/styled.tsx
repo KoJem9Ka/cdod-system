@@ -1,13 +1,17 @@
 import styled, { css } from 'styled-components'
 import { isNil }       from 'lodash'
-import { hexToRgbA } from '../../../other/helpers'
+import {
+  BtnHoveringDark,
+  BtnHoveringLight
+}                      from '../Btn'
 
 
 
-const SharedPaddings = css`
-  padding : 20px;
+const CSSPadding15px = css`
+  padding : 15px;
 `
-export const Form = styled.div`
+
+export const Form       = styled.div`
   overflow       : hidden;
   background     : var(--COLOR_blue);
   flex           : 0 0 350px;
@@ -22,17 +26,16 @@ export const Form = styled.div`
 
   font-size      : 0.9375rem /* 15/16 */;
 `
-export const FormHead = styled.div`
-  ${ SharedPaddings };
+export const FormHead   = styled.div`
+  ${CSSPadding15px};
   width                 : 100%;
   display               : grid;
   grid-template-columns : auto auto;
-  //flex-direction        : column;
   align-items           : center;
   box-shadow            : 0 0 1rem 1rem white;
   z-index               : 1;
   text-align            : center;
-  grid-gap              : .5rem;
+  grid-gap              : 0.5rem;
 
   & > svg {
     grid-row : 1 / span 2;
@@ -46,74 +49,81 @@ export const FormHead = styled.div`
     align-self : start;
   }
 `
-export const FormBody = styled.div`
-  ${ SharedPaddings };
+export const FormBody   = styled.div`
+  ${CSSPadding15px};
   overflow-y : auto;
   max-height : 100%;
   color      : black;
   background : white;
   flex-grow  : 1;
+
+  & > *:not(:last-child) {
+    margin-bottom : 0.5rem;
+  }
 `
 export const FormFooter = styled.div`
   box-shadow : 0 0 1rem 1rem white;
   display    : flex;
 
   button {
-    ${ SharedPaddings };
+    ${CSSPadding15px};
     flex-grow   : 1;
     cursor      : pointer;
     font-weight : bold;
+    background  : var(--COLOR_blue);
 
-    &[data-cancel=true] {
+    &[data-cancel='true'] {
       background : rgb(255, 128, 128);
     }
 
-    &:hover {
-      background : rgba(0, 0, 0, 0.2);
-    }
+    ${BtnHoveringDark};
   }
 `
+
+const CSSFont15pxCenter = css`
+  font-size  : 0.9375rem /* 15/16 */;
+  text-align : center;
+`
+
 export const Caption = styled.p`
   color     : var(--COLOR_gray-pale-punctuated);
   font-size : 0.75rem /* 12/16 */;
-  margin    : 0.625rem /* 10/16 */ 0 0.375rem /* 6/16 */ 0.625rem /* 10/16 */;
+`
 
-  &:first-child {
-    margin-top : 0;
-  }
-`
-const sharedFont = css`
-  font-size  : 0.9375rem /* 15/16 */;
-  text-align : center;
-  margin     : 0.625rem /* 10/16 */ 0;
-`
 export const Title = styled.p`
-  ${ sharedFont };
-  font-weight : bold;
+  ${CSSFont15pxCenter};
+  font-weight     : bold;
+  display         : flex;
+  justify-content : center;
+  align-items     : center;
+  gap             : 1rem;
+`
 
-  &:first-child {
-    margin-top : 0;
-  }
-`
 export const SubTitle = styled.p`
-  ${ sharedFont };
+  ${CSSFont15pxCenter};
 `
-export const TextLine = styled.p<{ isValid?: boolean }>`
+
+export const TextField = styled.p<{ isValid?: boolean }>`
   min-width     : 100%;
   resize        : block;
   max-width     : 100%;
   background    : var(--COLOR_gray-background);
   border-radius : 0.625rem /* 10/16 */;
   padding       : 6px 10px;
+  border        : none;
 
-  ${ ( { isValid } ) => !(isNil( isValid ) || isValid) && css`
-    padding : 4px 8px;
-    border  : 2px solid red;
-  `
-}
+  &[data-select='true'] {
+    ${BtnHoveringLight}
+  }
+
+  ${( { isValid } ) => !(isNil( isValid ) || isValid) &&
+          css`
+            padding : 4px 8px;
+            border  : 2px solid red;
+          `}
 `
 
 //TODO: убрать изменение фона, если кнопка неактивна
 export const FooterButton = styled.button`
-  opacity: ${props => (props.disabled ? 0.5 : 1)};
+  opacity : ${props => (props.disabled ? 0.5 : 1)};
 `

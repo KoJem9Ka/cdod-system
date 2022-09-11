@@ -5,7 +5,8 @@ export {
   FormFooter,
   FormHead,
   SubTitle,
-  TextLine,
-  Title
+  TextField,
+  Title,
+  FooterButton
 }                      from './styled'
 export { EditableFIO } from './EditableFIO'

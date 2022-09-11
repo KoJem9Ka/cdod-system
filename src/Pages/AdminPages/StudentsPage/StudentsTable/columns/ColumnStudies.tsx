@@ -2,7 +2,6 @@ import React                 from 'react'
 import styled                from 'styled-components'
 import { CellContext }       from '@tanstack/table-core'
 import { ColumnDefTemplate } from '@tanstack/react-table'
-import moment                from 'moment'
 import {
   GAllStudentsQuery,
   GContractState
@@ -11,6 +10,7 @@ import {
   hexIsDark,
   parseContractState
 }                            from '../../../../../other/helpers'
+import dayjs                 from 'dayjs'
 
 
 
@@ -18,7 +18,7 @@ type T = GAllStudentsQuery['students'][number]
 
 const ColumnStudies: ColumnDefTemplate<CellContext<T, any>> = ( { row: { original: { info } }, column: { getFilterValue } } ) => {
 
-  const filter = getFilterValue()
+  const filter  = getFilterValue()
   const filterd = filter ? info.filter( study => study.contractState === filter ) : info
 
   return (
@@ -28,7 +28,7 @@ const ColumnStudies: ColumnDefTemplate<CellContext<T, any>> = ( { row: { origina
           key={`${study.course.name} ${study.attempt}`}
           contractState={study.contractState}
         >
-          <p>{moment( study.admissionDate ).year()}</p>
+          <p>{dayjs( study.admissionDate ).year()}</p>
           <p>{study.course.name}</p>
           <p>{parseContractState( study.contractState )}</p>
         </Study>

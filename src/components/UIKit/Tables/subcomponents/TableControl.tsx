@@ -6,13 +6,16 @@ import React, {
   ButtonHTMLAttributes,
   ComponentProps,
   FC,
+  memo,
   MouseEventHandler
 }                            from 'react'
 import { AtLeastOne }        from '../../../../other/typing'
-import InputNumber           from '../../../UnstyledSkeletons/SpecialInputs/InputNumber'
+import InputNumber, { InputNumberProps }           from '../../../UnstyledSkeletons/SpecialInputs/InputNumber'
 import styled                from 'styled-components'
-import DebouncedInput        from '../../../UnstyledSkeletons/SpecialInputs/DebouncedInput'
+import DebouncedInput, { DebouncedInputProps }        from '../../../UnstyledSkeletons/SpecialInputs/DebouncedInput'
 import Icons, { Thumbnails } from '../../../../assets/icons/Icons'
+import { usePrevious } from '../../../../hooks/usePrevious'
+import { isEqual, pick } from 'lodash'
 
 
 
@@ -27,12 +30,12 @@ type TableControlProps = {
 | {
   variant: 'textInput'
   // } & RequiredFields<InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange'>
-} & ComponentProps<typeof DebouncedInput>
+} & DebouncedInputProps
 | {
   variant: 'numberInput'
-} & ComponentProps<typeof InputNumber>
+} & InputNumberProps
 
-export const TableControl: FC<TableControlProps> = props => {
+export const TableControl: FC<TableControlProps> = memo(props => {  
   switch ( props.variant ) {
   default:
     return (
@@ -52,7 +55,9 @@ export const TableControl: FC<TableControlProps> = props => {
   case 'textInput':
     return <FlatBox as={DebouncedInput} {...props}/>
   }
-}
+}, (a, b) => isEqual(a, b))
+
+TableControl.whyDidYouRender = true
 
 
 export const CheckOrRadioLabel = styled.label`
@@ -62,7 +67,7 @@ export const CheckOrRadioLabel = styled.label`
     margin-right : 1rem;
   }
 `
-export const ListPosAbsolute = styled.div`
+export const ListPosAbsolute   = styled.div`
   position       : absolute;
   display        : none;
   top            : 100%;

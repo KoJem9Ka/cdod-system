@@ -9,6 +9,7 @@ import {
   useAppSelector
 }                             from '../../store/store'
 import { actionSetPreloader } from '../../store/InsteadOfContext/reducer'
+import { selectIsPreloader }  from '../../store/InsteadOfContext/selectors'
 
 
 
@@ -38,7 +39,7 @@ const PreloaderWrapper = styled.div<PreloaderWrapperProps>`
     user-select    : none;
   }
 
-  ${ ( { loading1 } ) => (loading1 ? '' : 'display: none;') } @keyframes loading-open {
+  ${( { loading1 } ) => (loading1 ? '' : 'display: none;')} @keyframes loading-open {
     from {
       opacity   : 0;
       transform : scale(.5);
@@ -53,9 +54,9 @@ const PreloaderWrapper = styled.div<PreloaderWrapperProps>`
 let timer: number | undefined
 
 export const usePreloader = ( nextLoading: boolean ) => {
-  const dispatch = useAppDispatch()
-  const loading = useAppSelector( state => state.insteadOfContext.isPreloader )
-  const isDifferent = () => loading !== nextLoading
+  const dispatch    = useAppDispatch()
+  const isPreloader = useAppSelector( selectIsPreloader )
+  const isDifferent = () => isPreloader !== nextLoading
   useEffect( () => {
     if ( nextLoading )
       !timer && (timer = setTimeout( () => isDifferent() && dispatch( actionSetPreloader( true ) ), 500 ) as unknown as number)
@@ -68,10 +69,10 @@ export const usePreloader = ( nextLoading: boolean ) => {
 }
 
 export const Preloader: FC = () => {
-  const loading = useAppSelector( state => state.insteadOfContext.isPreloader )
+  const isPreloader = useAppSelector( selectIsPreloader )
   return (
-    <PreloaderWrapper loading1={ loading }>
-      <img alt='loading animation' src={ preloaderWebp }/>
+    <PreloaderWrapper loading1={isPreloader}>
+      <img alt='loading animation' src={preloaderWebp}/>
     </PreloaderWrapper>
   )
 }

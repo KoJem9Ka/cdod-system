@@ -1,20 +1,3 @@
-#query Groups {
-#  groups: allGroups {
-#    id
-#    name
-#    course: Course {
-#      name
-#    }
-#    teacher: Teacher {
-#      lastName
-#      firstName
-#      patronymic
-#    }
-#    startDate
-#    studentsCount
-#  }
-#}
-
 query Groups {
   groups {
     id
@@ -29,5 +12,13 @@ query Groups {
     }
     startDate
     studentsCount
+  }
+}
+
+query GroupsSmallList {
+  groups {
+    id
+    name
+    courseId
   }
 }

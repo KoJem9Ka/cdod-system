@@ -72,7 +72,7 @@ type InfoType {
   course: CourseType!
   courseId: Int!
   group: GroupType
-  isCoursePaid: Boolean!
+  isCoursePaid: Boolean
   isEquipmentPaid: Boolean
   isGetRobot: Boolean
   studentId: Int!
@@ -102,7 +102,11 @@ type Mutation {
   schoolUpdateMany(schools: [SchoolUpdateInput!]!): Boolean!
   studentCreate(student: StudentCreateInput!): StudentType!
   studentDeleteMany(studentIds: [Int!]!): Boolean!
+  studentStudyCreateMany(studentToCreate: [StudentToCourseCreateInput!]!): Boolean!
   studentUpdateMany(students: [StudentUpdateInput!]!): Boolean!
+  teacherCreate(teacher: TeacherInput!): TeacherType!
+  teacherDeleteMany(teacherIds: [Int!]!): Boolean!
+  teacherUpdate(id: Int!, teacher: TeacherInput!): Boolean!
   updateFromGoogleTable: Boolean!
 }
 
@@ -175,6 +179,7 @@ type SchoolType {
 
 type StudentType {
   birthDate: Date
+  contractOfEducation: URL
   description: String
   firstName: String
   id: Int!
@@ -277,6 +282,11 @@ scalar DateTime
 
 "The `TimeSpan` scalar represents an ISO-8601 compliant duration type."
 scalar TimeSpan
+
+scalar URL
+
+"The `Upload` scalar type represents a file upload."
+scalar Upload
 
 input AttendanceTypeFilterInput {
   and: [AttendanceTypeFilterInput!]
@@ -678,6 +688,17 @@ input StudentCreateInput {
   schoolId: Int
 }
 
+input StudentToCourseCreateInput {
+  admissionDate: Date
+  contract: Upload
+  contractState: ContractState!
+  contractUrl: String
+  courseId: Int!
+  groupId: Int
+  isGetRobot: Boolean
+  studentId: Int!
+}
+
 input StudentTypeFilterInput {
   and: [StudentTypeFilterInput!]
   birthDate: ComparableNullableOfDateOnlyOperationFilterInput
@@ -711,6 +732,29 @@ input StudentUpdateInput {
   parentId: Int
   patronymic: String
   schoolId: Int
+}
+
+input TeacherInput {
+  address: String
+  birthday: Date
+  education: String
+  email: String
+  firstname: String
+  inn: String
+  isAdmin: Boolean
+  isInternal: Boolean
+  lastname: String
+  passportCode: String
+  passportDate: Date
+  passportIssue: String
+  passportNo: String
+  password: String
+  patronymic: String
+  phoneNumber: String
+  postId: Int
+  snils: String
+  wageRateId: Int
+  workPlace: String
 }
 
 input TeacherTypeFilterInput {

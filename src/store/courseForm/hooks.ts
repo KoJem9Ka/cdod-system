@@ -18,7 +18,7 @@ type T = GCourseByIdQuery['course']
 
 export const useCourseForm = () => {
   const dispatch = useAppDispatch()
-  const state = useAppSelector( state1 => state1.courseForm )
+  const state = useAppSelector( state1 => state1.courseForm ) //TODO: Вынести селектор в константу
 
   const selectCourse = ( id: T['id'] ) => void dispatch( thunkLoadCourseById( id ) )
   const courseToggleEdit = ( value?: boolean ) => void dispatch( actionCourseToggleEdit( value ) )

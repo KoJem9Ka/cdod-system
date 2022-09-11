@@ -22,9 +22,10 @@
     "isolatedModules"                 : true,
     "noEmit"                          : true,
     "jsx"                             : "react-jsx",
-    "declarationMap"                  : true,
-    "sourceMap"                       : true,
-    "inlineSourceMap"                 : true
+    // "declarationMap"                  : true,
+    // "declaration": true,
+    // "sourceMap"                       : true
+    // "inlineSourceMap"                 : true
   },
   "include"        : [
     "src"

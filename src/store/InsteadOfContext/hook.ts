@@ -1,19 +1,16 @@
 import {
+  store,
   TAppState,
-  useAppDispatch,
   useAppSelector
 }                            from '../store'
 import { actionTogglePanel } from './reducer'
-import { useCallback }       from 'react'
 
 
 
-const selectIsOpened = ( state: TAppState ) => state.insteadOfContext.panelOpened
-
-export const usePanelOpening = () => {
-  const dispatch = useAppDispatch()
-  const opened = useAppSelector( selectIsOpened )
-  const toggleOpened = useCallback( () => dispatch( actionTogglePanel() ), [] )
+export const selectIsPanelOpened = ( state: TAppState ) => state.insteadOfContext.panelOpened
+const toggleOpened               = () => store.dispatch( actionTogglePanel() )
+export const usePanelOpening     = () => {
+  const opened = useAppSelector( selectIsPanelOpened )
   return { opened, toggleOpened }
 }
 

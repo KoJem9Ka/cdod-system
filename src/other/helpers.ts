@@ -2,12 +2,14 @@ import {
   cloneDeep,
   compact,
   invert,
+  isEqual,
   isNil,
+  isObject,
+  keys,
   mean,
   merge,
   uniq
-}                           from 'lodash'
-import moment, { duration } from 'moment/moment'
+}            from 'lodash'
 import {
   GContractState,
   GInfoType,
@@ -15,7 +17,8 @@ import {
   GParentType,
   GRelationType,
   GStudentByIdQuery
-}                           from './generated'
+}            from './generated'
+import dayjs from 'dayjs'
 
 
 
@@ -23,7 +26,7 @@ export const IS_DEV = process.env.NODE_ENV === 'development'
 
 export const mergeState = <A, B>( a: A, b: B ): A & B => merge( cloneDeep( a ), b )
 
-const onCycle = () => {
+const onCycle        = () => {
   const seen = new WeakSet()
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   return ( key: unknown, value: unknown ) => {
@@ -36,11 +39,11 @@ const onCycle = () => {
 }
 export const getJSON = ( obj?: object | null ) => JSON.stringify( obj, onCycle() )
 
-export const formatDate = ( date: string | null ) => (date ? moment( date ).format( 'YYYY-MM-DD' ) : null)
+export const formatDate = ( date: string | null ) => (date ? dayjs( date ).format( 'YYYY-MM-DD' ) : null)
 
 export const humanizeDate = ( date: string | null, operation?: 'floor' ) => {
   const method = operation === 'floor' ? 'years' : 'days'
-  return date && duration( moment().diff( date, method, false ), method ).humanize()
+  return date && dayjs.duration( dayjs().diff( dayjs( date, 'YYYY-MM-DD' ), method, false ), method ).humanize()
 }
 
 export const formatPhone = ( phone: string ): string => {
@@ -52,11 +55,15 @@ export const formatPhone = ( phone: string ): string => {
   return phone
 }
 
-export const shortFIOFormatter = (lastname: string, firstname: string, patronymic?: string) => (patronymic ? `${lastname} ${firstname[0]}. ${patronymic[0]}.` : `${lastname} ${firstname[0]}.`)
+//TODO: заменить все использования на strJoinSpace
+export const shortFIOFormatter = ( lastname: string, firstname: string, patronymic?: string ) => (patronymic
+  ? `${lastname} ${firstname[0]}. ${patronymic[0]}.`
+  : `${lastname} ${firstname[0]}.`)
 
+//strJoinSpace удаляет из массива строк "null" и "undefined" и склеивает пробелами; полезно для склейки ФИО
 export const strJoinSpace = ( ...strs: (string | null | undefined)[] ) => compact( strs ).join( ' ' )
 
-export const strsNonFalsy = ( ...strings: (string | undefined)[] ): boolean => strings.every( val => val !== '' && val !== undefined )
+export const strsNonFalsy = ( ...strings: (string | undefined)[] ): boolean => strings.every( val => val !== '' && !isNil( val ) )
 
 const hexToRGB = ( hex: string ) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -79,96 +86,108 @@ export const hexIsDark = ( hex: string ) => mean( uniq( hexToRGB( hex ) ) ) < (2
 export type TRelationTypeKey = keyof typeof relationTypeDecoder
 export type TRelationTypeString = typeof relationTypeDecoder[TRelationTypeKey]
 export const relationTypeDecoder/*: Record<GRelationType, string>*/ = {
-  [GRelationType.Mother]:    'Мама',
-  [GRelationType.Father]:    'Папа',
-  [GRelationType.Grandma]:   'Бабушка',
-  [GRelationType.Grandpa]:   'Дедушка',
-  [GRelationType.Brother]:   'Брат',
-  [GRelationType.Sister]:    'Сестра',
-  [GRelationType.Aunt]:      'Тетя',
-  [GRelationType.Uncle]:     'Дядя',
-  [GRelationType.Godparent]: 'Крёстный(ая)',
-  [GRelationType.Guardian]:  'Опекун',
-  [GRelationType.Other]:     'Родитель',
+  [GRelationType.Mother]    : 'Мама',
+  [GRelationType.Father]    : 'Папа',
+  [GRelationType.Grandma]   : 'Бабушка',
+  [GRelationType.Grandpa]   : 'Дедушка',
+  [GRelationType.Brother]   : 'Брат',
+  [GRelationType.Sister]    : 'Сестра',
+  [GRelationType.Aunt]      : 'Тетя',
+  [GRelationType.Uncle]     : 'Дядя',
+  [GRelationType.Godparent] : 'Крёстный(ая)',
+  [GRelationType.Guardian]  : 'Опекун',
+  [GRelationType.Other]     : 'Родитель',
 } as const
-export const relationTypeEncoder = invert( relationTypeDecoder )
-//TODO: Крёстный(ая), тут вылезет ошибка, когда добавят тип в БД) 😎
+export const relationTypeEncoder                                    = invert( relationTypeDecoder )
+
 export const parseParentType = ( relationType1: GParentType['type'] ): TRelationTypeString => (isNil( relationType1 )
   ? 'Родитель'
   : relationTypeDecoder[relationType1])
 
 
-const contractStateDecoder = {
-  [GContractState.Completed]:     'Закончил',
-  [GContractState.Consideration]: 'На рассмотрении',
-  [GContractState.Rejected]:      'Отказ',
-  [GContractState.Studying]:      'Учится',
-  [GContractState.Left]:          'Ушёл',
-  [GContractState.Excluded]:      'Исключён',
-}
-const contractStateColorizer = {
-  [GContractState.Completed]:     '#1473E6',
-  [GContractState.Consideration]: '#FD6F02',
-  [GContractState.Rejected]:      '#CCCCCC',
-  [GContractState.Studying]:      '#009132',
-  [GContractState.Left]:          '#CCCCCC',
-  [GContractState.Excluded]:      '#FFDBDD',
-}
-export const parseContractState = ( contractState1: GInfoType['contractState'], who: 'text' | 'color' = 'text' ): string => (who === 'text'
+export const contractStateDecoder = {
+  [GContractState.Completed]     : 'Закончил',
+  [GContractState.Consideration] : 'На рассмотрении',
+  [GContractState.Rejected]      : 'Отказ',
+  [GContractState.Studying]      : 'Учится',
+  [GContractState.Left]          : 'Ушёл',
+  [GContractState.Excluded]      : 'Исключён',
+} as const
+const contractStateColorizer      = {
+  [GContractState.Completed]     : '#1473E6',
+  [GContractState.Consideration] : '#FD6F02',
+  [GContractState.Rejected]      : '#CCCCCC',
+  [GContractState.Studying]      : '#009132',
+  [GContractState.Left]          : '#CCCCCC',
+  [GContractState.Excluded]      : '#FFDBDD',
+} as const
+export const parseContractState   = ( contractState1: GInfoType['contractState'], who: 'text' | 'color' = 'text' ): string => (who === 'text'
   ? contractStateDecoder[contractState1]
   : contractStateColorizer[contractState1])
 
-export const NonExistingID = -1
+export const NON_EXISTING_ID = -1
 
 
-export const newStudent = (): GStudentByIdQuery['student'] => ({
-  id:          NonExistingID,
-  lastName:    null,
-  firstName:   null,
-  patronymic:  null,
-  birthDate:   null,
-  description: null,
-  school:      null,
-  info:        [],
-  parent:      {
-    id:                0,
-    lastName:          null,
-    firstName:         null,
-    patronymic:        null,
-    applyingDate:      moment().format( 'YYYY-MM-DD' ),
-    email:             '',
-    phoneNumber:       null,
-    relationType:      null,
-    secondEmail:       null,
-    secondPhoneNumber: null,
-  },
-})
+export const CREATE = {
+  student : (): GStudentByIdQuery['student'] => ({
+    id          : NON_EXISTING_ID,
+    lastName    : null,
+    firstName   : null,
+    patronymic  : null,
+    birthDate   : null,
+    description : null,
+    school      : null,
+    info        : [],
+    parent      : {
+      id                : 0,
+      lastName          : null,
+      firstName         : null,
+      patronymic        : null,
+      applyingDate      : dayjs().format( 'YYYY-MM-DD' ),
+      email             : '',
+      phoneNumber       : null,
+      relationType      : null,
+      secondEmail       : null,
+      secondPhoneNumber : null,
+    },
+  }),
+  parent : (): GParentInput => ({
+    lastname   : null,
+    firstname  : null,
+    patronymic : null,
 
-export const newParent = (): GParentInput => ({
-  lastname:   undefined,
-  firstname:  undefined,
-  patronymic: undefined,
-  birthday:   undefined,
+    relationType : null,
+    applyingDate : null,
 
-  relationType: undefined,
-  applyingDate: undefined,
+    phoneNumber       : null,
+    secondPhoneNumber : null,
 
-  email:       undefined,
-  secondEmail: undefined,
+    password    : null,
+    email       : null,
+    secondEmail : null,
 
-  phoneNumber:       undefined,
-  secondPhoneNumber: undefined,
-
-  address:       undefined,
-  inn:           undefined,
-  education:     undefined,
-  passportCode:  undefined,
-  passportDate:  undefined,
-  passportIssue: undefined,
-  passportNo:    undefined,
-  password:      undefined,
-  snils:         undefined,
-})
+    inn           : null,
+    snils         : null,
+    address       : null,
+    birthday      : null,
+    education     : null,
+    passportNo    : null,
+    passportCode  : null,
+    passportDate  : null,
+    passportIssue : null,
+  }),
+  // TODO: Переделать под отправной инпут привязки студента к курсу
+  study : (): GStudentByIdQuery['student']['info'][number] => ({
+    course : {
+      id   : NON_EXISTING_ID,
+      name : '',
+    },
+    attempt       : Date.now(),
+    contractState : GContractState.Consideration,
+    isCoursePaid  : false,
+    admissionDate : dayjs().format( 'YYYY-MM-DD' ),
+  }),
+}
 
 type TJwt = {
   'emailaddress': string
@@ -180,10 +199,29 @@ type TJwt = {
 export const parseJwt = <T extends string | null>( token: T ): T extends string ? TJwt : null => {
   if ( token === null ) return null as any
   const base64Url = token.split( '.' )[1]
-  const base64 = base64Url.replace( /-/g, '+' ).replace( /_/g, '/' )
+  const base64    = base64Url.replace( /-/g, '+' ).replace( /_/g, '/' )
   let jsonPayload = decodeURIComponent( window.atob( base64 ).split( '' ).map( c => '%' + ('00' + c.charCodeAt( 0 ).toString( 16 )).slice( -2 ) ).join( '' ) )
-  jsonPayload = jsonPayload.replace( /(?<=(,|{)").+?\/(?=[a-z]+")/g, '' )
+  jsonPayload     = jsonPayload.replace( /(?<=(,|{)").+?\/(?=[a-z]+")/g, '' )
   return JSON.parse( jsonPayload )
 }
 
 
+type TReplaceDeep<O extends Record<string, any>, T, R> = {
+  [key in keyof O]: O[key] extends T
+    ? R
+    : O[key] extends object
+      ? TReplaceDeep<O[key], T, R>
+      : O[key]
+}
+
+export const recursiveConvertObjValues = <O extends Record<string, any>, T, R>( obj: O, target: T, replacement: R ): TReplaceDeep<O, T, R> => {
+  const obj1 = { ...obj }
+  for ( const key of keys( obj1 ) ) {
+    if ( !Object.hasOwn( obj1, 3 ) ) continue
+    if ( isEqual( obj1[key], target ) )
+      obj1[key] = replacement as any
+    else if ( isObject( obj1[key] ) )
+      obj1[key] = recursiveConvertObjValues( obj1[key], target, replacement ) as any
+  }
+  return obj1
+}

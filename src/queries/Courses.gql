@@ -11,3 +11,10 @@ query Courses{
     svgIconUrl
   }
 }
+
+query CoursesSmallList {
+  courses(order: {name: ASC}) {
+    id
+    name
+  }
+}

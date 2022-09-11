@@ -5,6 +5,7 @@ import {
 } from 'framer-motion'
 import React, {
   FC,
+  memo,
   SVGAttributes
 } from 'react'
 
@@ -15,6 +16,7 @@ type PropsMotionSVG = SVGMotionProps<SVGSVGElement>
 
 export type Thumbnails = never
 | 'add'
+| 'del'
 | 'filter'
 
 | 'tableColumns'
@@ -41,10 +43,12 @@ type Props = never
   thumb: MotionedThumbnails
 } & PropsMotionSVG
 
-const Icons: FC<Props> = ( { thumb, ...props } ) => {
+const Icons: FC<Props> = memo( ( { thumb, ...props } ) => {
   switch ( thumb ) {
   case 'add':
     return <IconAdd {...props as PropsSVG}/>
+  case 'del':
+    return <IconDel {...props as PropsSVG}/>
   case 'filter':
     return <IconFilter {...props as PropsSVG} />
   case 'tableFixer':
@@ -70,26 +74,33 @@ const Icons: FC<Props> = ( { thumb, ...props } ) => {
   case 'signOut':
     return <IconSignOut {...props as PropsMotionSVG}/>
   }
-}
-
+} )
 export default Icons
 
 
 const IconAdd: FC<PropsSVG> = props => (
-  <svg fill='none' height='16' viewBox='0 0 16 16' width='16' xmlns='http://www.w3.org/2000/svg' {...props}>
+  <svg fill='white' height='16' viewBox='0 0 16 16' width='16' xmlns='http://www.w3.org/2000/svg' {...props}>
     <path
       d='M8 0C3.5888 0 0 3.5888 0 8C0 12.4112 3.5888 16 8 16C12.4112 16 16 12.4112 16 8C16 3.5888 12.4112 0 8 0ZM11.4 8.6H8.6V11.4C8.6 11.7316 8.3312 12 8 12C7.6688 12 7.4 11.7316 7.4 11.4V8.6H4.6C4.2688 8.6 4 8.3316 4 8C4 7.6684 4.2688 7.4 4.6 7.4H7.4V4.6C7.4 4.2684 7.6688 4 8 4C8.3312 4 8.6 4.2684 8.6 4.6V7.4H11.4C11.7312 7.4 12 7.6684 12 8C12 8.3316 11.7312 8.6 11.4 8.6Z'
-      fill='white'
     />
   </svg>
 )
 
 
+const IconDel: FC<PropsSVG> = props => (
+  <svg fill='white' height='16' viewBox='0 0 16 16' width='16' xmlns='http://www.w3.org/2000/svg' {...props}>
+    <path
+      d='M15.532 2.72761L10.2596 8L15.532 13.2724C16.1564 13.8968 16.1556 14.9083 15.532 15.532C14.9083 16.1556 13.8968 16.1564 13.2724 15.532L8 10.2596L2.72761 15.532C2.10397 16.1556 1.09242 16.1564 0.468019 15.532C-0.156383 14.9076 -0.15563 13.896 0.468019 13.2724L5.74041 8L0.468019 2.72761C-0.156383 2.10321 -0.15563 1.09167 0.468019 0.468019C1.09167 -0.155629 2.10321 -0.156383 2.72761 0.468018L8 5.74041L13.2724 0.468018C13.896 -0.15563 14.9076 -0.156382 15.532 0.468019C16.1564 1.09242 16.1556 2.10396 15.532 2.72761Z'
+    />
+  </svg>
+
+)
+
+
 const IconFilter: FC<PropsSVG> = props => (
-  <svg fill='none' height={16} viewBox='0 0 17 16' width={16} xmlns='http://www.w3.org/2000/svg' {...props}>
+  <svg fill='white' height={16} viewBox='0 0 17 16' width={16} xmlns='http://www.w3.org/2000/svg' {...props}>
     <path
       d='M6.59028 9.77778V15.3333C6.59028 15.5831 6.72983 15.812 6.95161 15.9262C7.04806 15.9756 7.1525 16 7.25694 16C7.39339 16 7.52939 15.9582 7.6445 15.876L10.7556 13.6538C10.9307 13.5284 11.0347 13.3262 11.0347 13.1111V9.77778H6.59028ZM15.7014 0H1.92361C1.31117 0 0.8125 0.498667 0.8125 1.11111V2.484C0.8125 3.512 1.27561 4.46622 2.08272 5.10222L6.32494 8.44444H11.2996L15.5418 5.10222C16.3494 4.46622 16.8125 3.51156 16.8125 2.484V1.11111C16.8125 0.498667 16.3138 0 15.7014 0Z'
-      fill='white'
     />
   </svg>
 )

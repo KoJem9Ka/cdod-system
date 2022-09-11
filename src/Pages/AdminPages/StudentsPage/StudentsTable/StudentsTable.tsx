@@ -1,8 +1,3 @@
-import React, {
-  FC,
-  useMemo,
-  useState
-}                              from 'react'
 import {
   ColumnFiltersState,
   flexRender,
@@ -15,41 +10,53 @@ import {
   useReactTable,
   VisibilityState
 }                              from '@tanstack/react-table'
+import { isEmpty }             from 'lodash'
+import {
+  CSSProperties,
+  FC,
+  useCallback,
+  useMemo,
+  useState
+}                              from 'react'
+import { TableControl }        from '../../../../components/UIKit/Tables/subcomponents/TableControl'
+import { TableHeadSeparator }  from '../../../../components/UIKit/Tables/subcomponents/TableHeadSeparator'
+import TableColumnHider        from '../../../../components/UIKit/Tables/TableColumnHider'
+import TablePageSizer          from '../../../../components/UIKit/Tables/TablePageSizer'
+import { useAllStudentsQuery } from '../../../../other/generated'
+import {
+  StForm,
+  useStudentForm
+}                              from '../../../../store/studentForm/hooks'
+import styles                  from '../../../../styles/tableStyles.module.scss'
+import PaginationControls      from './components/PaginationControls'
 import {
   columns,
   studentsGlobalFilterFn
 }                              from './configColumns'
-import styles                  from '../../../../styles/tableStyles.module.scss'
-import { useAllStudentsQuery } from '../../../../other/generated'
-import { useStudentForm }      from '../../../../store/studentForm/hooks'
-import { TableControl }        from '../../../../components/UIKit/Tables/subcomponents/TableControl'
-import { TableHeadSeparator }  from '../../../../components/UIKit/Tables/subcomponents/TableHeadSeparator'
-import TablePageSizer          from '../../../../components/UIKit/Tables/TablePageSizer'
-import TableColumnHider        from '../../../../components/UIKit/Tables/TableColumnHider'
-import PaginationControls      from './components/PaginationControls'
-import { isEmpty }             from 'lodash'
 
 
 
-const StudentsTable: FC       = () => {
-  const { data: { students: data } = { students: [] } }   = useAllStudentsQuery()
-  const [ sorting, setSorting ]                           = useState<SortingState>( [] )
-  const [ columnFilters, setColumnFilters ]               = useState<ColumnFiltersState>( [] )
-  const [ globalFilter, setGlobalFilter ]                 = useState( '' )
-  const [ pagination, setPagination ]                     = useState<PaginationState>( { pageSize: 25, pageIndex: 0 } )
-  const [ columnVisibility, setColumnVisibility ]         = useState<VisibilityState>( {
-    parentFio: false,
-    phone:     false,
-    email:     false,
-    Оплата:    false,
+const SearchStyle: CSSProperties = { flexGrow: 1, width: '10ch', textAlign: 'left' }
+
+const StudentsTable: FC = () => {
+  const { data: { students: data } = { students: [] }, refetch } = useAllStudentsQuery()
+  const [ sorting, setSorting ]                                  = useState<SortingState>( [] )
+  const [ columnFilters, setColumnFilters ]                      = useState<ColumnFiltersState>( [] )
+  const [ globalFilter, setGlobalFilter ]                        = useState( '' )
+  const [ pagination, setPagination ]                            = useState<PaginationState>( { pageSize: 25, pageIndex: 0 } )
+  const [ columnVisibility, setColumnVisibility ]                = useState<VisibilityState>( {
+    parentFio : false,
+    phone     : false,
+    email     : false,
+    Оплата    : false,
   } )
-  const { studentSelect, studentOriginal, studentCreate } = useStudentForm()
 
+  const { studentOriginal } = useStudentForm( s => s.studentOriginal )
 
   const table = useReactTable( {
     data,
     columns,
-    state: {
+    state : {
       sorting,
       columnFilters,
       globalFilter,
@@ -57,43 +64,47 @@ const StudentsTable: FC       = () => {
       columnVisibility,
     },
 
-    getCoreRowModel:       getCoreRowModel(),
-    getSortedRowModel:     getSortedRowModel(),
-    getFilteredRowModel:   getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
+    getCoreRowModel       : getCoreRowModel(),
+    getSortedRowModel     : getSortedRowModel(),
+    getFilteredRowModel   : getFilteredRowModel(),
+    getPaginationRowModel : getPaginationRowModel(),
 
-    onSortingChange:          setSorting,
-    onColumnFiltersChange:    setColumnFilters,
-    onGlobalFilterChange:     setGlobalFilter,
-    onPaginationChange:       setPagination,
-    onColumnVisibilityChange: setColumnVisibility,
+    onSortingChange          : setSorting,
+    onColumnFiltersChange    : setColumnFilters,
+    onGlobalFilterChange     : setGlobalFilter,
+    onPaginationChange       : setPagination,
+    onColumnVisibilityChange : setColumnVisibility,
 
-    globalFilterFn: studentsGlobalFilterFn,
+    globalFilterFn : studentsGlobalFilterFn,
   } )
 
   // Без "useMemo" getFilteredRowModel() весь текущий компонент циклично бесконечно ререндерится
-  const dataFilteredCount = useMemo( () => table.getFilteredRowModel().rows.length, [ columnFilters, globalFilter ] )
+  const dataFilteredCount = useMemo( () => table.getFilteredRowModel().rows.length, [ columnFilters, globalFilter, data.length ] )
+
+  const handlerSearch = useCallback( ( value: string | number ): void => {
+    // setPagination({ ...pagination, pageIndex: 0 })
+    setGlobalFilter( String( value ) )
+  }, [ /*setPagination,*/ setGlobalFilter ] )
 
   if ( isEmpty( data ) )
     return <></>
 
-
   return (
     <div className={styles.tableMainContainer}>
       <div className={styles.utils}>
-        <TableControl thumb='add' onClick={studentCreate}/>
+        <TableControl thumb='add' onClick={StForm.create}/>
         <TableHeadSeparator/>
         <p>Показано: <b>{dataFilteredCount}</b> / <b>{data.length}</b></p>
         <TableHeadSeparator/>
         <TableControl
           placeholder='🔍 Поиск...'
-          style={{ flexGrow: 1, width: '10ch', textAlign: 'left' }}
+          style={SearchStyle}
           value={globalFilter}
           variant='textInput'
-          onChange={value => setGlobalFilter( String( value ) )}
+          onChange={handlerSearch}
         />
         <TableHeadSeparator/>
-        <TablePageSizer pagination={pagination} setPagination={setPagination} totalCount={data.length}/>
+        <TablePageSizer table={table}/>
         <TableColumnHider table={table}/>
         <TableHeadSeparator/>
         <PaginationControls table={table}/>
@@ -111,8 +122,8 @@ const StudentsTable: FC       = () => {
                   >
                     {flexRender( header.column.columnDef.header, header.getContext() )}
                     {{
-                      asc:  ' 🔼',
-                      desc: ' 🔽',
+                      asc  : ' 🔼',
+                      desc : ' 🔽',
                     }[header.column.getIsSorted() as string] ?? null}
                     {/*{header.column.getCanFilter() && (*/}
                     {/*  <StudentsTableFilter column={header.column} table={table}/>*/}
@@ -127,7 +138,7 @@ const StudentsTable: FC       = () => {
               <tr
                 key={row.id}
                 className={row.original.id === studentOriginal?.id ? styles.selected : undefined}
-                onClick={() => studentSelect( row.original.id )}
+                onClick={() => StForm.select( row.original.id )}
               >
                 {row.getVisibleCells().map( cell => (
                   <td key={cell.id}>
@@ -142,6 +153,6 @@ const StudentsTable: FC       = () => {
     </div>
   )
 }
-StudentsTable.whyDidYouRender = true
+// StudentsTable.whyDidYouRender = true
 
 export default StudentsTable

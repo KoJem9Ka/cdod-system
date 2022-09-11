@@ -9,10 +9,15 @@ a, a:visited, a:hover, a:active {
   color           : inherit;
 }
 
-input, button, textarea {
+input, button, textarea, select {
   font       : inherit;
   color      : inherit;
   border     : none;
   outline    : none;
   background : inherit;
+
+  & > option{
+    font : 1em "Arial", serif;
+    cursor: pointer;
+  }
 }

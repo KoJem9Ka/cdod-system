@@ -4,7 +4,10 @@ import {
 }                             from '@reduxjs/toolkit'
 import { GGroupByIdQuery }    from '../../other/generated'
 import { thunkLoadGroupByID } from './thunks'
-import { merge }              from 'lodash'
+import {
+  isNil,
+  merge
+}                             from 'lodash'
 import { actionLogout }       from '../globalActions'
 
 
@@ -34,7 +37,7 @@ export const groupFormSlice = createSlice( {
   initialState,
   reducers:      {
     actionGroupToggleEdit:    ( state, action: PayloadAction<boolean | undefined> ) => {
-      state.isEdit = action.payload !== undefined ? action.payload : !state.isEdit
+      state.isEdit = isNil( action.payload ) ? !state.isEdit : action.payload
     },
     actionGroupChange:        ( state, action: PayloadAction<Partial<Omit<AGroup, 'id'>>> ) => {
       merge( state.groupModified, action.payload )
@@ -55,7 +58,7 @@ export const groupFormSlice = createSlice( {
       .addCase( actionLogout, () => initialState )
       .addCase( thunkLoadGroupByID.pending, state => {
         state.groupLoading = true
-        state.error = null
+        state.error        = null
 
         state.groupModified = null
         state.groupOriginal = null
@@ -63,19 +66,19 @@ export const groupFormSlice = createSlice( {
         state.students = null
 
         state.removedIds = []
-        state.addedIds = []
+        state.addedIds   = []
 
         state.isEdit = false
       } )
       .addCase( thunkLoadGroupByID.rejected, ( state, action ) => {
         state.groupLoading = false
-        state.error = `${ action.error.message }: ${ action.payload }`
+        state.error        = `${action.error.message}: ${action.payload}`
       } )
       .addCase( thunkLoadGroupByID.fulfilled, ( state, action ) => {
-        state.groupLoading = false
+        state.groupLoading  = false
         state.groupOriginal = action.payload.group
         state.groupModified = action.payload.group
-        state.students = action.payload.students
+        state.students      = action.payload.students
       } ),
 } )
 

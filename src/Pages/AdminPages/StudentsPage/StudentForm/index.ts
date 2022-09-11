@@ -1,3 +1,3 @@
-export { FooterButtons } from './buttons/FooterButtons'
+export { FooterButtons } from './FooterButtons'
 
 export { StudiesFields } from './fields/StudiesFields'

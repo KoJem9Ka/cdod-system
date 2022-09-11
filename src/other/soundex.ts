@@ -1,6 +1,6 @@
 /* eslint-disable */
 // noinspection EqualityComparisonWithCoercionJS
-const codes = {
+const codes    = {
   A: {
     0: [ 0, -1, -1 ],
     I: [ [ 0, 1, -1 ] ],
@@ -126,12 +126,12 @@ const codes = {
         S: [ [ 2, 4, 4 ] ],
       },
       C: {
-        H: [ [ 2, 4, 4 ] ]
+        H: [ [ 2, 4, 4 ] ],
       },
       S: {
         H: [ [ 2, 4, 4 ] ],
         C: {
-          H: [ [ 2, 4, 4 ] ]
+          H: [ [ 2, 4, 4 ] ],
         },
       },
     },
@@ -143,12 +143,12 @@ const codes = {
           0: [ 2, 43, 43 ],
           S: {
             C: {
-              H: [ [ 2, 4, 4 ] ]
+              H: [ [ 2, 4, 4 ] ],
             },
             H: [ [ 2, 4, 4 ] ],
           },
           C: {
-            H: [ [ 2, 4, 4 ] ]
+            H: [ [ 2, 4, 4 ] ],
           },
         },
         D: [ [ 2, 43, 43 ] ],
@@ -159,14 +159,14 @@ const codes = {
       T: {
         0: [ 2, 43, 43 ],
         C: {
-          H: [ [ 2, 4, 4 ] ]
+          H: [ [ 2, 4, 4 ] ],
         },
         S: {
-          H: [ [ 2, 4, 4 ] ]
+          H: [ [ 2, 4, 4 ] ],
         },
       },
       C: {
-        H: [ [ 2, 4, 4 ] ]
+        H: [ [ 2, 4, 4 ] ],
       },
       D: [ [ 2, 43, 43 ] ],
     },
@@ -186,7 +186,7 @@ const codes = {
       Z: [ [ 4, 4, 4 ] ],
       H: [ [ 4, 4, 4 ] ],
       C: {
-        H: [ [ 4, 4, 4 ] ]
+        H: [ [ 4, 4, 4 ] ],
       },
     },
     T: {
@@ -194,11 +194,11 @@ const codes = {
         0: [ 4, 4, 4 ],
         Z: [ [ 4, 4, 4 ] ],
         C: {
-          H: [ [ 4, 4, 4 ] ]
+          H: [ [ 4, 4, 4 ] ],
         },
       },
       C: {
-        H: [ [ 4, 4, 4 ] ]
+        H: [ [ 4, 4, 4 ] ],
       },
       Z: [ [ 4, 4, 4 ] ],
     },
@@ -233,7 +233,7 @@ const codes = {
       D: {
         0: [ 2, 43, 43 ],
         Z: {
-          H: [ [ 2, 4, 4 ] ]
+          H: [ [ 2, 4, 4 ] ],
         },
       },
     },
@@ -241,18 +241,18 @@ const codes = {
       0: [ 4, 4, 4 ],
       H: [ [ 4, 4, 4 ] ],
       C: {
-        H: [ [ 4, 4, 4 ] ]
+        H: [ [ 4, 4, 4 ] ],
       },
     },
   },
 } as const
-const ru = [
+const ru       = [
   'А', 'а', 'Б', 'б', 'В', 'в', 'Г', 'г', 'Д', 'д', 'Е', 'е', 'Ё', 'ё', 'Ж', 'ж', 'З', 'з',
   'И', 'и', 'Й', 'й', 'К', 'к', 'Л', 'л', 'М', 'м', 'Н', 'н', 'О', 'о', 'П', 'п', 'Р', 'р',
   'С', 'с', 'Т', 'т', 'У', 'у', 'Ф', 'ф', 'Х', 'х', 'Ц', 'ц', 'Ч', 'ч', 'Ш', 'ш', 'Щ', 'щ',
   'Ъ', 'ъ', 'Ы', 'ы', 'Ь', 'ь', 'Э', 'э', 'Ю', 'ю', 'Я', 'я',
 ] as const
-const en = [
+const en       = [
   'A', 'a', 'B', 'b', 'V', 'v', 'G', 'g', 'D', 'd', 'E', 'e', 'E', 'e', 'ZH', 'zh', 'Z', 'z',
   'I', 'i', 'I', 'i', 'K', 'k', 'L', 'l', 'M', 'm', 'N', 'n', 'O', 'o', 'P', 'p', 'R', 'r',
   'S', 's', 'T', 't', 'U', 'u', 'F', 'f', 'H', 'h', 'C', 'c', 'CH', 'ch', 'SH', 'sh', 'SCH', 'sch',
@@ -286,27 +286,26 @@ const accented = {
   Y: /[Yy\xdd\xfd\xff\u0176-\u0178\u0232\u0233\u02b8\u1e8e\u1e8f\u1e99\u1ef2-\u1ef9\u24b4\u24ce\u24e8\u33c9\uff39\uff59]/ig,
   Z: /[Zz\u0179-\u017e\u01f1-\u01f3\u1dbb\u1e90-\u1e95\u2124\u2128\u24b5\u24cf\u24e9\u3390-\u3394\uff3a\uff5a]/ig,
 } as const
-const cache = {}
+const cache    = {}
 const wordFunc = function ( str: string, iscyr1: boolean ) {
-  let l = str.length
-  let output = ''
-  let i = 0
-  let iscyr = iscyr1 || true
+  let l        = str.length
+  let output   = ''
+  let i        = 0
+  let iscyr    = iscyr1 || true
   let previous = -1
-  let power = 6
-  console.log( `==${str}==` )
+  let power    = 6
   while ( i < l ) {
     // @ts-ignore
-    let last = codes[str.charAt( i )]
+    let last    = codes[str.charAt( i )]
     // @ts-ignore
     let current = codes[str.charAt( i )]
-    let j = 1
+    let j       = 1
     for ( let k = 1; k < power + 1; k++ ) {
       if ( !str[i + k] || !current[str[i + k]] ) break
       current = current[str[i + k]]
       if ( current[0] ) {
         last = current
-        j = k + 1
+        j    = k + 1
       }
     }
     let code
@@ -326,8 +325,8 @@ const wordFunc = function ( str: string, iscyr1: boolean ) {
   if ( output && output.length < 3 ) output += (new Array( 3 - output.length + 1 )).join( '0' )
   return output
 }
-const calc = function ( str1: string ): string | null {
-  let str = str1.toUpperCase()
+const calc     = function ( str1: string ): string | null {
+  let str   = str1.toUpperCase()
   let iscyr = false
   let trans = str.match( /[А-Я]/g )
   for ( let letter in accented ) {
@@ -335,7 +334,7 @@ const calc = function ( str1: string ): string | null {
     str.replace( accented[letter], letter )
   }
   if ( trans ) {
-    str = translit( str, trans )
+    str   = translit( str, trans )
     iscyr = true
   }
   str = str.replace( /[^\s^A-Z]/g, '' ).replace( /\s{2,}/g, ' ' ).replace( /^\s+|\s+$/g, '' )
@@ -358,7 +357,7 @@ const translit = function ( str: string, matches: string[] ) {
   for ( let i = 0, l = matches.length; i < l; i++ ) {
     // let index = $.inArray(matches[i], this.ru)
     const index = ru.indexOf( matches[i] as typeof ru[number] )
-    str = str.replace( matches[i], en[index] )
+    str         = str.replace( matches[i], en[index] )
   }
   return str
 }

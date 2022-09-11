@@ -1,17 +1,23 @@
-import React, { useState } from 'react'
-import styled              from 'styled-components'
-import Icons               from '../../assets/icons/Icons'
-import { Application }     from '../../queries/client'
-import { delay }           from 'lodash'
+import React, {
+  ButtonHTMLAttributes,
+  ChangeEventHandler,
+  InputHTMLAttributes,
+  KeyboardEventHandler,
+  memo,
+  useState
+}                      from 'react'
+import styled          from 'styled-components'
+import Icons           from '../../assets/icons/Icons'
+import { Application } from '../../queries/client'
+import { delay }       from 'lodash'
 
 
 
 type LoginPageProps = {}
 
 const LoginPage: React.FC<LoginPageProps> = () => {
-  const [ email, setEmail ] = useState( '' )
-  const [ password, setPassword ] = useState( '' )
-  const [ loading, setLoading ] = useState<boolean>( false )
+  const [ { email, password }, setAuth ] = useState( { email: '', password: '' } )
+  const [ loading, setLoading ]          = useState<boolean>( false )
 
   const disabled = email.length < 3 || !email.includes( '@' ) || password.length < 3 || loading
 
@@ -23,23 +29,31 @@ const LoginPage: React.FC<LoginPageProps> = () => {
         .finally( async () => delay( () => setLoading( false ), 5000 ) )
   }
 
+  const onKeyDown: KeyboardEventHandler<HTMLDivElement> = e => e.key === 'Enter' && loginHandler()
+  const onChange: ChangeEventHandler<HTMLInputElement>  = ( { currentTarget: { name, value } } ) => setAuth( prev => ({
+    ...prev,
+    [name]: value,
+  }) )
+
   return (
     <FullScreenLayout>
-      <BoxContainer onKeyDown={ e => e.key === 'Enter' && loginHandler() }>
-        <Icons thumb='logoCdodBlack' width={ 300 }/>
+      <BoxContainer onKeyDown={onKeyDown}>
+        <Icons thumb='logoCdodBlack' width={300}/>
         <Input
+          name='email'
           placeholder='Почта'
           type='email'
-          value={ email }
-          onChange={ e => setEmail( e.currentTarget.value ) }
+          value={email}
+          onChange={onChange}
         />
         <Input
+          name='password'
           placeholder='Пароль'
           type='password'
-          value={ password }
-          onChange={ e => setPassword( e.currentTarget.value ) }
+          value={password}
+          onChange={onChange}
         />
-        <Button disabled={ disabled } onClick={ loginHandler }>Войти</Button>
+        <Button disabled={disabled} onClick={loginHandler}>Войти</Button>
       </BoxContainer>
     </FullScreenLayout>
   )
@@ -77,7 +91,7 @@ const BoxContainer = styled.div`
   }
 `
 
-const Input = styled.input`
+const Input = memo<InputHTMLAttributes<HTMLInputElement>>( styled.input`
   border        : 3px solid transparent;
   border-bottom : 3px solid var(--COLOR_line-transparent-blue);
   padding       : 0.5rem .75rem;
@@ -89,9 +103,9 @@ const Input = styled.input`
   &:focus {
     border : 3px solid var(--COLOR_line-transparent-blue);
   }
-`
+` )
 
-const Button = styled.button`
+const Button = memo<ButtonHTMLAttributes<HTMLButtonElement>>( styled.button`
   background    : var(--COLOR_logo);
   color         : var(--COLOR_white);
   padding       : 0.5rem .75rem;
@@ -110,4 +124,4 @@ const Button = styled.button`
   &:disabled {
     opacity : 0.5;
   }
-`
+` )

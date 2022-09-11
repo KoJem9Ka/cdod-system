@@ -1,11 +1,15 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion,@typescript-eslint/no-unnecessary-type-assertion */
-import { createAsyncThunk }  from '@reduxjs/toolkit'
+import { createAsyncThunk } from '@reduxjs/toolkit'
 import {
   TAppState,
   TAppThunkConfig
-}                            from '../store'
-import { ApolloQueryResult } from '@apollo/client'
+}                           from '../store'
 import {
+  ApolloError,
+  ApolloQueryResult
+}                           from '@apollo/client'
+import {
+  AllStudentsDocument,
   GParentInput,
   GStudentByIdQuery,
   GStudentByIdQueryVariables,
@@ -16,17 +20,14 @@ import {
   StudentByIdDocument,
   StudentWithParentCreateCommitDocument,
   StudentWithParentUpdateCommitDocument
-}                            from '../../other/generated'
+}                           from '../../other/generated'
+import { isNil }            from 'lodash'
 import {
-  isNil,
-  merge
-}                            from 'lodash'
-import {
-  newParent,
-  NonExistingID
-}                            from '../../other/helpers'
-import { toast }             from 'react-toastify'
-import { client }            from '../../queries/client'
+  CREATE,
+  NON_EXISTING_ID
+}                           from '../../other/helpers'
+import { toast }            from 'react-toastify'
+import { client }           from '../../queries/client'
 
 
 
@@ -46,57 +47,58 @@ export const thunkStudentLoad = createAsyncThunk<TStudentObjFromQuery, TVariable
   }
 )
 
+//TODO: Добавить отправку обучения на курсах
 export const thunkStudentCommit = createAsyncThunk( 'studentForm/commit',
   async ( _, { rejectWithValue, getState } ) => {
-    console.log( 'commiting' )
     try {
-      const { studentForm: { studentModified: student } } = getState() as TAppState
-      if ( isNil( student ) ) throw new TypeError( 'studentModified равен null, нечего отправлять на сервер.' )
-      const isCreated = student.id === NonExistingID
+      const { studentForm: { studentModified: st } } = getState() as TAppState
+      if ( isNil( st ) ) throw new TypeError( 'studentModified равен null, нечего отправлять на сервер.' )
+      const isCreated = st.id === NON_EXISTING_ID
 
       const StudentCreateInput: GStudentCreateInput = {
-        lastName:   student.lastName,
-        firstName:  student.firstName,
-        patronymic: student.patronymic,
+        lastName   : st.lastName ?? null,
+        firstName  : st.firstName ?? null,
+        patronymic : st.patronymic ?? null,
 
-        birthDate:   student.birthDate,
-        description: student.description,
-        parentId:    student.parent.id,
-        schoolId:    student.school?.id,
+        birthDate   : st.birthDate ?? null,
+        description : st.description ?? null,
+        parentId    : st.parent.id,
+        schoolId    : st.school?.id ?? null,
       }
-      const StudentUpdateInput: GStudentUpdateInput = { id: student.id, ...StudentCreateInput }
+      const StudentUpdateInput: GStudentUpdateInput = { id: st.id, ...StudentCreateInput }
 
-      const ParentInput: GParentInput = merge( newParent(), {
-        lastname:   student.parent.lastName,
-        firstname:  student.parent.firstName,
-        patronymic: student.parent.patronymic,
+      const ParentInput: GParentInput = {
+        ...CREATE.parent(),
+        lastname          : st.parent.lastName ?? null,
+        firstname         : st.parent.firstName ?? null,
+        patronymic        : st.parent.patronymic ?? null,
+        relationType      : st.parent.relationType ?? null,
+        applyingDate      : st.parent.applyingDate ?? null,
+        phoneNumber       : st.parent.phoneNumber ?? null,
+        secondPhoneNumber : st.parent.secondPhoneNumber ?? null,
+        email             : st.parent.email ?? null,
+        secondEmail       : st.parent.secondEmail ?? null,
+      }
 
-        email:       student.parent.email,
-        secondEmail: student.parent.secondEmail,
-
-        phoneNumber:       student.parent.phoneNumber,
-        secondPhoneNumber: student.parent.secondPhoneNumber,
-
-        applyingDate: student.parent.applyingDate,
-        relationType: student.parent.relationType,
-      } )
-
-      const { data, errors } = isCreated
+      isCreated
         ? await (client.mutate as GStudentWithParentCreateCommitMutationFn)( {
-          mutation:  StudentWithParentCreateCommitDocument,
-          variables: { student: StudentCreateInput, parent: ParentInput },
+          mutation       : StudentWithParentCreateCommitDocument,
+          variables      : { student: StudentCreateInput, parent: ParentInput },
+          refetchQueries : [ { query: AllStudentsDocument }, { query: StudentByIdDocument } ],
         } )
         : await (client.mutate as GStudentWithParentUpdateCommitMutationFn)( {
-          mutation:  StudentWithParentUpdateCommitDocument,
-          variables: { student: StudentUpdateInput, parent: ParentInput, parentId: student.parent.id },
+          mutation       : StudentWithParentUpdateCommitDocument,
+          variables      : { student: StudentUpdateInput, parent: ParentInput, parentId: st.parent.id },
+          refetchQueries : [ { query: AllStudentsDocument }, { query: StudentByIdDocument } ],
         } )
 
       toast( 'Успешная отправка!' )
     }
-    catch ( err ) {
-      console.log( JSON.stringify( err ) )
-      toast.error( JSON.stringify( err ) )
-      rejectWithValue( `Ошибка при сохранении студента на сервер: ${err}` )
+    // @ts-ignore
+    catch ( err: ApolloError ) {
+      console.log( JSON.stringify( err.message ) )
+      toast.error( JSON.stringify( err.message ) )
+      rejectWithValue( `Ошибка при сохранении студента на сервер: ${err.message}` )
     }
   }
 )

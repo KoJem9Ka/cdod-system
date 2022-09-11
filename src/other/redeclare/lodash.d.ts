@@ -8,6 +8,8 @@ export declare module 'lodash' {
     invert<T extends Record<PropertyKey, PropertyKey>>( obj: T ): InvertObject<T>
 
     toPairs<T extends Record<any, any>>( object?: T ): [ keyof T, T[keyof T] ][]
+    
+    keys<T extends object>( o: T ): (keyof T & string)[]
 
     // toPairs<T>(object?: Dictionary<T> | NumericDictionary<T>): Array<[string, T]>;
     // toPairs(object?: object): Array<[string, any]>;

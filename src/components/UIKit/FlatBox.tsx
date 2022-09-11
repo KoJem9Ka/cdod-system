@@ -12,18 +12,26 @@ export type FlatBoxProps = {
   }
 }
 
-export const FlatBox = styled.span<FlatBoxProps>`
-  background    : rgba(255, 255, 255, 0.2);
+export const FlatBoxCSS = css`
   border-radius : 10px;
-  display       : flex;
-  gap           : 10px;
-  align-items   : center;
-  transition    : background .1s ease;
-
-  fill          : white;
-  text-align    : center;
-
   padding       : .4rem 1rem;
+  display       : flex;
+  align-items   : center;
+  gap           : 10px;
+  text-align    : center;
+`
+
+export const FlatCircleCSS = css`
+  ${FlatBoxCSS};
+  padding : .4rem .4rem;
+`
+
+export const FlatBox = styled.span<FlatBoxProps>`
+  ${FlatBoxCSS};
+  background : rgba(255, 255, 255, 0.2);
+  transition : background .1s ease;
+
+  fill       : white;
 
   &[type="text"] {
     padding : .3rem .9rem;

@@ -6,6 +6,10 @@ import { GCourseByIdQuery }    from '../../other/generated'
 import { ApolloError }         from '@apollo/client'
 import { thunkLoadCourseById } from './thunks'
 import { actionLogout }        from '../globalActions'
+import {
+  isNil,
+  merge
+}                              from 'lodash'
 
 
 
@@ -24,34 +28,32 @@ export const courseFormSlice = createSlice( {
   initialState,
   reducers:      {
     actionCourseToggleEdit: ( state, action: PayloadAction<boolean | undefined> ) => {
-      state.isEdit = action.payload !== undefined ? action.payload : !state.isEdit
+      state.isEdit = isNil( action.payload ) ? !state.isEdit : action.payload
     },
-
-    actionCourseChange: ( state, action: PayloadAction<Partial<Omit<T, 'id'>>> ) => {
-      // @ts-ignore
-      state.courseModified = { ...state.courseModified, ...action.payload }
+    actionCourseChange:     ( state, action: PayloadAction<Partial<Omit<T, 'id'>>> ) => {
+      merge( state.courseModified, action.payload )
     },
-    actionCourseClose:  state => {
+    actionCourseClose:      state => {
       state.courseModified = null
       state.courseOriginal = null
-      state.isEdit = false
+      state.isEdit         = false
     },
   },
   extraReducers: builder => builder
       .addCase( actionLogout, () => initialState )
       .addCase( thunkLoadCourseById.pending, state => {
-        state.courseLoading = true
-        state.error = null
-        state.isEdit = false
+        state.courseLoading  = true
+        state.error          = null
+        state.isEdit         = false
         state.courseModified = null
         state.courseOriginal = null
       } )
       .addCase( thunkLoadCourseById.rejected, ( state, action ) => {
         state.courseLoading = false
-        state.error = `${ action.error.message }: ${ action.payload }`
+        state.error         = `${action.error.message}: ${action.payload}`
       } )
       .addCase( thunkLoadCourseById.fulfilled, ( state, action ) => {
-        state.courseLoading = false
+        state.courseLoading  = false
         state.courseOriginal = action.payload
         state.courseModified = action.payload
       } ),

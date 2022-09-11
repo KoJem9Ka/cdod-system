@@ -1,46 +1,45 @@
-import React, {
-  FC,
-  useId
-}                          from 'react'
-import { PaginationState } from '@tanstack/react-table'
+import React, { FC } from 'react'
+import { Table }     from '@tanstack/react-table'
 import {
   CheckOrRadioLabel,
   ListPosAbsolute,
   TableControl
-}                          from './subcomponents/TableControl'
-import { uniq }            from 'lodash'
+}                     from './subcomponents/TableControl'
+import { uniq }       from 'lodash'
 
 
 
 type Props = {
-  totalCount: number
-  pagination: PaginationState
-  setPagination: ( pagination: PaginationState )=> void
+  // totalCount: number
+  // pagination: PaginationState
+  // setPagination: (pagination: PaginationState)=> void
+  table: Table<any>
 }
-export const TablePageSizer: FC<Props> = ( { totalCount, pagination, setPagination } ) => {
-  const dataCount = totalCount
-  const name = useId()
+export const TablePageSizer: FC<Props> = ( { table } ) => {
+  const dataCount = table.getFilteredRowModel().rows.length
 
   return (
     <TableControl
-      hoverable={ { elem: ListPosAbsolute, display: 'flex' } }
-      text={ `${ pagination.pageSize }` }
+      hoverable={{ elem: ListPosAbsolute, display: 'flex' }}
+      text={`${table.getState().pagination.pageSize}`}
       thumb='tableRows'
       title='Строк на страницу'
     >
       <ListPosAbsolute>
-        { uniq( [ 10, 25, 50, 100, dataCount ] ).map( pageSize => (
-          <CheckOrRadioLabel key={ pageSize }>
+        {uniq( [ 10, 25, 50, 100, dataCount ] ).map( pageSize => (
+          <CheckOrRadioLabel key={pageSize}>
             <input
-              checked={ pagination.pageSize === pageSize }
-              name={ name }
+              checked={table.getState().pagination.pageSize === pageSize}
               type='radio'
-              value={ pageSize }
-              onChange={ e => setPagination( { ...pagination, pageSize: Number( e.target.value ) } ) }
+              value={pageSize}
+              onChange={() => {
+                table.resetPageIndex()
+                table.setPageSize( pageSize )
+              }}
             />
-            <span>Отображать { pageSize }</span>
+            <span>Отображать {pageSize}</span>
           </CheckOrRadioLabel>
-        ) ) }
+        ) )}
       </ListPosAbsolute>
     </TableControl>
   )

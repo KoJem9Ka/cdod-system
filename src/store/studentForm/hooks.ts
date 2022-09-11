@@ -1,51 +1,43 @@
 import {
+  store,
   TAppState,
-  useAppDispatch,
   useAppSelector
-}                      from '../store'
-import {
-  GStudentByIdQuery,
-  GStudentType
-}                      from '../../other/generated'
-import { useCallback } from 'react'
+}                       from '../store'
+import { GStudentType } from '../../other/generated'
 import {
   thunkStudentCommit,
   thunkStudentLoad
-}                      from './thunks'
+}                       from './thunks'
 import {
   actionStudentChange,
   actionStudentClose,
   actionStudentCreate,
+  actionStudentStudyChange,
+  actionStudentStudyCreate,
+  actionStudentStudyDelete,
   actionStudentToggleEdit
-}                      from './reducer'
+}                       from './reducer'
+import { isEqual }      from 'lodash'
 
 
 
-type T = GStudentByIdQuery['student']
+const { dispatch } = store // Нормально это или нет .. неизвестно ...
+// ... и пошло поехало, зато все функции статичные 😎 и не нужен useCallback
+export const StForm = {
+  select      : ( id: GStudentType['id'] ) => void dispatch( thunkStudentLoad( id ) ),
+  toggleEdit  : (): void => void dispatch( actionStudentToggleEdit() ),
+  createStudy : (): void => void dispatch( actionStudentStudyCreate() ),
+  changeStudy : ( value: Parameters<typeof actionStudentStudyChange>[0] ): void => void dispatch( actionStudentStudyChange( value ) ),
+  delStudy    : ( value: Parameters<typeof actionStudentStudyDelete>[0] ): void => void dispatch( actionStudentStudyDelete( value ) ),
+  create      : (): void => void dispatch( actionStudentCreate() ),
+  close       : (): void => void dispatch( actionStudentClose() ),
+  change      : ( value: Parameters<typeof actionStudentChange>[0] ): void => void dispatch( actionStudentChange( value ) ),
+  commit      : (): void => void dispatch( thunkStudentCommit() ),
+} as const
 
-const selectStudentForm = ( state1: TAppState ) => state1.studentForm
-
-export const useStudentForm = () => {
-  const dispatch = useAppDispatch()
-  const state = useAppSelector( selectStudentForm )
-
-  const studentSelect = useCallback( ( id: GStudentType['id'] ) => void dispatch( thunkStudentLoad( id ) ), [] )
-  const studentToggleEdit = useCallback( ( value?: boolean ) => void dispatch( actionStudentToggleEdit( value ) ), [] )
-  const studentCreate = useCallback( () => dispatch( actionStudentCreate() ), [] )
-  const studentClose = useCallback( () => dispatch( actionStudentClose() ), [] )
-  const studentChange = useCallback( ( value: Parameters<typeof actionStudentChange>[0] ) => void dispatch( actionStudentChange( value ) ), [] )
-  const studentCommit = useCallback( () => dispatch( thunkStudentCommit() ), [] )
-
-  return {
-    ...state,
-    studentSelect,
-
-    studentToggleEdit,
-    studentCreate,
-    studentClose,
-
-    studentChange,
-
-    studentCommit,
-  }
-} 
+type TCheckFn = ( state: TAppState['studentForm'] )=> any
+const selectStudentForm     = ( { studentForm }: TAppState ) => studentForm
+export const useStudentForm = ( checkFn: TCheckFn ) => useAppSelector(
+  selectStudentForm,
+  ( a, b ) => isEqual( checkFn( a ), checkFn( b ) )
+)

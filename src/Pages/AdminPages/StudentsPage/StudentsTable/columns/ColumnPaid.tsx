@@ -15,16 +15,16 @@ const ColumnPaid: ColumnDefTemplate<CellContext<T, any>> = ( { row: { original: 
 
   const isPaid = info.reduce<boolean | null>( ( final, cur ) => {
     const isStudying = cur.contractState === GContractState.Studying
-    const isPaid1 = cur.isCoursePaid && (isNil( cur.isEquipmentPaid ) || cur.isEquipmentPaid)
+    const isPaid1    = cur.isCoursePaid && (isNil( cur.isEquipmentPaid ) || cur.isEquipmentPaid)
     return isStudying && final === null
-      ? isPaid1
+      ? isPaid1 ?? null
       : isStudying
-        ? final && isPaid1
+        ? final && (isPaid1 ?? null)
         : final
   }, null )
 
-  return !isNil( isPaid ) && <PaidBage isPaid={ isPaid }>
-    { isPaid ? 'Оплачено' : 'Долг' }
+  return !isNil( isPaid ) && <PaidBage isPaid={isPaid}>
+    {isPaid ? 'Оплачено' : 'Долг'}
   </PaidBage>
 }
 
@@ -39,11 +39,11 @@ const PaidBage = styled.div<{ isPaid: boolean }>`
   text-align    : center;
   font-weight   : 500;
 
-  ${ ( { isPaid } ) => (isPaid ? css`
+  ${( { isPaid } ) => (isPaid ? css`
     color      : var(--COLOR_grades-mark--great--main);
     background : var(--COLOR_grades-mark--great-back);
   ` : css`
     color      : var(--COLOR_grades-mark--bad--main);
     background : var(--COLOR_grades-mark--bad-back);
-  `) }
+  `)}
 `

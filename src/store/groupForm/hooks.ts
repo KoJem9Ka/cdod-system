@@ -16,7 +16,7 @@ type AGroup = GGroupByIdQuery['group']
 
 export const useGroupForm = () => {
   const dispatch = useAppDispatch()
-  const state = useAppSelector( state1 => state1.groupForm )
+  const state    = useAppSelector( state1 => state1.groupForm ) // TODO Вытащить функцию в константу за пределами компонента
 
   const selectGroup = ( id: AGroup['id'] ) => void dispatch( thunkLoadGroupByID( id ) )
   const groupToggleEdit = (value?: boolean ) => void dispatch( actionGroupToggleEdit( value ) )
