@@ -24,7 +24,7 @@ const Modal = styled.div`
 const ModalStudentCourse: FC = () => (
   <RootPortal>
     <Modal>
-        модальное говно
+        модальное окно
     </Modal>
   </RootPortal>
 )

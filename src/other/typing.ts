@@ -16,5 +16,3 @@ export type DeepPartial<T> = T extends object ? { [P in keyof T]?: DeepPartial<T
 export type InvertObject<T extends Record<PropertyKey, PropertyKey>> = {
   [P in keyof T as T[P]]: P
 }
-
-// export type OneOfObj<O> =
