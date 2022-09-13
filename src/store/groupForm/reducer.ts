@@ -17,44 +17,46 @@ type AStudents = GGroupByIdQuery['students']
 
 
 const initialState = {
-  groupOriginal: null as null | AGroup,
-  groupModified: null as null | AGroup,
+  groupOriginal : null as null | AGroup,
+  groupModified : null as null | AGroup,
 
-  students:   null as null | AStudents,
-  removedIds: [] as number[],
-  addedIds:   [] as number[],
+  students   : null as null | AStudents,
+  removedIds : [] as number[],
+  addedIds   : [] as number[],
 
-  isEdit: false as boolean,
+  otherStudents : null as null | AStudents,
+  
+  isEdit : false as boolean,
 
-  groupLoading: false as boolean,
-  error:        null as null | string,
+  groupLoading : false as boolean,
+  error        : null as null | string,
 }
 
 //TODO: fix ts-ignore...
 
 export const groupFormSlice = createSlice( {
-  name:          'groupForm',
+  name     : 'groupForm',
   initialState,
-  reducers:      {
-    actionGroupToggleEdit:    ( state, action: PayloadAction<boolean | undefined> ) => {
+  reducers : {
+    actionGroupToggleEdit : ( state, action: PayloadAction<boolean | undefined> ) => {
       state.isEdit = isNil( action.payload ) ? !state.isEdit : action.payload
     },
-    actionGroupChange:        ( state, action: PayloadAction<Partial<Omit<AGroup, 'id'>>> ) => {
+    actionGroupChange : ( state, action: PayloadAction<Partial<Omit<AGroup, 'id'>>> ) => {
       merge( state.groupModified, action.payload )
     },
-    actionGroupRemoveStudent: ( state, action: PayloadAction<number> ) => {
+    actionGroupRemoveStudent : ( state, action: PayloadAction<number> ) => {
       state.removedIds.includes( action.payload )
         ? state.removedIds = state.removedIds.filter( id => id !== action.payload )
         : state.removedIds = [ ...state.removedIds, action.payload ]
     },
-    actionGroupAddStudent:    ( state, action: PayloadAction<number> ) => {
+    actionGroupAddStudent : ( state, action: PayloadAction<number> ) => {
       state.addedIds.includes( action.payload )
         ? state.addedIds = state.addedIds.filter( id => id !== action.payload )
         : state.addedIds = [ ...state.addedIds, action.payload ]
     },
 
   },
-  extraReducers: builder => builder
+  extraReducers : builder => builder
       .addCase( actionLogout, () => initialState )
       .addCase( thunkLoadGroupByID.pending, state => {
         state.groupLoading = true
@@ -64,7 +66,8 @@ export const groupFormSlice = createSlice( {
         state.groupOriginal = null
 
         state.students = null
-
+        state.otherStudents = null
+        
         state.removedIds = []
         state.addedIds   = []
 
@@ -79,6 +82,8 @@ export const groupFormSlice = createSlice( {
         state.groupOriginal = action.payload.group
         state.groupModified = action.payload.group
         state.students      = action.payload.students
+        
+        state.otherStudents = action.payload.otherStudents
       } ),
 } )
 

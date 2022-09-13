@@ -9,14 +9,19 @@ import styled from 'styled-components'
 // `
 
 const GroupBodyList: React.FC = () => {
+  const { students, otherStudents, isEdit } = useGroupForm(g => [ g.students, g.otherStudents, g.isEdit ])
   
-  const { students } = useGroupForm()
-  
+  //TODO: отредактировать вывод студентов, заменить рандомные значения на айдишники
   return (
     <>
       {
         students?.map((student, index) => (
-          <GroupBodyListItem key={student.id} index={index} student={student}/>
+          <GroupBodyListItem key={Math.random()} index={index} student={student}/>
+        ))
+      }
+      {
+        isEdit && otherStudents?.map(student => (
+          <GroupBodyListItem key={Math.random()} student={student} other/>
         ))
       }
     </>

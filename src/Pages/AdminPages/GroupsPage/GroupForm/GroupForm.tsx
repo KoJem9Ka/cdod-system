@@ -7,14 +7,17 @@ import GroupFooterButtons from './GroupFooterButtons'
 
 const GroupForm: React.FC = () => {
 	
-  const { groupOriginal, groupModified, groupLoading, changeGroup, isEdit, isModified } = useGroupForm()
-  if (!groupOriginal) return <></>
+  const { groupOriginal, groupModified } = useGroupForm( g => [ g.groupOriginal, g.groupModified ])
+  
+  if (!groupModified) return <></>
 	
   return (
     <Form>
       <FormHead>
         <GroupLogo/>
-        
+        <p>{groupModified.course.name}</p>
+        <p>{groupModified.name}</p>
+        {/*<p>{groupOriginal.studentsCount} уч.</p>*/}
       </FormHead>
       <FormBody>
         <GroupBodyList/>
