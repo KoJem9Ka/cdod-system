@@ -1,5 +1,6 @@
 import { ApolloClient, ApolloLink, from, fromPromise, HttpLink, InMemoryCache } from '@apollo/client'
 import { onError } from '@apollo/client/link/error'
+import { isEmpty, isNil } from 'lodash'
 import { toast } from 'react-toastify'
 import { GLoginInput, GLoginMutationFn, GRenewTokenMutationFn, LoginDocument, RenewTokenDocument } from '../other/generated'
 import { IS_DEV } from '../other/helpers'
@@ -15,7 +16,7 @@ export const Application = {
       error   : 'Ошибка запроса авторизации',
     })
     if (!data?.login) {
-      toast.error('Ошибка в ответе запроса авторизации')
+      toast.error('Ошибка в ответе запроса авторизации', { autoClose: false })
       return
     }
     if (data.login.message === 'Success' && data.login.accessToken && data.login.refreshToken) {
@@ -44,7 +45,7 @@ export const Application = {
       error   : 'Ошибка запроса обновления токена',
     })
     if (!data?.relogin.accessToken || !data.relogin.refreshToken) {
-      toast.error('Ошибка в ответе запроса обновления токена')
+      toast.error('Ошибка в ответе запроса обновления токена', { autoClose: false })
       return
     }
     IS_DEV && toast.success('Рефреш токен обновлён!')
@@ -54,7 +55,12 @@ export const Application = {
   },
 }
 
-const serverDomainLink = new HttpLink({ uri: 'https://localhost:7094' })
+const SERVER_DOMAIN = process.env.REACT_APP_SERVER_DOMAIN || 'https://localhost:7094'
+if (isEmpty(SERVER_DOMAIN) || isNil(SERVER_DOMAIN)) {
+  console.error('REACT_APP_SERVER_DOMAIN is not defined')
+  throw new Error('REACT_APP_SERVER_DOMAIN is not defined')
+}
+const serverDomainLink = new HttpLink({ uri: SERVER_DOMAIN })
 
 const authMiddleware = new ApolloLink((operation, forward) => {
   const token = localStorage.getItem('AccessToken')
