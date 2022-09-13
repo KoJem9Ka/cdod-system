@@ -1,4 +1,5 @@
-import React, { ChangeEvent, memo, ReactNode, useId, useState } from 'react'
+import { ChangeEvent, memo, ReactNode, useId, useState } from 'react'
+import { NON_EXISTING_ID } from '../../../other/helpers'
 import { Caption, SubTitle, TextField, Title } from './index'
 
 type Props<T extends object | string, N> = {
@@ -10,6 +11,7 @@ type Props<T extends object | string, N> = {
 
 type SelectingSearch<T extends object | string, N> = {
   variant: 'search' | 'select'
+  default?: true
   canNull?: N
 
   element: T | null | undefined
@@ -73,6 +75,7 @@ const FormField = <T extends object | string, N extends boolean = false>(p: Prop
       <>
         <TextField
           as='select'
+          defaultValue={NON_EXISTING_ID}
           value={(p.element && p.getId(p.element)) || undefined}
           data-select
           onChange={(e: ChangeEvent<HTMLSelectElement>) => {
@@ -82,11 +85,14 @@ const FormField = <T extends object | string, N extends boolean = false>(p: Prop
             setIsValid(p.canNull || !!foundValue)
           }}
         >
-          {p.elements.map(el => (
-            <option key={p.getId(el)} value={p.getId(el)}>
-              {p.getText(el)}
-            </option>
-          ))}
+          <>
+            {p.default && <option value={NON_EXISTING_ID}>Выбор:</option>}
+            {p.elements.map(el => (
+              <option key={p.getId(el)} value={p.getId(el)}>
+                {p.getText(el)}
+              </option>
+            ))}
+          </>
         </TextField>
       </>
     )

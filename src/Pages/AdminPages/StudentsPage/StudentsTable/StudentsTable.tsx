@@ -9,42 +9,45 @@ import {
   SortingState,
   useReactTable,
   VisibilityState
-}                              from '@tanstack/react-table'
-import { isEmpty }             from 'lodash'
+} from '@tanstack/react-table'
+import { isEmpty } from 'lodash'
 import {
   CSSProperties,
   FC,
   useCallback,
   useMemo,
   useState
-}                              from 'react'
-import { TableControl }        from '../../../../components/UIKit/Tables/subcomponents/TableControl'
-import { TableHeadSeparator }  from '../../../../components/UIKit/Tables/subcomponents/TableHeadSeparator'
-import TableColumnHider        from '../../../../components/UIKit/Tables/TableColumnHider'
-import TablePageSizer          from '../../../../components/UIKit/Tables/TablePageSizer'
+} from 'react'
+import { TableControl } from '../../../../components/UIKit/Tables/subcomponents/TableControl'
+import { TableHeadSeparator } from '../../../../components/UIKit/Tables/subcomponents/TableHeadSeparator'
+import TableColumnHider from '../../../../components/UIKit/Tables/TableColumnHider'
+import TablePageSizer from '../../../../components/UIKit/Tables/TablePageSizer'
+import { useWatcher } from '../../../../hooks/useWatcher'
 import { useAllStudentsQuery } from '../../../../other/generated'
 import {
   StForm,
   useStudentForm
-}                              from '../../../../store/studentForm/hooks'
-import styles                  from '../../../../styles/tableStyles.module.scss'
-import PaginationControls      from './components/PaginationControls'
+} from '../../../../store/studentForm/hooks'
+import styles from '../../../../styles/tableStyles.module.scss'
+import PaginationControls from './components/PaginationControls'
 import {
   columns,
   studentsGlobalFilterFn
-}                              from './configColumns'
+} from './configColumns'
 
 
 
 const SearchStyle: CSSProperties = { flexGrow: 1, width: '10ch', textAlign: 'left' }
 
+
+
 const StudentsTable: FC = () => {
-  const { data: { students: data } = { students: [] }, refetch } = useAllStudentsQuery()
-  const [ sorting, setSorting ]                                  = useState<SortingState>( [] )
-  const [ columnFilters, setColumnFilters ]                      = useState<ColumnFiltersState>( [] )
-  const [ globalFilter, setGlobalFilter ]                        = useState( '' )
-  const [ pagination, setPagination ]                            = useState<PaginationState>( { pageSize: 25, pageIndex: 0 } )
-  const [ columnVisibility, setColumnVisibility ]                = useState<VisibilityState>( {
+  const { data: { students: data } = { students: [] } } = useAllStudentsQuery()
+  const [ sorting, setSorting ]                         = useState<SortingState>( [] )
+  const [ columnFilters, setColumnFilters ]             = useState<ColumnFiltersState>( [] )
+  const [ globalFilter, setGlobalFilter ]               = useState( '' )
+  const [ pagination, setPagination ]                   = useState<PaginationState>( { pageSize: 25, pageIndex: 0 } )
+  const [ columnVisibility, setColumnVisibility ]       = useState<VisibilityState>( {
     parentFio : false,
     phone     : false,
     email     : false,
@@ -52,6 +55,15 @@ const StudentsTable: FC = () => {
   } )
 
   const { studentOriginal } = useStudentForm( s => s.studentOriginal )
+  
+  useWatcher(data, () => {
+    if (isEmpty(data)) return
+    const pageIndex = Math.max(0, Math.floor(data.findIndex(st => st.id === studentOriginal?.id) / pagination.pageSize))
+    setPagination({
+      pageSize : pagination.pageSize,
+      pageIndex,
+    })
+  } )
 
   const table = useReactTable( {
     data,

@@ -15,9 +15,7 @@
     "@types/react": "^18.0.19",
     "@types/react-dom": "^18.0.6",
     "axios": "^0.27.2",
-    "bcryptjs": "^2.4.3",
     "csstype": "^3.1.0",
-    "date-fns": "^2.29.2",
     "dayjs": "^1.11.5",
     "dotenv": "^16.0.2",
     "framer-motion": "^7.3.2",
@@ -43,12 +41,6 @@
     "test": "react-scripts test",
     "postinstall": "npm run generate"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -69,7 +61,6 @@
     "@graphql-codegen/typescript": "2.7.3",
     "@graphql-codegen/typescript-operations": "2.5.3",
     "@graphql-codegen/typescript-react-apollo": "3.3.3",
-    "@types/bcryptjs": "^2.4.2",
     "@types/lodash": "^4.14.185",
     "@types/redux-logger": "^3.0.9",
     "@types/styled-components": "^5.1.26",
@@ -78,8 +69,11 @@
     "@welldone-software/why-did-you-render": "^7.0.1",
     "concurrently": "^7.4.0",
     "eslint": "8.22.0",
+    "eslint-config-react-app": "^7.0.1",
     "eslint-plugin-react": "^7.31.8",
     "patch-package": "^6.4.7",
+    "prettier": "^2.7.1",
+    "prettier-eslint": "^15.0.1",
     "redux-logger": "^3.0.6",
     "sass": "^1.54.9",
     "stylelint": "^14.11.0",

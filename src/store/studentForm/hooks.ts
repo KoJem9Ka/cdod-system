@@ -1,13 +1,10 @@
+import { isEqual } from 'lodash'
+import { GStudentType } from '../../other/generated'
 import {
   store,
   TAppState,
   useAppSelector
-}                       from '../store'
-import { GStudentType } from '../../other/generated'
-import {
-  thunkStudentCommit,
-  thunkStudentLoad
-}                       from './thunks'
+} from '../store'
 import {
   actionStudentChange,
   actionStudentClose,
@@ -16,15 +13,18 @@ import {
   actionStudentStudyCreate,
   actionStudentStudyDelete,
   actionStudentToggleEdit
-}                       from './reducer'
-import { isEqual }      from 'lodash'
+} from './reducer'
+import {
+  thunkStudentCommit,
+  thunkStudentLoad
+} from './thunks'
 
 
 
 const { dispatch } = store // Нормально это или нет .. неизвестно ...
 // ... и пошло поехало, зато все функции статичные 😎 и не нужен useCallback
 export const StForm = {
-  select      : ( id: GStudentType['id'] ) => void dispatch( thunkStudentLoad( id ) ),
+  select      : ( id: GStudentType['id'] ) => void dispatch( thunkStudentLoad( { id } ) ),
   toggleEdit  : (): void => void dispatch( actionStudentToggleEdit() ),
   createStudy : (): void => void dispatch( actionStudentStudyCreate() ),
   changeStudy : ( value: Parameters<typeof actionStudentStudyChange>[0] ): void => void dispatch( actionStudentStudyChange( value ) ),

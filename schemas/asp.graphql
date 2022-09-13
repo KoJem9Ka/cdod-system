@@ -1,606 +1,414 @@
-# This file was generated based on ".graphqlconfig". Do not edit manually.
-
-schema {
-  query: Query
-  mutation: Mutation
-}
-
-"The `@defer` directive may be provided for fragment spreads and inline fragments to inform the executor to delay the execution of the current fragment to indicate deprioritization of the current fragment. A query with `@defer` directive will cause the request to potentially return multiple responses, where non-deferred data is delivered in the initial response and data deferred is delivered in a subsequent response. `@include` and `@skip` take precedence over `@defer`."
+"""
+The `@defer` directive may be provided for fragment spreads and inline fragments to inform the executor to delay the execution of the current fragment to indicate deprioritization of the current fragment. A query with `@defer` directive will cause the request to potentially return multiple responses, where non-deferred data is delivered in the initial response and data deferred is delivered in a subsequent response. `@include` and `@skip` take precedence over `@defer`.
+"""
 directive @defer(
-  "Deferred when true."
-  if: Boolean,
-  "If this argument label has a value other than null, it will be passed on to the result of this defer directive. This label is intended to give client applications a way to identify to which fragment a deferred result belongs to."
+  """
+  If this argument label has a value other than null, it will be passed on to the result of this defer directive. This label is intended to give client applications a way to identify to which fragment a deferred result belongs to.
+  """
   label: String
+
+  """
+  Deferred when true.
+  """
+  if: Boolean
 ) on FRAGMENT_SPREAD | INLINE_FRAGMENT
 
-"The `@stream` directive may be provided for a field of `List` type so that the backend can leverage technology such as asynchronous iterators to provide a partial list in the initial response, and additional list items in subsequent responses. `@include` and `@skip` take precedence over `@stream`."
+"""
+The `@stream` directive may be provided for a field of `List` type so that the backend can leverage technology such as asynchronous iterators to provide a partial list in the initial response, and additional list items in subsequent responses. `@include` and `@skip` take precedence over `@stream`.
+"""
 directive @stream(
-  "Streamed when true."
-  if: Boolean,
-  "The initial elements that shall be send down to the consumer."
-  initialCount: Int! = 0,
-  "If this argument label has a value other than null, it will be passed on to the result of this stream directive. This label is intended to give client applications a way to identify to which fragment a streamed result belongs to."
+  """
+  If this argument label has a value other than null, it will be passed on to the result of this stream directive. This label is intended to give client applications a way to identify to which fragment a streamed result belongs to.
+  """
   label: String
+
+  """
+  The initial elements that shall be send down to the consumer.
+  """
+  initialCount: Int! = 0
+
+  """
+  Streamed when true.
+  """
+  if: Boolean
 ) on FIELD
 
 directive @authorize(
-  "Defines when when the resolver shall be executed.By default the resolver is executed after the policy has determined that the current user is allowed to access the field."
-  apply: ApplyPolicy! = BEFORE_RESOLVER,
-  "The name of the authorization policy that determines access to the annotated resource."
-  policy: String,
-  "Roles that are allowed to access the annotated resource."
+  """
+  The name of the authorization policy that determines access to the annotated resource.
+  """
+  policy: String
+
+  """
+  Roles that are allowed to access the annotated resource.
+  """
   roles: [String!]
-) on SCHEMA | OBJECT | FIELD_DEFINITION
 
-type AttendanceType {
-  lesson: LessonType!
-  lessonId: Int!
-  mark: Int!
-  note: String!
-  status: Status!
-  student: StudentType!
-  studentId: Int!
-}
+  """
+  Defines when when the resolver shall be executed.By default the resolver is executed after the policy has determined that the current user is allowed to access the field.
+  """
+  apply: ApplyPolicy! = BEFORE_RESOLVER
+) repeatable on SCHEMA | OBJECT | FIELD_DEFINITION
 
-type CourseType {
-  color: String
-  durationInMonths: Int
-  equipmentPriceWithRobot: Float
-  equipmentPriceWithoutRobot: Float
-  id: Int!
-  name: String!
-  price: Float
-  programId: Int
-  svgIconUrl: String
-}
-
-type GroupType {
-  course: CourseType!
-  courseId: Int!
-  id: Int!
-  name: String!
-  startDate: Date!
-  studentsCount: Int!
-  teacher: TeacherType!
-  teacherId: Int!
-}
-
-type InfoType {
-  admissionDate: Date!
-  attempt: Int!
-  contractState: ContractState!
-  course: CourseType!
-  courseId: Int!
-  group: GroupType
-  isCoursePaid: Boolean
-  isEquipmentPaid: Boolean
-  isGetRobot: Boolean
-  studentId: Int!
-}
-
-type LessonType {
-  classRoom: String!
-  duration: Int!
-  group: GroupType!
-  groupId: Int!
-  homework: String!
-  id: Int!
-  startDateTime: DateTime!
-  topic: String!
-}
-
-type Mutation {
-  courseCreateCourse(course: CourseCreateInput!): CourseType!
-  courseUpdateMany(courses: [CourseUpdateInput!]!): Boolean!
-  createSchool(school: SchoolCreateInput!): SchoolType!
-  login(loginInput: LoginInput!): TokenResponseType!
-  parentCreate(parent: ParentInput!): ParentType!
-  parentDeleteMany(parentsIds: [Int!]!): Boolean!
-  parentUpdate(id: Int!, parent: ParentInput!): ParentType!
-  renewAccessToken(renewToken: RenewTokenInput!): TokenResponseType!
-  schoolDeleteMany(schoolIds: [Int!]!): Boolean!
-  schoolUpdateMany(schools: [SchoolUpdateInput!]!): Boolean!
-  studentCreate(student: StudentCreateInput!): StudentType!
-  studentDeleteMany(studentIds: [Int!]!): Boolean!
-  studentStudyCreateMany(studentToCreate: [StudentToCourseCreateInput!]!): Boolean!
-  studentUpdateMany(students: [StudentUpdateInput!]!): Boolean!
-  teacherCreate(teacher: TeacherInput!): TeacherType!
-  teacherDeleteMany(teacherIds: [Int!]!): Boolean!
-  teacherUpdate(id: Int!, teacher: TeacherInput!): Boolean!
-  updateFromGoogleTable: Boolean!
-}
-
-type ParentType {
-  address: String
-  applyingDate: Date
-  birthday: Date
-  education: String
-  email: String
-  firstName: String
-  id: Int!
-  inn: String
-  isAdmin: Boolean!
-  lastName: String
-  passportCode: String
-  passportDate: Date
-  passportIssue: String
-  passportNo: String
-  password: String
-  patronymic: String
-  phoneNumber: String
-  secondEmail: String
-  secondPhoneNumber: String
-  snils: String
-  type: RelationType
-}
-
-type PostType {
-  id: Int!
-  name: String!
-}
-
-type ProgramType {
-  hours: Int!
-  id: Int!
-  name: String!
-  programFileUrl: String
-  topics: String
+enum ApplyPolicy {
+  BEFORE_RESOLVER
+  AFTER_RESOLVER
 }
 
 type Query {
-  attendances(courseId: Int, lessonId: Int, order: [AttendanceTypeSortInput!], studentId: Int, where: AttendanceTypeFilterInput): [AttendanceType!]!
-  course(id: Int!): CourseType!
-  courses(order: [CourseTypeSortInput!], where: CourseTypeFilterInput): [CourseType!]!
-  group(id: Int!): GroupType!
-  groups(courseId: Int, order: [GroupTypeSortInput!], where: GroupTypeFilterInput): [GroupType!]!
-  lesson(id: Int!): LessonType!
-  lessons(groupId: Int, order: [LessonTypeSortInput!], studentId: Int, teacherId: Int, where: LessonTypeFilterInput): [LessonType!]!
-  parent(id: Int!): ParentType!
-  parents(order: [ParentTypeSortInput!], where: ParentTypeFilterInput): [ParentType!]!
-  post(id: Int!): PostType!
-  posts(order: [PostTypeSortInput!], where: PostTypeFilterInput): [PostType!]!
-  program(id: Int!): ProgramType!
-  programs(order: [ProgramTypeSortInput!], where: ProgramTypeFilterInput): [ProgramType!]!
-  school(id: Int!): SchoolType!
-  schools(order: [SchoolTypeSortInput!], where: SchoolTypeFilterInput): [SchoolType!]!
+  students(
+    courseId: Int
+    groupId: Int
+    parentId: Int
+    schoolId: Int
+    where: StudentTypeFilterInput
+    order: [StudentTypeSortInput!]
+  ): [StudentType!]!
   student(id: Int!): StudentType!
-  students(courseId: Int, groupId: Int, order: [StudentTypeSortInput!], parentId: Int, schoolId: Int, where: StudentTypeFilterInput): [StudentType!]!
-  teacher(groupId: Int, id: Int): TeacherType!
-  teachers(lessonId: Int, order: [TeacherTypeSortInput!], where: TeacherTypeFilterInput): [TeacherType!]!
-  teachersWorkTime(lessonId: Int, order: [TeachersWorkTimeTypeSortInput!], teacherId: Int, where: TeachersWorkTimeTypeFilterInput): [TeachersWorkTimeType!]!
+  groups(
+    courseId: Int
+    where: GroupTypeFilterInput
+    order: [GroupTypeSortInput!]
+  ): [GroupType!]!
+  group(id: Int!): GroupType!
+  courses(
+    where: CourseTypeFilterInput
+    order: [CourseTypeSortInput!]
+  ): [CourseType!]!
+  course(id: Int!): CourseType!
+  teachers(
+    lessonId: Int
+    where: TeacherTypeFilterInput
+    order: [TeacherTypeSortInput!]
+  ): [TeacherType!]!
+  teacher(id: Int, groupId: Int): TeacherType!
+  teachersWorkTime(
+    lessonId: Int
+    teacherId: Int
+    where: TeachersWorkTimeTypeFilterInput
+    order: [TeachersWorkTimeTypeSortInput!]
+  ): [TeachersWorkTimeType!]!
+  lessons(
+    studentId: Int
+    teacherId: Int
+    groupId: Int
+    where: LessonTypeFilterInput
+    order: [LessonTypeSortInput!]
+  ): [LessonType!]!
+  lesson(id: Int!): LessonType!
+  attendances(
+    lessonId: Int
+    studentId: Int
+    courseId: Int
+    where: AttendanceTypeFilterInput
+    order: [AttendanceTypeSortInput!]
+  ): [AttendanceType!]!
+  parents(
+    where: ParentTypeFilterInput
+    order: [ParentTypeSortInput!]
+  ): [ParentType!]!
+  parent(id: Int!): ParentType!
+  schools(
+    where: SchoolTypeFilterInput
+    order: [SchoolTypeSortInput!]
+  ): [SchoolType!]!
+  school(id: Int!): SchoolType!
+  posts(where: PostTypeFilterInput, order: [PostTypeSortInput!]): [PostType!]!
+  post(id: Int!): PostType!
+  programs(
+    where: ProgramTypeFilterInput
+    order: [ProgramTypeSortInput!]
+  ): [ProgramType!]!
+  program(id: Int!): ProgramType!
 }
 
 type SchoolType {
-  district: District
+  students: [StudentType!]!
   id: Int!
   name: String!
-  students: [StudentType!]!
+  district: District
 }
 
 type StudentType {
-  birthDate: Date
-  contractOfEducation: URL
-  description: String
-  firstName: String
-  id: Int!
-  info: [InfoType!]!
-  lastName: String
-  parent: ParentType!
-  parentId: Int!
-  patronymic: String
   school: SchoolType
-  schoolId: Int
-}
-
-type TeacherType {
-  address: String
-  birthday: Date
-  education: String
-  email: String!
+  parent: ParentType!
+  info: [InfoType!]!
+  id: Int!
   firstName: String
-  id: Int!
-  inn: String
-  isAdmin: Boolean!
   lastName: String
-  passportCode: String
-  passportDate: Date
-  passportIssue: String
-  passportNo: String
-  password: String!
   patronymic: String
-  phoneNumber: String
-  post: String
-  postId: Int
-  snils: String
-  workPlace: String!
+  description: String
+  birthDate: Date
+  schoolId: Int
+  parentId: Int!
 }
 
-type TeachersWorkTimeType {
-  lesson: LessonType!
-  lessonId: Int!
-  teacher: TeacherType!
-  teacherId: Int!
-  workTime: TimeSpan!
+type Mutation {
+  updateFromGoogleTable: Boolean!
+  login(loginInput: LoginInput!): TokenResponseType!
+  renewAccessToken(renewToken: RenewTokenInput!): TokenResponseType!
+  parentCreate(parent: ParentInput!): ParentType!
+  parentUpdate(id: Int!, parent: ParentInput!): ParentType!
+  parentDeleteMany(parentsIds: [Int!]!): Boolean!
+  createSchool(school: SchoolCreateInput!): SchoolType!
+  schoolUpdateMany(schools: [SchoolUpdateInput!]!): Boolean!
+  schoolDeleteMany(schoolIds: [Int!]!): Boolean!
+  studentCreate(student: StudentCreateInput!): StudentType!
+  studentUpdateMany(students: [StudentUpdateInput!]!): Boolean!
+  studentDeleteMany(studentIds: [Int!]!): Boolean!
+  studentStudyCreateMany(
+    studentToCourseCreate: [StudentToCourseCreateInput!]!
+  ): Boolean!
+  studentStudyUpdateMany(
+    studentToCourseUpdate: [StudentToCourseUpdateInput!]!
+  ): Boolean!
+  studentsStudyDeleteMany(
+    studentToCourseDetach: [StudentToCourseDetachInput!]!
+  ): Boolean!
+  courseCreateCourse(course: CourseCreateInput!): CourseType!
+  courseUpdateMany(courses: [CourseUpdateInput!]!): Boolean!
+  teacherCreate(teacher: TeacherInput!): TeacherType!
+  teacherUpdate(id: Int!, teacher: TeacherInput!): Boolean!
+  teacherDeleteMany(teacherIds: [Int!]!): Boolean!
 }
 
-type TokenResponseType {
-  accessToken: String
-  message: String
-  refreshToken: String
-}
-
-enum ApplyPolicy {
-  AFTER_RESOLVER
-  BEFORE_RESOLVER
-}
-
-enum ContractState {
-  COMPLETED
-  CONSIDERATION
-  EXCLUDED
-  LEFT
-  REJECTED
-  STUDYING
-}
-
-enum District {
-  CENTRAL
-  TRACTOR
-  VOROSHILOVSKIY
-}
-
-enum RelationType {
-  AUNT
-  BROTHER
-  FATHER
-  GODPARENT
-  GRANDMA
-  GRANDPA
-  GUARDIAN
-  MOTHER
-  OTHER
-  SISTER
-  UNCLE
-}
-
-enum SortEnumType {
-  ASC
-  DESC
-}
-
-enum Status {
-  ABSENT
-  ABSENT_VALID_REASON
-  ATTENDED
-}
-
-"The `Date` scalar represents an ISO-8601 compliant date type."
-scalar Date
-
-"The `DateTime` scalar represents an ISO-8601 compliant date time type."
-scalar DateTime
-
-"The `TimeSpan` scalar represents an ISO-8601 compliant duration type."
-scalar TimeSpan
-
-scalar URL
-
-"The `Upload` scalar type represents a file upload."
-scalar Upload
-
-input AttendanceTypeFilterInput {
-  and: [AttendanceTypeFilterInput!]
-  lessonId: ComparableInt32OperationFilterInput
-  mark: ComparableInt32OperationFilterInput
-  note: StringOperationFilterInput
-  or: [AttendanceTypeFilterInput!]
-  status: StatusOperationFilterInput
-  studentId: ComparableInt32OperationFilterInput
-}
-
-input AttendanceTypeSortInput {
-  lessonId: SortEnumType
-  mark: SortEnumType
-  note: SortEnumType
-  status: SortEnumType
-  studentId: SortEnumType
-}
-
-input BooleanOperationFilterInput {
-  eq: Boolean
-  neq: Boolean
-}
-
-input ComparableDateOnlyOperationFilterInput {
-  eq: Date
-  gt: Date
-  gte: Date
-  in: [Date!]
-  lt: Date
-  lte: Date
-  neq: Date
-  ngt: Date
-  ngte: Date
-  nin: [Date!]
-  nlt: Date
-  nlte: Date
-}
-
-input ComparableDateTimeOperationFilterInput {
-  eq: DateTime
-  gt: DateTime
-  gte: DateTime
-  in: [DateTime!]
-  lt: DateTime
-  lte: DateTime
-  neq: DateTime
-  ngt: DateTime
-  ngte: DateTime
-  nin: [DateTime!]
-  nlt: DateTime
-  nlte: DateTime
-}
-
-input ComparableInt32OperationFilterInput {
-  eq: Int
-  gt: Int
-  gte: Int
-  in: [Int!]
-  lt: Int
-  lte: Int
-  neq: Int
-  ngt: Int
-  ngte: Int
-  nin: [Int!]
-  nlt: Int
-  nlte: Int
-}
-
-input ComparableNullableOfDateOnlyOperationFilterInput {
-  eq: Date
-  gt: Date
-  gte: Date
-  in: [Date]
-  lt: Date
-  lte: Date
-  neq: Date
-  ngt: Date
-  ngte: Date
-  nin: [Date]
-  nlt: Date
-  nlte: Date
-}
-
-input ComparableNullableOfDoubleOperationFilterInput {
-  eq: Float
-  gt: Float
-  gte: Float
-  in: [Float]
-  lt: Float
-  lte: Float
-  neq: Float
-  ngt: Float
-  ngte: Float
-  nin: [Float]
-  nlt: Float
-  nlte: Float
-}
-
-input ComparableNullableOfInt32OperationFilterInput {
-  eq: Int
-  gt: Int
-  gte: Int
-  in: [Int]
-  lt: Int
-  lte: Int
-  neq: Int
-  ngt: Int
-  ngte: Int
-  nin: [Int]
-  nlt: Int
-  nlte: Int
-}
-
-input ComparableTimeOnlyOperationFilterInput {
-  eq: TimeSpan
-  gt: TimeSpan
-  gte: TimeSpan
-  in: [TimeSpan!]
-  lt: TimeSpan
-  lte: TimeSpan
-  neq: TimeSpan
-  ngt: TimeSpan
-  ngte: TimeSpan
-  nin: [TimeSpan!]
-  nlt: TimeSpan
-  nlte: TimeSpan
-}
-
-input CourseCreateInput {
-  color: String
-  coursePrice: Float
-  durationInMonths: Int
-  equipmentPriceWithRobot: Float
-  equipmentPriceWithoutRobot: Float
-  name: String!
-  programId: Int
-  svgIconColor: String
-}
-
-input CourseTypeFilterInput {
-  and: [CourseTypeFilterInput!]
-  color: StringOperationFilterInput
-  durationInMonths: ComparableNullableOfInt32OperationFilterInput
-  equipmentPriceWithRobot: ComparableNullableOfDoubleOperationFilterInput
-  equipmentPriceWithoutRobot: ComparableNullableOfDoubleOperationFilterInput
+input StudentTypeFilterInput {
+  and: [StudentTypeFilterInput!]
+  or: [StudentTypeFilterInput!]
   id: ComparableInt32OperationFilterInput
-  name: StringOperationFilterInput
-  or: [CourseTypeFilterInput!]
-  price: ComparableNullableOfDoubleOperationFilterInput
-  programId: ComparableNullableOfInt32OperationFilterInput
-  svgIconUrl: StringOperationFilterInput
+  firstName: StringOperationFilterInput
+  lastName: StringOperationFilterInput
+  patronymic: StringOperationFilterInput
+  description: StringOperationFilterInput
+  birthDate: ComparableNullableOfDateOnlyOperationFilterInput
+  schoolId: ComparableNullableOfInt32OperationFilterInput
+  parentId: ComparableInt32OperationFilterInput
 }
 
-input CourseTypeSortInput {
-  color: SortEnumType
-  durationInMonths: SortEnumType
-  equipmentPriceWithRobot: SortEnumType
-  equipmentPriceWithoutRobot: SortEnumType
+input StudentTypeSortInput {
   id: SortEnumType
-  name: SortEnumType
-  price: SortEnumType
-  programId: SortEnumType
-  svgIconUrl: SortEnumType
-}
-
-input CourseUpdateInput {
-  color: String
-  coursePrice: Float
-  durationInMonths: Int
-  equipmentPriceWithRobot: Float
-  equipmentPriceWithoutRobot: Float
-  id: Int!
-  name: String
-  programId: Int
-  svgIconColor: String
+  firstName: SortEnumType
+  lastName: SortEnumType
+  patronymic: SortEnumType
+  description: SortEnumType
+  birthDate: SortEnumType
+  schoolId: SortEnumType
+  parentId: SortEnumType
 }
 
 input GroupTypeFilterInput {
   and: [GroupTypeFilterInput!]
-  courseId: ComparableInt32OperationFilterInput
+  or: [GroupTypeFilterInput!]
   id: ComparableInt32OperationFilterInput
   name: StringOperationFilterInput
-  or: [GroupTypeFilterInput!]
-  startDate: ComparableDateOnlyOperationFilterInput
   teacherId: ComparableInt32OperationFilterInput
+  startDate: ComparableDateOnlyOperationFilterInput
+  courseId: ComparableInt32OperationFilterInput
 }
 
 input GroupTypeSortInput {
-  courseId: SortEnumType
   id: SortEnumType
   name: SortEnumType
-  startDate: SortEnumType
   teacherId: SortEnumType
+  startDate: SortEnumType
+  courseId: SortEnumType
+}
+
+input CourseTypeFilterInput {
+  and: [CourseTypeFilterInput!]
+  or: [CourseTypeFilterInput!]
+  id: ComparableInt32OperationFilterInput
+  name: StringOperationFilterInput
+  programId: ComparableNullableOfInt32OperationFilterInput
+  price: ComparableNullableOfDoubleOperationFilterInput
+  color: StringOperationFilterInput
+  svgIconUrl: StringOperationFilterInput
+  equipmentPriceWithRobot: ComparableNullableOfDoubleOperationFilterInput
+  equipmentPriceWithoutRobot: ComparableNullableOfDoubleOperationFilterInput
+  durationInMonths: ComparableNullableOfInt32OperationFilterInput
+}
+
+input CourseTypeSortInput {
+  id: SortEnumType
+  name: SortEnumType
+  programId: SortEnumType
+  price: SortEnumType
+  color: SortEnumType
+  svgIconUrl: SortEnumType
+  equipmentPriceWithRobot: SortEnumType
+  equipmentPriceWithoutRobot: SortEnumType
+  durationInMonths: SortEnumType
+}
+
+input TeacherTypeFilterInput {
+  and: [TeacherTypeFilterInput!]
+  or: [TeacherTypeFilterInput!]
+  id: ComparableInt32OperationFilterInput
+  firstName: StringOperationFilterInput
+  lastName: StringOperationFilterInput
+  patronymic: StringOperationFilterInput
+  phoneNumber: StringOperationFilterInput
+  email: StringOperationFilterInput
+  password: StringOperationFilterInput
+  birthday: ComparableNullableOfDateOnlyOperationFilterInput
+  address: StringOperationFilterInput
+  education: StringOperationFilterInput
+  inn: StringOperationFilterInput
+  snils: StringOperationFilterInput
+  passportNo: StringOperationFilterInput
+  passportIssue: StringOperationFilterInput
+  passportDate: ComparableNullableOfDateOnlyOperationFilterInput
+  passportCode: StringOperationFilterInput
+  isAdmin: BooleanOperationFilterInput
+  workPlace: StringOperationFilterInput
+  postId: ComparableNullableOfInt32OperationFilterInput
+}
+
+input TeacherTypeSortInput {
+  id: SortEnumType
+  firstName: SortEnumType
+  lastName: SortEnumType
+  patronymic: SortEnumType
+  phoneNumber: SortEnumType
+  email: SortEnumType
+  password: SortEnumType
+  birthday: SortEnumType
+  address: SortEnumType
+  education: SortEnumType
+  inn: SortEnumType
+  snils: SortEnumType
+  passportNo: SortEnumType
+  passportIssue: SortEnumType
+  passportDate: SortEnumType
+  passportCode: SortEnumType
+  isAdmin: SortEnumType
+  workPlace: SortEnumType
+  postId: SortEnumType
+}
+
+input TeachersWorkTimeTypeFilterInput {
+  and: [TeachersWorkTimeTypeFilterInput!]
+  or: [TeachersWorkTimeTypeFilterInput!]
+  teacherId: ComparableInt32OperationFilterInput
+  lessonId: ComparableInt32OperationFilterInput
+  workTime: ComparableTimeOnlyOperationFilterInput
+}
+
+input TeachersWorkTimeTypeSortInput {
+  teacherId: SortEnumType
+  lessonId: SortEnumType
+  workTime: SortEnumType
 }
 
 input LessonTypeFilterInput {
   and: [LessonTypeFilterInput!]
-  classRoom: StringOperationFilterInput
-  duration: ComparableInt32OperationFilterInput
-  groupId: ComparableInt32OperationFilterInput
-  homework: StringOperationFilterInput
-  id: ComparableInt32OperationFilterInput
   or: [LessonTypeFilterInput!]
+  id: ComparableInt32OperationFilterInput
+  homework: StringOperationFilterInput
   startDateTime: ComparableDateTimeOperationFilterInput
+  duration: ComparableInt32OperationFilterInput
+  classRoom: StringOperationFilterInput
   topic: StringOperationFilterInput
+  groupId: ComparableInt32OperationFilterInput
 }
 
 input LessonTypeSortInput {
-  classRoom: SortEnumType
-  duration: SortEnumType
-  groupId: SortEnumType
-  homework: SortEnumType
   id: SortEnumType
+  homework: SortEnumType
   startDateTime: SortEnumType
+  duration: SortEnumType
+  classRoom: SortEnumType
   topic: SortEnumType
+  groupId: SortEnumType
 }
 
-input LoginInput {
-  email: String!
-  password: String!
+input AttendanceTypeFilterInput {
+  and: [AttendanceTypeFilterInput!]
+  or: [AttendanceTypeFilterInput!]
+  studentId: ComparableInt32OperationFilterInput
+  lessonId: ComparableInt32OperationFilterInput
+  mark: ComparableInt32OperationFilterInput
+  note: StringOperationFilterInput
+  status: StatusOperationFilterInput
 }
 
-input NullableOfDistrictOperationFilterInput {
-  eq: District
-  in: [District]
-  neq: District
-  nin: [District]
-}
-
-input NullableOfRelationTypeOperationFilterInput {
-  eq: RelationType
-  in: [RelationType]
-  neq: RelationType
-  nin: [RelationType]
-}
-
-input ParentInput {
-  address: String
-  applyingDate: Date
-  birthday: Date
-  education: String
-  email: String
-  firstname: String
-  inn: String
-  lastname: String
-  passportCode: String
-  passportDate: Date
-  passportIssue: String
-  passportNo: String
-  password: String
-  patronymic: String
-  phoneNumber: String
-  relationType: RelationType
-  secondEmail: String
-  secondPhoneNumber: String
-  snils: String
+input AttendanceTypeSortInput {
+  studentId: SortEnumType
+  lessonId: SortEnumType
+  mark: SortEnumType
+  note: SortEnumType
+  status: SortEnumType
 }
 
 input ParentTypeFilterInput {
-  address: StringOperationFilterInput
   and: [ParentTypeFilterInput!]
-  applyingDate: ComparableNullableOfDateOnlyOperationFilterInput
-  birthday: ComparableNullableOfDateOnlyOperationFilterInput
-  education: StringOperationFilterInput
-  email: StringOperationFilterInput
-  firstName: StringOperationFilterInput
-  id: ComparableInt32OperationFilterInput
-  inn: StringOperationFilterInput
-  isAdmin: BooleanOperationFilterInput
-  lastName: StringOperationFilterInput
   or: [ParentTypeFilterInput!]
-  passportCode: StringOperationFilterInput
-  passportDate: ComparableNullableOfDateOnlyOperationFilterInput
-  passportIssue: StringOperationFilterInput
-  passportNo: StringOperationFilterInput
-  password: StringOperationFilterInput
+  id: ComparableInt32OperationFilterInput
+  firstName: StringOperationFilterInput
+  lastName: StringOperationFilterInput
   patronymic: StringOperationFilterInput
   phoneNumber: StringOperationFilterInput
-  secondEmail: StringOperationFilterInput
-  secondPhoneNumber: StringOperationFilterInput
+  email: StringOperationFilterInput
+  password: StringOperationFilterInput
+  birthday: ComparableNullableOfDateOnlyOperationFilterInput
+  address: StringOperationFilterInput
+  education: StringOperationFilterInput
+  inn: StringOperationFilterInput
   snils: StringOperationFilterInput
+  passportNo: StringOperationFilterInput
+  passportIssue: StringOperationFilterInput
+  passportDate: ComparableNullableOfDateOnlyOperationFilterInput
+  passportCode: StringOperationFilterInput
+  isAdmin: BooleanOperationFilterInput
+  secondPhoneNumber: StringOperationFilterInput
+  secondEmail: StringOperationFilterInput
+  applyingDate: ComparableNullableOfDateOnlyOperationFilterInput
   type: NullableOfRelationTypeOperationFilterInput
 }
 
 input ParentTypeSortInput {
-  address: SortEnumType
-  applyingDate: SortEnumType
-  birthday: SortEnumType
-  education: SortEnumType
-  email: SortEnumType
-  firstName: SortEnumType
   id: SortEnumType
-  inn: SortEnumType
-  isAdmin: SortEnumType
+  firstName: SortEnumType
   lastName: SortEnumType
-  passportCode: SortEnumType
-  passportDate: SortEnumType
-  passportIssue: SortEnumType
-  passportNo: SortEnumType
-  password: SortEnumType
   patronymic: SortEnumType
   phoneNumber: SortEnumType
-  secondEmail: SortEnumType
-  secondPhoneNumber: SortEnumType
+  email: SortEnumType
+  password: SortEnumType
+  birthday: SortEnumType
+  address: SortEnumType
+  education: SortEnumType
+  inn: SortEnumType
   snils: SortEnumType
+  passportNo: SortEnumType
+  passportIssue: SortEnumType
+  passportDate: SortEnumType
+  passportCode: SortEnumType
+  isAdmin: SortEnumType
+  secondPhoneNumber: SortEnumType
+  secondEmail: SortEnumType
+  applyingDate: SortEnumType
   type: SortEnumType
+}
+
+input SchoolTypeFilterInput {
+  and: [SchoolTypeFilterInput!]
+  or: [SchoolTypeFilterInput!]
+  id: ComparableInt32OperationFilterInput
+  name: StringOperationFilterInput
+  district: NullableOfDistrictOperationFilterInput
+}
+
+input SchoolTypeSortInput {
+  id: SortEnumType
+  name: SortEnumType
+  district: SortEnumType
 }
 
 input PostTypeFilterInput {
   and: [PostTypeFilterInput!]
+  or: [PostTypeFilterInput!]
   id: ComparableInt32OperationFilterInput
   name: StringOperationFilterInput
-  or: [PostTypeFilterInput!]
 }
 
 input PostTypeSortInput {
@@ -610,20 +418,318 @@ input PostTypeSortInput {
 
 input ProgramTypeFilterInput {
   and: [ProgramTypeFilterInput!]
-  hours: ComparableInt32OperationFilterInput
-  id: ComparableInt32OperationFilterInput
-  name: StringOperationFilterInput
   or: [ProgramTypeFilterInput!]
+  id: ComparableInt32OperationFilterInput
+  hours: ComparableInt32OperationFilterInput
+  name: StringOperationFilterInput
   programFileUrl: StringOperationFilterInput
   topics: StringOperationFilterInput
 }
 
 input ProgramTypeSortInput {
-  hours: SortEnumType
   id: SortEnumType
+  hours: SortEnumType
   name: SortEnumType
   programFileUrl: SortEnumType
   topics: SortEnumType
+}
+
+input ComparableInt32OperationFilterInput {
+  eq: Int
+  neq: Int
+  in: [Int!]
+  nin: [Int!]
+  gt: Int
+  ngt: Int
+  gte: Int
+  ngte: Int
+  lt: Int
+  nlt: Int
+  lte: Int
+  nlte: Int
+}
+
+input StringOperationFilterInput {
+  and: [StringOperationFilterInput!]
+  or: [StringOperationFilterInput!]
+  eq: String
+  neq: String
+  contains: String
+  ncontains: String
+  in: [String]
+  nin: [String]
+  startsWith: String
+  nstartsWith: String
+  endsWith: String
+  nendsWith: String
+}
+
+input ComparableNullableOfDateOnlyOperationFilterInput {
+  eq: Date
+  neq: Date
+  in: [Date]
+  nin: [Date]
+  gt: Date
+  ngt: Date
+  gte: Date
+  ngte: Date
+  lt: Date
+  nlt: Date
+  lte: Date
+  nlte: Date
+}
+
+input ComparableNullableOfInt32OperationFilterInput {
+  eq: Int
+  neq: Int
+  in: [Int]
+  nin: [Int]
+  gt: Int
+  ngt: Int
+  gte: Int
+  ngte: Int
+  lt: Int
+  nlt: Int
+  lte: Int
+  nlte: Int
+}
+
+enum SortEnumType {
+  ASC
+  DESC
+}
+
+input ComparableDateOnlyOperationFilterInput {
+  eq: Date
+  neq: Date
+  in: [Date!]
+  nin: [Date!]
+  gt: Date
+  ngt: Date
+  gte: Date
+  ngte: Date
+  lt: Date
+  nlt: Date
+  lte: Date
+  nlte: Date
+}
+
+input ComparableNullableOfDoubleOperationFilterInput {
+  eq: Float
+  neq: Float
+  in: [Float]
+  nin: [Float]
+  gt: Float
+  ngt: Float
+  gte: Float
+  ngte: Float
+  lt: Float
+  nlt: Float
+  lte: Float
+  nlte: Float
+}
+
+input BooleanOperationFilterInput {
+  eq: Boolean
+  neq: Boolean
+}
+
+input ComparableTimeOnlyOperationFilterInput {
+  eq: TimeSpan
+  neq: TimeSpan
+  in: [TimeSpan!]
+  nin: [TimeSpan!]
+  gt: TimeSpan
+  ngt: TimeSpan
+  gte: TimeSpan
+  ngte: TimeSpan
+  lt: TimeSpan
+  nlt: TimeSpan
+  lte: TimeSpan
+  nlte: TimeSpan
+}
+
+input ComparableDateTimeOperationFilterInput {
+  eq: DateTime
+  neq: DateTime
+  in: [DateTime!]
+  nin: [DateTime!]
+  gt: DateTime
+  ngt: DateTime
+  gte: DateTime
+  ngte: DateTime
+  lt: DateTime
+  nlt: DateTime
+  lte: DateTime
+  nlte: DateTime
+}
+
+input StatusOperationFilterInput {
+  eq: Status
+  neq: Status
+  in: [Status!]
+  nin: [Status!]
+}
+
+input NullableOfRelationTypeOperationFilterInput {
+  eq: RelationType
+  neq: RelationType
+  in: [RelationType]
+  nin: [RelationType]
+}
+
+input NullableOfDistrictOperationFilterInput {
+  eq: District
+  neq: District
+  in: [District]
+  nin: [District]
+}
+
+enum District {
+  CENTRAL
+  TRACTOR
+  VOROSHILOVSKIY
+}
+
+type ProgramType {
+  id: Int!
+  hours: Int!
+  name: String!
+  programFileUrl: String
+  topics: String
+}
+
+type PostType {
+  id: Int!
+  name: String!
+}
+
+type ParentType {
+  id: Int!
+  firstName: String
+  lastName: String
+  patronymic: String
+  phoneNumber: String
+  email: String
+  password: String
+  birthday: Date
+  address: String
+  education: String
+  inn: String
+  snils: String
+  passportNo: String
+  passportIssue: String
+  passportDate: Date
+  passportCode: String
+  isAdmin: Boolean!
+  secondPhoneNumber: String
+  secondEmail: String
+  applyingDate: Date
+  type: RelationType
+}
+
+type AttendanceType {
+  student: StudentType!
+  lesson: LessonType!
+  studentId: Int!
+  lessonId: Int!
+  mark: Int!
+  note: String!
+  status: Status!
+}
+
+type LessonType {
+  group: GroupType!
+  id: Int!
+  homework: String!
+  startDateTime: DateTime!
+  duration: Int!
+  classRoom: String!
+  topic: String!
+  groupId: Int!
+}
+
+type TeachersWorkTimeType {
+  teacher: TeacherType!
+  lesson: LessonType!
+  teacherId: Int!
+  lessonId: Int!
+  workTime: TimeSpan!
+}
+
+type TeacherType {
+  post: String
+  id: Int!
+  firstName: String
+  lastName: String
+  patronymic: String
+  phoneNumber: String
+  email: String!
+  password: String!
+  birthday: Date
+  address: String
+  education: String
+  inn: String
+  snils: String
+  passportNo: String
+  passportIssue: String
+  passportDate: Date
+  passportCode: String
+  isAdmin: Boolean!
+  workPlace: String!
+  postId: Int
+}
+
+type CourseType {
+  id: Int!
+  name: String!
+  programId: Int
+  price: Float
+  color: String
+  svgIconUrl: String
+  equipmentPriceWithRobot: Float
+  equipmentPriceWithoutRobot: Float
+  durationInMonths: Int
+}
+
+type GroupType {
+  teacher: TeacherType!
+  course: CourseType!
+  studentsCount: Int!
+  id: Int!
+  name: String!
+  teacherId: Int!
+  startDate: Date!
+  courseId: Int!
+}
+
+type InfoType {
+  course: CourseType!
+  group: GroupType
+  isCoursePaid: Boolean
+  isEquipmentPaid: Boolean
+  courseId: Int!
+  studentId: Int!
+  attempt: Int!
+  admissionDate: Date!
+  isGetRobot: Boolean
+  contractState: ContractState!
+}
+
+"""
+The `Date` scalar represents an ISO-8601 compliant date type.
+"""
+scalar Date
+
+type TokenResponseType {
+  message: String
+  accessToken: String
+  refreshToken: String
+}
+
+input LoginInput {
+  email: String!
+  password: String!
 }
 
 input RenewTokenInput {
@@ -631,188 +737,168 @@ input RenewTokenInput {
   refreshToken: String!
 }
 
+input ParentInput {
+  firstName: String
+  lastName: String
+  patronymic: String
+  relationType: RelationType
+  phoneNumber: String
+  email: String
+  password: String
+  birthday: Date
+  address: String
+  education: String
+  inn: String
+  snils: String
+  passportNo: String
+  passportIssue: String
+  passportDate: Date
+  passportCode: String
+  secondPhoneNumber: String
+  secondEmail: String
+  applyingDate: Date
+}
+
 input SchoolCreateInput {
-  district: District
   name: String!
-}
-
-input SchoolTypeFilterInput {
-  and: [SchoolTypeFilterInput!]
-  district: NullableOfDistrictOperationFilterInput
-  id: ComparableInt32OperationFilterInput
-  name: StringOperationFilterInput
-  or: [SchoolTypeFilterInput!]
-}
-
-input SchoolTypeSortInput {
-  district: SortEnumType
-  id: SortEnumType
-  name: SortEnumType
+  district: District
 }
 
 input SchoolUpdateInput {
-  district: District
   id: Int!
   name: String
-}
-
-input StatusOperationFilterInput {
-  eq: Status
-  in: [Status!]
-  neq: Status
-  nin: [Status!]
-}
-
-input StringOperationFilterInput {
-  and: [StringOperationFilterInput!]
-  contains: String
-  endsWith: String
-  eq: String
-  in: [String]
-  ncontains: String
-  nendsWith: String
-  neq: String
-  nin: [String]
-  nstartsWith: String
-  or: [StringOperationFilterInput!]
-  startsWith: String
+  district: District
 }
 
 input StudentCreateInput {
-  birthDate: Date
-  description: String
   firstName: String
   lastName: String
-  parentId: Int!
   patronymic: String
+  description: String
+  birthDate: Date
   schoolId: Int
-}
-
-input StudentToCourseCreateInput {
-  admissionDate: Date
-  contract: Upload
-  contractState: ContractState!
-  contractUrl: String
-  courseId: Int!
-  groupId: Int
-  isGetRobot: Boolean
-  studentId: Int!
-}
-
-input StudentTypeFilterInput {
-  and: [StudentTypeFilterInput!]
-  birthDate: ComparableNullableOfDateOnlyOperationFilterInput
-  description: StringOperationFilterInput
-  firstName: StringOperationFilterInput
-  id: ComparableInt32OperationFilterInput
-  lastName: StringOperationFilterInput
-  or: [StudentTypeFilterInput!]
-  parentId: ComparableInt32OperationFilterInput
-  patronymic: StringOperationFilterInput
-  schoolId: ComparableNullableOfInt32OperationFilterInput
-}
-
-input StudentTypeSortInput {
-  birthDate: SortEnumType
-  description: SortEnumType
-  firstName: SortEnumType
-  id: SortEnumType
-  lastName: SortEnumType
-  parentId: SortEnumType
-  patronymic: SortEnumType
-  schoolId: SortEnumType
+  parentId: Int!
 }
 
 input StudentUpdateInput {
-  birthDate: Date
-  description: String
-  firstName: String
   id: Int!
+  firstName: String
   lastName: String
-  parentId: Int
   patronymic: String
+  description: String
+  birthDate: Date
   schoolId: Int
+  parentId: Int
+}
+
+input StudentToCourseCreateInput {
+  studentId: Int!
+  courseId: Int!
+  groupId: Int
+  admissionDate: Date
+  contractState: ContractState!
+  contractUrl: String
+  isGetRobot: Boolean
+}
+
+input StudentToCourseUpdateInput {
+  studentId: Int!
+  courseId: Int!
+  attempt: Int!
+  groupId: Int
+  admissionDate: Date
+  contractState: ContractState
+  contractUrl: String
+  isGetRobot: Boolean
+}
+
+input StudentToCourseDetachInput {
+  studentId: Int!
+  courseId: Int!
+  attempt: Int!
+}
+
+input CourseCreateInput {
+  name: String!
+  programId: Int
+  coursePrice: Float
+  equipmentPriceWithRobot: Float
+  equipmentPriceWithoutRobot: Float
+  color: String
+  svgIconColor: String
+  durationInMonths: Int
+}
+
+input CourseUpdateInput {
+  id: Int!
+  name: String
+  programId: Int
+  coursePrice: Float
+  equipmentPriceWithRobot: Float
+  equipmentPriceWithoutRobot: Float
+  color: String
+  svgIconColor: String
+  durationInMonths: Int
 }
 
 input TeacherInput {
-  address: String
-  birthday: Date
-  education: String
-  email: String
-  firstname: String
-  inn: String
-  isAdmin: Boolean
-  isInternal: Boolean
-  lastname: String
-  passportCode: String
-  passportDate: Date
-  passportIssue: String
-  passportNo: String
-  password: String
+  firstName: String
+  lastName: String
   patronymic: String
   phoneNumber: String
-  postId: Int
+  email: String
+  password: String
+  birthday: Date
+  address: String
+  education: String
+  inn: String
   snils: String
-  wageRateId: Int
+  passportNo: String
+  passportIssue: String
+  passportDate: Date
+  passportCode: String
+  isAdmin: Boolean
   workPlace: String
+  postId: Int
+  isInternal: Boolean
+  wageRateId: Int
 }
 
-input TeacherTypeFilterInput {
-  address: StringOperationFilterInput
-  and: [TeacherTypeFilterInput!]
-  birthday: ComparableNullableOfDateOnlyOperationFilterInput
-  education: StringOperationFilterInput
-  email: StringOperationFilterInput
-  firstName: StringOperationFilterInput
-  id: ComparableInt32OperationFilterInput
-  inn: StringOperationFilterInput
-  isAdmin: BooleanOperationFilterInput
-  lastName: StringOperationFilterInput
-  or: [TeacherTypeFilterInput!]
-  passportCode: StringOperationFilterInput
-  passportDate: ComparableNullableOfDateOnlyOperationFilterInput
-  passportIssue: StringOperationFilterInput
-  passportNo: StringOperationFilterInput
-  password: StringOperationFilterInput
-  patronymic: StringOperationFilterInput
-  phoneNumber: StringOperationFilterInput
-  postId: ComparableNullableOfInt32OperationFilterInput
-  snils: StringOperationFilterInput
-  workPlace: StringOperationFilterInput
+"""
+The `TimeSpan` scalar represents an ISO-8601 compliant duration type.
+"""
+scalar TimeSpan
+
+"""
+The `DateTime` scalar represents an ISO-8601 compliant date time type.
+"""
+scalar DateTime
+
+enum Status {
+  ATTENDED
+  ABSENT
+  ABSENT_VALID_REASON
 }
 
-input TeacherTypeSortInput {
-  address: SortEnumType
-  birthday: SortEnumType
-  education: SortEnumType
-  email: SortEnumType
-  firstName: SortEnumType
-  id: SortEnumType
-  inn: SortEnumType
-  isAdmin: SortEnumType
-  lastName: SortEnumType
-  passportCode: SortEnumType
-  passportDate: SortEnumType
-  passportIssue: SortEnumType
-  passportNo: SortEnumType
-  password: SortEnumType
-  patronymic: SortEnumType
-  phoneNumber: SortEnumType
-  postId: SortEnumType
-  snils: SortEnumType
-  workPlace: SortEnumType
+enum RelationType {
+  MOTHER
+  FATHER
+  GRANDMA
+  GRANDPA
+  AUNT
+  UNCLE
+  BROTHER
+  SISTER
+  GUARDIAN
+  GODPARENT
+  OTHER
 }
 
-input TeachersWorkTimeTypeFilterInput {
-  and: [TeachersWorkTimeTypeFilterInput!]
-  lessonId: ComparableInt32OperationFilterInput
-  or: [TeachersWorkTimeTypeFilterInput!]
-  teacherId: ComparableInt32OperationFilterInput
-  workTime: ComparableTimeOnlyOperationFilterInput
-}
-
-input TeachersWorkTimeTypeSortInput {
-  lessonId: SortEnumType
-  teacherId: SortEnumType
-  workTime: SortEnumType
+enum ContractState {
+  CONSIDERATION
+  REJECTED
+  STUDYING
+  COMPLETED
+  LEFT
+  EXCLUDED
 }

@@ -1,9 +1,36 @@
-mutation StudentWithParentCreateCommit($student: StudentCreateInput!, $parent: ParentInput!) {
-  studentCreate(student: $student) { id }
-  parentCreate(parent: $parent) { id }
+mutation ParentCreate($parent: ParentInput!) {
+  newParent: parentCreate(parent: $parent) {
+    id
+  }
 }
 
-mutation StudentWithParentUpdateCommit($student: StudentUpdateInput!,$parentId: Int!, $parent: ParentInput!) {
+mutation StudentCreate(
+  $student: StudentCreateInput!, 
+) {
+  newStudent: studentCreate(student: $student) {
+    id
+  }
+}
+
+mutation StudiesCreate(
+  $addStudies: [StudentToCourseCreateInput!]!
+){
+  studentStudyCreateMany(studentToCourseCreate: $addStudies)
+}
+
+mutation StudentWithParentUpdate(
+  $student: StudentUpdateInput!, 
+  $parent: ParentInput!, 
+  $parentId: Int!, 
+  $addStudies: [StudentToCourseCreateInput!]!, 
+  $updStudies: [StudentToCourseUpdateInput!]!, 
+  $delStudies: [StudentToCourseDetachInput!]!
+) {
   studentUpdateMany(students: [$student])
-  parentUpdate(id: $parentId, parent: $parent) { id }
+  parentUpdate( id: $parentId, parent: $parent ) {
+    id
+  }
+  studentStudyCreateMany(studentToCourseCreate: $addStudies)
+  studentStudyUpdateMany(studentToCourseUpdate: $updStudies)
+  studentsStudyDeleteMany(studentToCourseDetach: $delStudies)
 }

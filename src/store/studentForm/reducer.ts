@@ -1,23 +1,24 @@
+import { ApolloError } from '@apollo/client'
 import {
   createSlice,
   PayloadAction
-}                            from '@reduxjs/toolkit'
-import {
-  thunkStudentCommit,
-  thunkStudentLoad
-}                            from './thunks'
-import { ApolloError }       from '@apollo/client'
-import { GStudentByIdQuery } from '../../other/generated'
+} from '@reduxjs/toolkit'
 import {
   isNil,
   merge
-}                            from 'lodash'
-import { DeepPartial }       from '../../other/typing'
+} from 'lodash'
+import { toast } from 'react-toastify'
+import { GStudentByIdQuery } from '../../other/generated'
 import {
   CREATE,
+  IS_DEV,
   recursiveConvertObjValues
-}                            from '../../other/helpers'
-import { toast }             from 'react-toastify'
+} from '../../other/helpers'
+import { DeepPartial } from '../../other/typing'
+import {
+  thunkStudentCommit,
+  thunkStudentLoad
+} from './thunks'
 
 
 
@@ -78,9 +79,10 @@ export const studentFormSlice = createSlice( {
       .addCase( thunkStudentLoad.rejected, ( state, action ) => {
         state.studentLoading = false
         state.error          = `${action.error.message}: ${action.payload}`
+        toast.error(state.error)
       } )
       .addCase( thunkStudentLoad.fulfilled, ( state, action ) => {
-      // IS_DEV && toast( action.payload.id )
+        // IS_DEV && toast( action.payload.id )
         state.studentLoading  = false
         state.studentModified = state.studentOriginal = action.payload
       } )
@@ -91,6 +93,7 @@ export const studentFormSlice = createSlice( {
       .addCase( thunkStudentCommit.rejected, ( state, action ) => {
         state.studentLoading = false
         state.error          = `${action.error.message}: ${action.payload}`
+        toast.error(state.error)
       } )
       .addCase( thunkStudentCommit.fulfilled, state => {
         state.studentLoading  = false
