@@ -30,13 +30,13 @@ import { TAppDispatch, TAppState, TAppThunkConfig } from '../store'
 type TStudentObjFromQuery = GStudentByIdQuery['student']
 type TVariableStudentID = {
   id: GStudentByIdQueryVariables['studentID']
-  referch?: true
+  refetch?: true
 }
 
-export const thunkStudentLoad = createAsyncThunk<TStudentObjFromQuery, TVariableStudentID, TAppThunkConfig>('studentForm/load', async ({ id, referch }, { rejectWithValue }) => {
+export const thunkStudentLoad = createAsyncThunk<TStudentObjFromQuery, TVariableStudentID, TAppThunkConfig>('studentForm/load', async ({ id, refetch }, { rejectWithValue }) => {
   let queryResult: ApolloQueryResult<GStudentByIdQuery>
   try {
-    queryResult = await client.query<GStudentByIdQuery, GStudentByIdQueryVariables>({ query: StudentByIdDocument, variables: { studentID: id }, fetchPolicy: referch ? 'network-only' : undefined })
+    queryResult = await client.query<GStudentByIdQuery, GStudentByIdQueryVariables>({ query: StudentByIdDocument, variables: { studentID: id }, fetchPolicy: refetch ? 'network-only' : undefined })
   }
   catch (e) {
     return rejectWithValue(`Произошла ошибка при загрузке студента с id = ${id}, error: ${e}`)
@@ -44,7 +44,6 @@ export const thunkStudentLoad = createAsyncThunk<TStudentObjFromQuery, TVariable
   return queryResult.data.student
 })
 
-//TODO: Добавить отправку обучения на курсах
 export const thunkStudentCommit = createAsyncThunk('studentForm/commit', async (_, { rejectWithValue, getState, dispatch }) => {
   try {
     const {
@@ -152,7 +151,7 @@ export const thunkStudentCommit = createAsyncThunk('studentForm/commit', async (
       })
     }
 
-    (dispatch as TAppDispatch)(thunkStudentLoad({ id: updatableStudentId, referch: true }))
+    (dispatch as TAppDispatch)(thunkStudentLoad({ id: updatableStudentId, refetch: true }))
     toast('Успешная отправка!')
   }
   catch (err) {

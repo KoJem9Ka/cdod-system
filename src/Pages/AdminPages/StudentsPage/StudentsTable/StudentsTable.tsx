@@ -55,15 +55,6 @@ const StudentsTable: FC = () => {
   } )
 
   const { studentOriginal } = useStudentForm( s => s.studentOriginal )
-  
-  useWatcher(data, () => {
-    if (isEmpty(data)) return
-    const pageIndex = Math.max(0, Math.floor(data.findIndex(st => st.id === studentOriginal?.id) / pagination.pageSize))
-    setPagination({
-      pageSize : pagination.pageSize,
-      pageIndex,
-    })
-  } )
 
   const table = useReactTable( {
     data,
@@ -88,6 +79,15 @@ const StudentsTable: FC = () => {
     onColumnVisibilityChange : setColumnVisibility,
 
     globalFilterFn : studentsGlobalFilterFn,
+  } )
+  
+  useWatcher(data, () => {
+    if (isEmpty(data)) return
+    const pageIndex = Math.max(0, Math.floor(table.getFilteredRowModel().rows.findIndex(st => st.original.id === studentOriginal?.id) / pagination.pageSize))
+    setPagination({
+      pageSize : pagination.pageSize,
+      pageIndex,
+    })
   } )
 
   // Без "useMemo" getFilteredRowModel() весь текущий компонент циклично бесконечно ререндерится

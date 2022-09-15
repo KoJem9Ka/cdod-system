@@ -3,15 +3,17 @@ import { useGroupsQuery } from '../../../../other/generated'
 import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import { columns } from './configColumns'
 import styles from '../../../../styles/tableStyles.module.scss'
-import {GroupForm, useGroupForm} from '../../../../store/groupForm/hooks'
+import { GForm, useGroupForm } from '../../../../store/groupForm/hooks'
 import { isEmpty } from 'lodash'
+import { TableControl } from '../../../../components/UIKit/Tables/subcomponents/TableControl'
+import { TableHeadSeparator } from '../../../../components/UIKit/Tables/subcomponents/TableHeadSeparator'
 
 const GroupsTable: React.FC = () => {
 	
   const { data: { groups: data } = { groups: [] } } = useGroupsQuery()
 	
-  const {groupOriginal} = useGroupForm(g=>[g.groupOriginal])
-  const {groupSelect} = GroupForm
+  const { groupOriginal } = useGroupForm(g => [ g.groupOriginal ])
+  const { groupSelect } = GForm
   
   const table = useReactTable({
     data,
@@ -25,6 +27,10 @@ const GroupsTable: React.FC = () => {
   
   return (
     <div className={styles.tableMainContainer}>
+      <div className={styles.utils}>
+        <TableControl thumb='add' onClick={() => alert('create')}/>
+        <TableHeadSeparator/>
+      </div>
       <div className={styles.tableSizableContainer}>
         <table>
           <thead>

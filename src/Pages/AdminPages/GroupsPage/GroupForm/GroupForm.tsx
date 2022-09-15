@@ -1,23 +1,35 @@
 import React from 'react'
 import { Form, FormBody, FormFooter, FormHead } from '../../../../components/UIKit/Forms'
-import { useGroupForm } from '../../../../store/groupForm/hooks'
+import { GForm, useGroupForm } from '../../../../store/groupForm/hooks'
 import { ReactComponent as GroupLogo } from '../../../../assets/img/noGroupLogo.svg'
 import GroupBodyList from './GroupBodyList/GroupBodyList'
 import GroupFooterButtons from './GroupFooterButtons'
+import { strJoinSpace } from '../../../../other/helpers'
+import { HeadStyledText, StyledParagraph } from '../../../../components/UIKit/Forms/styled'
+import GroupSelectTeacher from './Components/GroupSelectTeacher'
+import { GTeachersQuery } from '../../../../other/generated'
+import GroupInputName from './Components/GroupInputName'
 
-const GroupForm: React.FC = () => {
-	
-  const { groupOriginal, groupModified } = useGroupForm( g => [ g.groupOriginal, g.groupModified ])
+type T = GTeachersQuery['teachers'][number]
+export type QGroupTeacher = Pick<T, 'lastName' | 'firstName' | 'patronymic' | 'id'>
+
+const handlerTeacher = (teacher: QGroupTeacher) => GForm.changeGroup({ teacher })
+
+const GroupForm: React.FC = () => {	
+  const { groupModified, removedIds, addedIds } = useGroupForm( g => [ g.groupModified, g.addedIds, g.removedIds ])
+  if (!groupModified) return <></>  
+  const teacherName = strJoinSpace(groupModified.teacher.lastName, groupModified.teacher.firstName && groupModified.teacher.firstName[0], groupModified.teacher.patronymic && groupModified.teacher.patronymic[0])
   
-  if (!groupModified) return <></>
-	
   return (
     <Form>
       <FormHead>
         <GroupLogo/>
-        <p>{groupModified.course.name}</p>
-        <p>{groupModified.name}</p>
-        {/*<p>{groupOriginal.studentsCount} уч.</p>*/}
+        <div>
+          <StyledParagraph>{groupModified.course.name}</StyledParagraph>
+          <GroupInputName value={groupModified.name}/>
+          <GroupSelectTeacher value={teacherName} onChange={handlerTeacher}/>
+          <HeadStyledText>{groupModified.studentsCount - removedIds.length + addedIds.length} уч.</HeadStyledText>
+        </div>
       </FormHead>
       <FormBody>
         <GroupBodyList/>

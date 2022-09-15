@@ -5,9 +5,10 @@ import {
 import { GGroupByIdQuery }    from '../../other/generated'
 import { thunkLoadGroupByID } from './thunks'
 import {
+  cloneDeep,
   isNil,
   merge
-}                             from 'lodash'
+} from 'lodash'
 import { actionLogout }       from '../globalActions'
 
 
@@ -40,6 +41,9 @@ export const groupFormSlice = createSlice( {
   reducers : {
     actionGroupToggleEdit : ( state, action: PayloadAction<boolean | undefined> ) => {
       state.isEdit = isNil( action.payload ) ? !state.isEdit : action.payload
+      state.removedIds = []
+      state.addedIds   = []
+      state.groupModified = cloneDeep(state.groupOriginal)
     },
     actionGroupChange : ( state, action: PayloadAction<Partial<Omit<AGroup, 'id'>>> ) => {
       merge( state.groupModified, action.payload )
@@ -54,7 +58,6 @@ export const groupFormSlice = createSlice( {
         ? state.addedIds = state.addedIds.filter( id => id !== action.payload )
         : state.addedIds = [ ...state.addedIds, action.payload ]
     },
-
   },
   extraReducers : builder => builder
       .addCase( actionLogout, () => initialState )

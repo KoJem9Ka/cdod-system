@@ -55,16 +55,19 @@ const StudentForm: FC = () => {
     <Form>
       <FormHead>
         <UserLogo/>
-        <EditableFIO
-          isEdit={studentIsEdit}
-          setValues={StForm.change}
-          values={{
-            lastName   : studentModified.lastName,
-            firstName  : studentModified.firstName,
-            patronymic : studentModified.patronymic,
-          }}
-        />
-        {studentModified.birthDate && <p style={{ fontSize: 18 }}>{humanizeDate( studentModified.birthDate, 'floor' )}</p>}
+        <div>
+          <EditableFIO
+            isEdit={studentIsEdit}
+            setValues={StForm.change}
+            values={{
+              lastName   : studentModified.lastName,
+              firstName  : studentModified.firstName,
+              patronymic : studentModified.patronymic,
+            }}
+          />
+          {studentModified.birthDate &&
+            <p style={{ fontSize: 18 }}>{humanizeDate(studentModified.birthDate, 'floor')}</p>}
+        </div>
       </FormHead>
       <FormBody id='StFormBody'>
         <FormField

@@ -16,12 +16,12 @@ const GroupBodyList: React.FC = () => {
     <>
       {
         students?.map((student, index) => (
-          <GroupBodyListItem key={Math.random()} index={index} student={student}/>
+          <GroupBodyListItem key={student.id} index={index} student={student}/>
         ))
       }
       {
         isEdit && otherStudents?.map(student => (
-          <GroupBodyListItem key={Math.random()} student={student} other/>
+          <GroupBodyListItem key={student.id} student={student} other/>
         ))
       }
     </>
