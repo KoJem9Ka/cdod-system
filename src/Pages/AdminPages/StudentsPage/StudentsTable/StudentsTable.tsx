@@ -4,13 +4,9 @@ import {
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
-  getSortedRowModel,
-  PaginationState,
-  SortingState,
-  useReactTable,
-  VisibilityState
+  getSortedRowModel, PaginationState, SortingState, useReactTable, VisibilityState
 } from '@tanstack/react-table'
-import { isEmpty } from 'lodash'
+import { isEmpty, isNil } from 'lodash'
 import {
   CSSProperties,
   FC,
@@ -24,6 +20,7 @@ import TableColumnHider from '../../../../components/UIKit/Tables/TableColumnHid
 import TablePageSizer from '../../../../components/UIKit/Tables/TablePageSizer'
 import { useWatcher } from '../../../../hooks/useWatcher'
 import { useAllStudentsQuery } from '../../../../other/generated'
+import { IS_CLIENT_TEMP_ID } from '../../../../other/helpers'
 import {
   StForm,
   useStudentForm
@@ -57,8 +54,8 @@ const StudentsTable: FC = () => {
   const { studentOriginal } = useStudentForm( s => s.studentOriginal )
   
   useWatcher(data, () => {
-    if (isEmpty(data)) return
-    const pageIndex = Math.max(0, Math.floor(data.findIndex(st => st.id === studentOriginal?.id) / pagination.pageSize))
+    if (isEmpty(data) || isNil(studentOriginal) || IS_CLIENT_TEMP_ID(studentOriginal.id)) return
+    const pageIndex = Math.max(0, Math.floor(data.findIndex(st => st.id === studentOriginal.id) / pagination.pageSize))
     setPagination({
       pageSize : pagination.pageSize,
       pageIndex,
