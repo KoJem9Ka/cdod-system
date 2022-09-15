@@ -14,15 +14,15 @@ import { IS_DEV }                from '../other/helpers'
 
 
 export const store = configureStore( {
-  reducer:    {
-    insteadOfContext: insteadOfContextSlice.reducer,
-    studentForm:      studentFormSlice.reducer,
-    courseForm:       courseFormSlice.reducer,
-    groupForm:        groupFormSlice.reducer,
+  reducer : {
+    insteadOfContext : insteadOfContextSlice.reducer,
+    studentForm      : studentFormSlice.reducer,
+    courseForm       : courseFormSlice.reducer,
+    groupForm        : groupFormSlice.reducer,
   },
-  devTools:   IS_DEV,
-  middleware: getDefaultMiddleware => getDefaultMiddleware( {
-    thunk: { extraArgument: {} },
+  devTools   : IS_DEV,
+  middleware : getDefaultMiddleware => getDefaultMiddleware( {
+    thunk : { extraArgument: {} },
   } )/*.concat( logger )*/,
 } )
 

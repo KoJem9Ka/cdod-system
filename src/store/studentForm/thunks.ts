@@ -49,7 +49,7 @@ export const thunkStudentCommit = createAsyncThunk('studentForm/commit', async (
     const {
       studentForm: { studentModified: stM, studentOriginal: stO },
     } = getState() as TAppState
-    if (isNil(stM) || isNil(stO)) throw 'Критическая ошибка при отправке сохранения на сервер.'
+    if (isNil(stM) || isNil(stO)) throw new TypeError('Критическая ошибка при отправке сохранения на сервер.')
 
     const StudentCreateInput: GStudentCreateInput = {
       lastName   : stM.lastName ?? null,
@@ -98,7 +98,6 @@ export const thunkStudentCommit = createAsyncThunk('studentForm/commit', async (
       const old = stO.info.find(info => info.course.id === study.course.id && info.attempt === study.attempt)
       // число даты (1 янв. 2000г.) такое большое (949352400000), что вероятность нормального attempt превысить его невероятно мала
       // а в новых, ещё не отправленных на сервер, обучениях ставится число сегодняшней даты, т.е. она всегда больше чем 1 янв. 2000г.
-      // если courseId является TEMP_ID, значит пользователь не указал курс, тогда просто игнорируем
       if (IS_CLIENT_TEMP_ID(study.attempt)) !IS_CLIENT_TEMP_ID(study.course.id) && addStudies.push(StudentToCourseCreateInput)
       else if (!isEqual(old, study)) updStudies.push(StudentToCourseUpdateInput)
     }
@@ -111,21 +110,33 @@ export const thunkStudentCommit = createAsyncThunk('studentForm/commit', async (
         })
 
     let updatableStudentId = stO.id
-    
+
+    console.log({
+      StudentUpdateInput,
+      ParentInput,
+      parentId : stM.parent.id,
+      addStudies,
+      updStudies,
+      delStudies,
+    })
+
     if (IS_CLIENT_TEMP_ID(stM.id)) {
       const res1 = await (client.mutate as GParentCreateMutationFn)({
         mutation  : ParentCreateDocument,
         variables : { parent: ParentInput },
       })
-      if (isNil(res1.data?.newParent.id)) throw 'Не удалось создать родителя'
+      if (isNil(res1.data?.newParent.id)) return rejectWithValue('Не удалось создать родителя')
       StudentCreateInput.parentId = res1.data!.newParent.id
+      console.log(`parentId: ${res1.data!.newParent.id}`)
+      console.log({ StudentCreateInput })
       const res2 = await (client.mutate as GStudentCreateMutationFn)({
         mutation  : StudentCreateDocument,
         variables : { student: StudentCreateInput },
       })
-      if (isNil(res1.data?.newParent.id)) throw 'Не удалось создать студента'
+      if (isNil(res1.data?.newParent.id)) return rejectWithValue('Не удалось создать студента')
       updatableStudentId = res2.data!.newStudent.id
       for (const el of addStudies) el.studentId = updatableStudentId
+      console.log(`updatableStudentId: ${updatableStudentId}`)
       await (client.mutate as GStudiesCreateMutationFn)({
         mutation       : StudiesCreateDocument,
         variables      : { addStudies },
@@ -140,11 +151,11 @@ export const thunkStudentCommit = createAsyncThunk('studentForm/commit', async (
       })
     }
 
-    await (dispatch as TAppDispatch)(thunkStudentLoad({ id: updatableStudentId, refetch: true }))
+    (dispatch as TAppDispatch)(thunkStudentLoad({ id: updatableStudentId, refetch: true }))
     toast('Успешная отправка!')
   }
   catch (err) {
-    console.error(JSON.stringify(err))
+    console.log(JSON.stringify(err))
     toast.error(JSON.stringify(err))
     rejectWithValue(`Ошибка при отправке студента на сервер: ${err}`)
   }

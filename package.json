@@ -1,6 +1,6 @@
 {
   "name": "cdod-system",
-  "version": "1.0.1",
+  "version": "1.0.1b",
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.6.9",
@@ -34,7 +34,7 @@
     "web-vitals": "^3.0.1"
   },
   "scripts": {
-    "client": "set HTTPS=true && set SSL_CRT_FILE=cert.pem && set SSL_KEY_FILE=key.pem && react-scripts start",
+    "client": "react-scripts start",
     "generateWatch": "graphql-codegen -w",
     "generate": "graphql-codegen",
     "build": "react-scripts build",

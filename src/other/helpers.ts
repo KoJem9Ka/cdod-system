@@ -1,6 +1,14 @@
 import dayjs from 'dayjs'
 import { cloneDeep, compact, invert, isEqual, isNil, isObject, keys, mean, merge, uniq } from 'lodash'
-import { GContractState, GInfoType, GParentInput, GParentType, GRelationType, GStudentByIdQuery } from './generated'
+import {
+  GContractState,
+  GGroupByIdQuery,
+  GInfoType,
+  GParentInput,
+  GParentType,
+  GRelationType,
+  GStudentByIdQuery
+} from './generated'
 
 export const IS_DEV = process.env.NODE_ENV === 'development'
 
@@ -158,6 +166,18 @@ export const CREATE = {
     contractState : GContractState.Consideration,
     isCoursePaid  : false,
     admissionDate : dayjs().format('YYYY-MM-DD'),
+  }),
+  group : (): GGroupByIdQuery['group'] => ({
+    id      : NON_EXISTING_ID,
+    name    : '',
+    teacher : {
+      id : NON_EXISTING_ID,
+    },
+    course : {
+      id   : NON_EXISTING_ID,
+      name : 'null',
+    },
+    studentsCount : 0,
   }),
 }
 

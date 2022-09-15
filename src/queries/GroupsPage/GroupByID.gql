@@ -42,6 +42,14 @@ query GroupByID($groupID: Int!, $courseID: Int!) {
     lastName
     patronymic
     birthDate
+    info {
+      courseId
+      contractState
+      attempt
+      group {
+        id
+      }
+    }
   }
   otherStudents: students (groupId: $groupID, courseId: $courseID){
     id
@@ -49,5 +57,10 @@ query GroupByID($groupID: Int!, $courseID: Int!) {
     lastName
     patronymic
     birthDate
+    info {
+      courseId
+      contractState
+      attempt
+    }
   }
 }
