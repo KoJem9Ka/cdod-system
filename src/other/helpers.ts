@@ -35,8 +35,6 @@ export const formatPhone = (phone: string): string => {
   return phone
 }
 
-//TODO: заменить все использования на strJoinSpace
-export const shortFIOFormatter = (lastname: string, firstname: string, patronymic?: string) => (patronymic ? `${lastname} ${firstname[0]}. ${patronymic[0]}.` : `${lastname} ${firstname[0]}.`)
 
 //strJoinSpace удаляет из массива строк "null" и "undefined" и склеивает пробелами; полезно для склейки ФИО
 export const strJoinSpace = (...strs: (string | null | undefined)[]) => compact(strs).join(' ')
@@ -96,6 +94,7 @@ const contractStateColorizer = {
 } as const
 export const parseContractState = (contractState1: GInfoType['contractState'], who: 'text' | 'color' = 'text'): string => (who === 'text' ? contractStateDecoder[contractState1] : contractStateColorizer[contractState1])
 
+// если поменять -1 на что то другое, то сломается запрос сохранения группы
 export const NON_EXISTING_ID = -1
 export const GEN_CLIENT_TEMP_ID = () => Date.now() // generated id > 1663016327000
 export const IS_CLIENT_TEMP_ID = (id: number) => id > NON_EXISTING_LOW_ID || id === NON_EXISTING_ID

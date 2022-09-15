@@ -10,9 +10,7 @@ import {
 import { toast } from 'react-toastify'
 import { GStudentByIdQuery } from '../../other/generated'
 import {
-  CREATE,
-  IS_DEV,
-  recursiveConvertObjValues
+  CREATE
 } from '../../other/helpers'
 import { DeepPartial } from '../../other/typing'
 import {
@@ -66,7 +64,7 @@ export const studentFormSlice = createSlice( {
       state.studentIsEdit   = isNil( action.payload ) ? !state.studentIsEdit : action.payload
     },
     actionStudentChange( state, action: PayloadAction<DeepPartial<Omit<T, 'id'>>> ) {
-      merge( state.studentModified, recursiveConvertObjValues( action.payload, '', null ) )
+      merge( state.studentModified, action.payload)
     },
   },
   extraReducers : builder => builder
@@ -97,7 +95,6 @@ export const studentFormSlice = createSlice( {
       } )
       .addCase( thunkStudentCommit.fulfilled, state => {
         state.studentLoading  = false
-        state.studentOriginal = state.studentModified
       } ),
 } )
 

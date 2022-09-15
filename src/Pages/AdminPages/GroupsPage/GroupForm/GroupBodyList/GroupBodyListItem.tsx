@@ -1,12 +1,10 @@
 import React from 'react'
-import { ReactComponent as AddIcon } from '../../../../../assets/icons/editIcons/add.svg'
-import { ReactComponent as AddedIcon } from '../../../../../assets/icons/editIcons/added.svg'
-import { ReactComponent as RemoveIcon } from '../../../../../assets/icons/editIcons/remove.svg'
-import { ReactComponent as RemovedIcon } from '../../../../../assets/icons/editIcons/removed.svg'
-import { useGroupForm } from '../../../../../store/groupForm/hooks'
+import { GForm, useGroupForm } from '../../../../../store/groupForm/hooks'
 import styled from 'styled-components'
 import { GGroupByIdQuery, GGroupsQuery } from '../../../../../other/generated'
-import {humanizeDate, shortFIOFormatter} from '../../../../../other/helpers'
+import { humanizeDate, strJoinSpace } from '../../../../../other/helpers'
+import Icons from '../../../../../assets/icons/Icons'
+import { isNil } from 'lodash'
 
 const Item = styled.div`
   line-height           : 2rem;
@@ -22,23 +20,32 @@ const Item = styled.div`
 
 type GroupBodyListItem = {
   student: GGroupByIdQuery['students'][number]
-  index: number
+  index?: number
+  other?: true
 }
 
-const GroupBodyListItem: React.FC<GroupBodyListItem> = ({ student, index }) => {
+const GroupBodyListItem: React.FC<GroupBodyListItem> = ({ student, index, other }) => {
   
-  const { isEdit, removedIds, addedIds } = useGroupForm()
+  const { isEdit, removedIds, addedIds } = useGroupForm(g => [ g.isEdit, g.removedIds, g.addedIds ])
+  const { groupRemoveStudent, groupAddStudent } = GForm
   
-  //TODO: Почему у студента поля имени могут быть пустыми...?
   return (
     <Item>
       {
         isEdit ? <span>
-          <RemovedIcon/>
+          {
+            other
+              ? <Icons thumb={addedIds.includes(student.id) ? 'studentAdded' : 'studentAdd'} onClick={() => groupAddStudent(student.id)}/>
+              : <Icons
+                thumb={removedIds.includes(student.id) ? 'studentRemoved' : 'studentRemove'}
+                onClick={() => groupRemoveStudent(student.id)
+                }
+              />
+          }
         </span>
-          : <span>{index + 1}.</span>
+          : <span>{!isNil(index) && index + 1}.</span>
       }
-      <span>{shortFIOFormatter(student.lastName!, student.firstName!, student.patronymic!)}</span>
+      <span>{strJoinSpace(student.lastName, student.firstName, student.patronymic && `${student.patronymic[0]}.`)}</span>
       <span>{student.birthDate && humanizeDate(student.birthDate, 'floor')}</span>
     </Item>
   )

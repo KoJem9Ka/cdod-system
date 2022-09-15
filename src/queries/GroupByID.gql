@@ -20,20 +20,30 @@
 #    }
 #  }
 #}
-query GroupByID($groupID: Int!) {
+query GroupByID($groupID: Int!, $courseID: Int!) {
   group(id: $groupID) {
     id
     name
     course{
+      id
       name
     }
     teacher{
+      id
       lastName
       firstName
       patronymic
     }
+    studentsCount
   }
-  students(groupId: $groupID){
+  students: students(groupId: $groupID){
+    id
+    firstName
+    lastName
+    patronymic
+    birthDate
+  }
+  otherStudents: students (groupId: $groupID, courseId: $courseID){
     id
     firstName
     lastName

@@ -144,7 +144,6 @@ type StudentType {
 }
 
 type Mutation {
-  updateFromGoogleTable: Boolean!
   login(loginInput: LoginInput!): TokenResponseType!
   renewAccessToken(renewToken: RenewTokenInput!): TokenResponseType!
   parentCreate(parent: ParentInput!): ParentType!

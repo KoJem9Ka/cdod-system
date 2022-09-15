@@ -31,6 +31,7 @@ const CourseTopicsBlock: React.FC <CourseThemeBlockProps> = ({ color, programId 
     useEffect(() => {
       const text = data?.program.topics
       if (typeof text === 'string') {
+        // console.log(text)
         setTopics(JSON.parse(text))
       }
     }, [ data ])

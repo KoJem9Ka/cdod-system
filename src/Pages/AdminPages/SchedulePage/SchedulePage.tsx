@@ -1,12 +1,11 @@
 import React from 'react'
 import Workspace from '../../../HOC/Workspace/Workspace'
+import NotFoundPage from '../../NotFoundPage/NotFoundPage'
 
 
 
 const SchedulePage: React.FC = () => (
-  <Workspace>
-      Расписание...
-  </Workspace>
+  <NotFoundPage/>
 )
 
 export default SchedulePage

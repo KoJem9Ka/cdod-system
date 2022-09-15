@@ -6,6 +6,7 @@ import React, {
 import { compact }      from 'lodash'
 import { GStudentType } from '../../../other/generated'
 import styled, { css }  from 'styled-components'
+import { StyledLineEdit, StyledParagraph } from './styled'
 
 
 
@@ -32,22 +33,3 @@ export const EditableFIO: FC<Props> = ( { isEdit, setValues, values: { firstName
     : <StyledParagraph>{ fio }</StyledParagraph>
 }
 
-const SharedStyles = css`
-  background : transparent;
-  text-align : center;
-  width      : 100%;
-  font-size  : 1.25rem /* 20/16 */;
-  color      : var(--COLOR_white);
-`
-
-const StyledParagraph = styled.p`
-  ${ SharedStyles };
-  font-weight : 600;
-`
-
-const StyledLineEdit = styled.input.attrs( { type: 'text' } )`
-  ${ SharedStyles };
-  border        : none;
-  border-bottom : 2px solid var(--COLOR_white);
-  margin-top    : .2rem;
-`

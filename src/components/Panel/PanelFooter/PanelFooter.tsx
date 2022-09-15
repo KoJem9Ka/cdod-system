@@ -12,9 +12,9 @@ export const PanelFooter: React.FC = () => {
 
   return (
     <div className={ style.PanelFooter }>
+      Фамилия И.О.&nbsp;&nbsp;
       <LogoutButton onClick={ logoutHandler }>
         <Icons thumb='signOut' width={ 20 } layout/>
-        Выйти
       </LogoutButton>
     </div>
   )
