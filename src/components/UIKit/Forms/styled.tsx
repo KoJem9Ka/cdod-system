@@ -30,23 +30,25 @@ export const FormHead   = styled.div`
   ${CSSPadding15px};
   width                 : 100%;
   display               : grid;
-  grid-template-columns : auto auto;
+  grid-template-columns : auto 1fr;
   align-items           : center;
   box-shadow            : 0 0 1rem 1rem white;
   z-index               : 1;
   text-align            : center;
   grid-gap              : 0.5rem;
-
-  & > svg {
-    grid-row : 1 / span 2;
-  }
-
-  & > *:nth-child(2) {
-    align-self : end;
-  }
-
+  
   & > *:nth-child(3) {
     align-self : start;
+  }
+  
+  & > div {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-direction: column;
+    & > p {
+    
+    }
   }
 `
 export const FormBody   = styled.div`
@@ -126,4 +128,31 @@ export const TextField = styled.p<{ isValid?: boolean }>`
 //TODO: убрать изменение фона, если кнопка неактивна
 export const FooterButton = styled.button`
   opacity : ${props => (props.disabled ? 0.5 : 1)};
+`
+
+export const HeadStyledText = styled.p`
+  font-size: 18px
+`
+export const HeadStyledSelect = styled.select`
+ font-size: 18px;
+ `
+
+export const SharedStyles = css`
+  background : transparent;
+  text-align : center;
+  width      : 100%;
+  font-size  : 1.25rem /* 20/16 */;
+  color      : var(--COLOR_white);
+`
+
+export const StyledParagraph = styled.p`
+  ${ SharedStyles };
+  font-weight : 600;
+`
+
+export const StyledLineEdit = styled.input.attrs( { type: 'text' } )`
+  ${ SharedStyles };
+  border        : none;
+  border-bottom : 2px solid var(--COLOR_white);
+  margin-top    : .2rem;
 `

@@ -1,0 +1,22 @@
+version: '3.4'
+
+services:
+  cdod_react:
+    image: cdod_react:latest
+    container_name: cdod_react
+    hostname: cdod_react
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8083:80
+    networks:
+      - global
+
+networks:
+  global:
+    external: true
+
+
+    

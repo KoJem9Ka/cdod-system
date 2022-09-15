@@ -3,6 +3,7 @@ query Groups {
     id
     name
     course {
+      id
       name
     }
     teacher {

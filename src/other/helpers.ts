@@ -35,8 +35,6 @@ export const formatPhone = (phone: string): string => {
   return phone
 }
 
-//TODO: заменить все использования на strJoinSpace
-export const shortFIOFormatter = (lastname: string, firstname: string, patronymic?: string) => (patronymic ? `${lastname} ${firstname[0]}. ${patronymic[0]}.` : `${lastname} ${firstname[0]}.`)
 
 //strJoinSpace удаляет из массива строк "null" и "undefined" и склеивает пробелами; полезно для склейки ФИО
 export const strJoinSpace = (...strs: (string | null | undefined)[]) => compact(strs).join(' ')

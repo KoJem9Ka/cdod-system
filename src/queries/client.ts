@@ -55,8 +55,8 @@ export const Application = {
   },
 }
 
-const SERVER_DOMAIN = process.env.REACT_APP_SERVER_DOMAIN
-IS_DEV && console.log(SERVER_DOMAIN)
+const SERVER_DOMAIN = process.env.REACT_APP_SERVER_DOMAIN || '/api'
+
 if (isEmpty(SERVER_DOMAIN) || isNil(SERVER_DOMAIN)) {
   console.error('REACT_APP_SERVER_DOMAIN is not defined')
   throw new Error('REACT_APP_SERVER_DOMAIN is not defined')

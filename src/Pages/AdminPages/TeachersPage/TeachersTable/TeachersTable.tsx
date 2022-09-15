@@ -7,6 +7,7 @@ import {
 }                           from '@tanstack/react-table'
 import { columns }          from './configColumns'
 import styles               from '../../../../styles/tableStyles.module.scss'
+import { isEmpty } from 'lodash'
 
 
 
@@ -16,9 +17,12 @@ const TeachersTable: React.FC = () => {
   const table = useReactTable( {
     data,
     columns,
-    getCoreRowModel: getCoreRowModel(),
+    getCoreRowModel : getCoreRowModel(),
   } )
-
+  
+  if ( isEmpty( data ) )
+    return <></>
+  
   return (
     <div className={styles.tableMainContainer}>
       <div className={styles.tableSizableContainer}>
@@ -34,8 +38,8 @@ const TeachersTable: React.FC = () => {
                   >
                     {flexRender( header.column.columnDef.header, header.getContext() )}
                     {{
-                      asc:  ' 🔼',
-                      desc: ' 🔽',
+                      asc  : ' 🔼',
+                      desc : ' 🔽',
                     }[header.column.getIsSorted() as string] ?? null}
                   </th>
                 ) )}

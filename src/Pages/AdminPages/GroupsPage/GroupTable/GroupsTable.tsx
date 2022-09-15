@@ -3,23 +3,34 @@ import { useGroupsQuery } from '../../../../other/generated'
 import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import { columns } from './configColumns'
 import styles from '../../../../styles/tableStyles.module.scss'
-import { useGroupForm } from '../../../../store/groupForm/hooks'
+import { GForm, useGroupForm } from '../../../../store/groupForm/hooks'
+import { isEmpty } from 'lodash'
+import { TableControl } from '../../../../components/UIKit/Tables/subcomponents/TableControl'
+import { TableHeadSeparator } from '../../../../components/UIKit/Tables/subcomponents/TableHeadSeparator'
 
 const GroupsTable: React.FC = () => {
 	
   const { data: { groups: data } = { groups: [] } } = useGroupsQuery()
 	
-  const { selectGroup, groupOriginal } = useGroupForm()
+  const { groupOriginal } = useGroupForm(g => [ g.groupOriginal ])
+  const { groupSelect } = GForm
   
   const table = useReactTable({
     data,
     columns,
-    state: {},
-    getCoreRowModel: getCoreRowModel(),
+    state           : {},
+    getCoreRowModel : getCoreRowModel(),
   })
-	
+  
+  if ( isEmpty( data ) )
+    return <></>
+  
   return (
     <div className={styles.tableMainContainer}>
+      <div className={styles.utils}>
+        <TableControl thumb='add' onClick={() => alert('create')}/>
+        <TableHeadSeparator/>
+      </div>
       <div className={styles.tableSizableContainer}>
         <table>
           <thead>
@@ -33,8 +44,8 @@ const GroupsTable: React.FC = () => {
                   >
                     {flexRender(header.column.columnDef.header, header.getContext())}
                     {{
-                      asc: ' 🔼',
-                      desc: ' 🔽',
+                      asc  : ' 🔼',
+                      desc : ' 🔽',
                     }[header.column.getIsSorted() as string] ?? null}
                   </th>
                 ))}
@@ -46,7 +57,7 @@ const GroupsTable: React.FC = () => {
               <tr
                 key={row.id}
                 className = {row.original.id === groupOriginal?.id ? styles.selected : undefined}
-                onClick={() => selectGroup(row.original.id)}
+                onClick={() => groupSelect(row.original.id, row.original.course.id )}
               >
                 {row.getVisibleCells().map(cell => (
                   <td key={cell.id}>
