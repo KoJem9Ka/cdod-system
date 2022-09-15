@@ -34,7 +34,7 @@
     "web-vitals": "^3.0.1"
   },
   "scripts": {
-    "client": "react-scripts start",
+    "client": "set HTTPS=true && set SSL_CRT_FILE=cert.pem && set SSL_KEY_FILE=key.pem && react-scripts start",
     "generateWatch": "graphql-codegen -w",
     "generate": "graphql-codegen",
     "build": "react-scripts build",
