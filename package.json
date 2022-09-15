@@ -1,6 +1,6 @@
 {
   "name": "cdod-system",
-  "version": "1.0.1",
+  "version": "1.0.1b",
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.6.9",

@@ -3,11 +3,11 @@ import {
   useAppDispatch,
   useAppSelector
 } from '../store'
-import { thunkLoadGroupByID } from './thunks'
+import { thunkGroupCommit, thunkLoadGroupByID } from './thunks'
 import { GGroupByIdQuery }    from '../../other/generated'
 import {
   actionGroupAddStudent,
-  actionGroupChange, actionGroupRemoveStudent,
+  actionGroupChange, actionGroupCreate, actionGroupRemoveStudent,
   actionGroupToggleEdit
 } from './reducer'
 import { isEqual }            from 'lodash'
@@ -23,6 +23,8 @@ export const GForm = {
   changeGroup        : (value: Parameters<typeof actionGroupChange>[0]): void => void dispatch(actionGroupChange(value)),
   groupAddStudent    : (studentId: number) => void dispatch(actionGroupAddStudent(studentId)),
   groupRemoveStudent : (studentId: number) => void dispatch(actionGroupRemoveStudent(studentId)),
+  groupCommit        : () => void dispatch(thunkGroupCommit()),
+  groupCreate        : () => void dispatch(actionGroupCreate()),
 }
 
 const selectPartialGroup = ({ groupForm: { groupModified, groupOriginal, addedIds, removedIds } }: TAppState) => ({

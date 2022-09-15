@@ -3,13 +3,15 @@ import {
   PayloadAction
 }                             from '@reduxjs/toolkit'
 import { GGroupByIdQuery }    from '../../other/generated'
-import { thunkLoadGroupByID } from './thunks'
+import { thunkGroupCommit, thunkLoadGroupByID } from './thunks'
 import {
   cloneDeep,
   isNil,
   merge
 } from 'lodash'
 import { actionLogout }       from '../globalActions'
+import { toast } from 'react-toastify'
+import { CREATE } from '../../other/helpers'
 
 
 
@@ -21,11 +23,11 @@ const initialState = {
   groupOriginal : null as null | AGroup,
   groupModified : null as null | AGroup,
 
-  students   : null as null | AStudents,
+  students   : [] as AStudents,
   removedIds : [] as number[],
   addedIds   : [] as number[],
 
-  otherStudents : null as null | AStudents,
+  otherStudents : [] as AStudents,
   
   isEdit : false as boolean,
 
@@ -58,6 +60,14 @@ export const groupFormSlice = createSlice( {
         ? state.addedIds = state.addedIds.filter( id => id !== action.payload )
         : state.addedIds = [ ...state.addedIds, action.payload ]
     },
+    actionGroupCreate : state => {
+      state.groupOriginal = state.groupModified = CREATE.group()
+      state.isEdit = true
+      state.removedIds = []
+      state.addedIds   = []
+      state.students = []
+      state.otherStudents = []
+    },
   },
   extraReducers : builder => builder
       .addCase( actionLogout, () => initialState )
@@ -68,8 +78,8 @@ export const groupFormSlice = createSlice( {
         state.groupModified = null
         state.groupOriginal = null
 
-        state.students = null
-        state.otherStudents = null
+        state.students = []
+        state.otherStudents = []
         
         state.removedIds = []
         state.addedIds   = []
@@ -87,7 +97,19 @@ export const groupFormSlice = createSlice( {
         state.students      = action.payload.students
         
         state.otherStudents = action.payload.otherStudents
-      } ),
+      } )
+      .addCase(thunkGroupCommit.pending, state => {
+        state.groupLoading = true,
+        state.isEdit = false
+      })
+      .addCase(thunkGroupCommit.rejected, (state, action) => {
+        state.groupLoading = false,
+        state.error = `${action.error.message}: ${action.payload}`
+        toast.error(state.error)
+      })
+      .addCase(thunkGroupCommit.fulfilled, state => {
+        state.groupLoading = false
+      }),
 } )
 
 export const {
@@ -95,4 +117,5 @@ export const {
   actionGroupChange,
   actionGroupAddStudent,
   actionGroupToggleEdit,
+  actionGroupCreate
 } = groupFormSlice.actions

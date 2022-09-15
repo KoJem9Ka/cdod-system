@@ -14,7 +14,7 @@ const GroupFooterButtons: React.FC = () => {
       {
         isEdit ?
           <>
-            <FooterButton disabled={!isModified} onClick={() => alert('Сохранено!')}>Сохранить</FooterButton>
+            <FooterButton disabled={!isModified} onClick={GForm.groupCommit}>Сохранить</FooterButton>
             <button data-cancel onClick={() => groupToggleEdit()}>Отмена</button>
           </>
           : <button onClick={groupToggleEdit}>Редактировать</button>

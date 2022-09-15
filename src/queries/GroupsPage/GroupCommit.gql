@@ -1,0 +1,20 @@
+mutation GroupCreate(
+  $group: GroupCreateInput!
+){
+  groupCreate(group: $group){id}
+}
+
+mutation GroupUpdateWithStudies(
+  $group: [GroupUpdateInput!]!
+  $studies: [StudentToCourseUpdateInput!]!
+){
+  groupUpdateMany(groups: $group)
+  studentStudyUpdateMany(studentToCourseUpdate: $studies)
+}
+
+# привязка без изменения полей группы
+mutation GroupAttachStudents(
+  $studies: [StudentToCourseUpdateInput!]!
+){
+  studentStudyUpdateMany(studentToCourseUpdate: $studies)
+}

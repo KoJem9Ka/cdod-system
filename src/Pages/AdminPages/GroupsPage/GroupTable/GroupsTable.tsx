@@ -28,7 +28,7 @@ const GroupsTable: React.FC = () => {
   return (
     <div className={styles.tableMainContainer}>
       <div className={styles.utils}>
-        <TableControl thumb='add' onClick={() => alert('create')}/>
+        <TableControl thumb='add' onClick={GForm.groupCreate}/>
         <TableHeadSeparator/>
       </div>
       <div className={styles.tableSizableContainer}>
