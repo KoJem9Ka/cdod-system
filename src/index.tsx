@@ -1,5 +1,6 @@
 import { ApolloProvider } from '@apollo/client'
 import dayjs from 'dayjs'
+import 'dayjs/locale/ru'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import duration1 from 'dayjs/plugin/duration'
 import relativeTime from 'dayjs/plugin/relativeTime'

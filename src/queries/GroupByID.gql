@@ -29,6 +29,7 @@ query GroupByID($groupID: Int!, $courseID: Int!) {
       name
     }
     teacher{
+      id
       lastName
       firstName
       patronymic

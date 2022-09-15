@@ -1,6 +1,6 @@
 {
   "name": "cdod-system",
-  "version": "0.1.0",
+  "version": "1.0.1",
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.6.9",
@@ -17,6 +17,7 @@
     "axios": "^0.27.2",
     "csstype": "^3.1.0",
     "dayjs": "^1.11.5",
+    "dotenv": "^16.0.2",
     "framer-motion": "^7.3.2",
     "graphql": "^16.6.0",
     "lodash": "^4.17.21",
