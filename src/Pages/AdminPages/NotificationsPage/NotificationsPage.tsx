@@ -1,10 +1,10 @@
 import React from 'react'
-import NotFoundPage from '../../NotFoundPage/NotFoundPage'
+import ComingSoon from '../../ErrorPages/ComingSoon/ComingSoon';
 
 
 
 const NotificationsPage: React.FC = () => (
-  <NotFoundPage/>
+  <ComingSoon/>
 )
 
 export default NotificationsPage

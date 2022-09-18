@@ -5,7 +5,7 @@ import {
   Routes
 }                          from 'react-router-dom'
 import UserLayoutWithPanel from './Layout/BasicLayout/UserLayoutWithPanel'
-import NotFoundPage        from './Pages/NotFoundPage/NotFoundPage'
+import NotFoundPage        from './Pages/ErrorPages/NotFoundPage/NotFoundPage'
 import LoginPage           from './Pages/LoginPage/LoginPage'
 import { CRoutesTest }     from './components/Panel/PanelConfig'
 

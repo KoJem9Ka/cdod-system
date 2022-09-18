@@ -7,13 +7,17 @@ import GroupFooterButtons from './GroupFooterButtons'
 import { strJoinSpace } from '../../../../other/helpers'
 import { HeadStyledText, StyledParagraph } from '../../../../components/UIKit/Forms/styled'
 import GroupSelectTeacher from './Components/GroupSelectTeacher'
-import { GTeachersQuery } from '../../../../other/generated'
+import { GCoursesQuery, GTeachersQuery } from '../../../../other/generated'
 import GroupInputName from './Components/GroupInputName'
+import GroupSelectCourse from './Components/GroupSelectCourse'
 
-type T = GTeachersQuery['teachers'][number]
-export type QGroupTeacher = Pick<T, 'lastName' | 'firstName' | 'patronymic' | 'id'>
+type TTeacher = GTeachersQuery['teachers'][number]
+export type QGroupTeacher = Pick<TTeacher, 'lastName' | 'firstName' | 'patronymic' | 'id'>
+type TCourse = GCoursesQuery['courses'][number]
+export type QGroupCourse = Pick<TCourse, 'id' | 'name'>
 
 const handlerTeacher = (teacher: QGroupTeacher) => GForm.changeGroup({ teacher })
+const handlerCourse = (course: QGroupCourse) => GForm.changeGroup({ course })
 
 const GroupForm: React.FC = () => {	
   const { groupModified, removedIds, addedIds } = useGroupForm( g => [ g.groupModified, g.addedIds, g.removedIds ])
@@ -25,7 +29,8 @@ const GroupForm: React.FC = () => {
       <FormHead>
         <GroupLogo/>
         <div>
-          <StyledParagraph>{groupModified.course.name}</StyledParagraph>
+          {/*<StyledParagraph>{groupModified.course.name}</StyledParagraph>*/}
+          <GroupSelectCourse value={groupModified.course.name} onChange={handlerCourse}/>
           <GroupInputName value={groupModified.name}/>
           <GroupSelectTeacher value={teacherName} onChange={handlerTeacher}/>
           <HeadStyledText>{groupModified.studentsCount - removedIds.length + addedIds.length} уч.</HeadStyledText>

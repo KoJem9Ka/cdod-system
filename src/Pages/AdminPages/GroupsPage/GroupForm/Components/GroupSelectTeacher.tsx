@@ -2,21 +2,24 @@ import React from 'react'
 import groupForm, { QGroupTeacher } from '../GroupForm'
 import { GForm, useGroupForm } from '../../../../../store/groupForm/hooks'
 import { GTeachersQuery, useTeachersQuery } from '../../../../../other/generated'
-import { strJoinSpace } from '../../../../../other/helpers'
+import { NON_EXISTING_ID, strJoinSpace } from '../../../../../other/helpers'
 import { HeadStyledSelect, HeadStyledText } from '../../../../../components/UIKit/Forms/styled'
 
 
-type GroupSelectProps = {
+type GroupSelectTeacherProps = {
   value: string
   onChange: (teacher: QGroupTeacher)=> void
 }
 
-const GroupSelectTeacher: React.FC<GroupSelectProps> = ({ value, onChange }) => {
-  const { isEdit } = useGroupForm(g => g.isEdit)
+const GroupSelectTeacher: React.FC<GroupSelectTeacherProps> = ({ value, onChange }) => {
+  const { isEdit, groupOriginal, groupModified } = useGroupForm(g => [ g.isEdit, g.groupOriginal, g.groupModified ])
   const { data: { teachers: teachers } = { teachers: [] } } = useTeachersQuery()
   
+  const isNew = () => groupModified?.id === NON_EXISTING_ID
+  
   return isEdit ? (
-    <HeadStyledSelect onChange={e => onChange({ id: +e.currentTarget.value})}>
+    <HeadStyledSelect onChange={e => onChange({ id: +e.currentTarget.value })} value={''}>
+      <option disabled={groupModified?.teacher.id !== NON_EXISTING_ID}>Выбор:&nbsp;</option>
       {
         teachers.map(teacher => {
           const teacherName = strJoinSpace(teacher.lastName, teacher.firstName && teacher.firstName[0], teacher.patronymic && teacher.patronymic[0])
@@ -30,7 +33,7 @@ const GroupSelectTeacher: React.FC<GroupSelectProps> = ({ value, onChange }) => 
     : (
       <HeadStyledText>{value}</HeadStyledText>
     )
-  
+	
 }
 
 export default GroupSelectTeacher

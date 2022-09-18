@@ -11,7 +11,7 @@ import {
 } from 'lodash'
 import { actionLogout }       from '../globalActions'
 import { toast } from 'react-toastify'
-import { CREATE } from '../../other/helpers'
+import { CREATE, NON_EXISTING_ID } from '../../other/helpers'
 
 
 
@@ -46,6 +46,11 @@ export const groupFormSlice = createSlice( {
       state.removedIds = []
       state.addedIds   = []
       state.groupModified = cloneDeep(state.groupOriginal)
+      if (state.groupOriginal?.id === NON_EXISTING_ID) {
+        state.groupOriginal = null
+        state.groupModified = null
+      }
+      
     },
     actionGroupChange : ( state, action: PayloadAction<Partial<Omit<AGroup, 'id'>>> ) => {
       merge( state.groupModified, action.payload )
@@ -117,5 +122,5 @@ export const {
   actionGroupChange,
   actionGroupAddStudent,
   actionGroupToggleEdit,
-  actionGroupCreate
+  actionGroupCreate,
 } = groupFormSlice.actions

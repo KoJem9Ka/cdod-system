@@ -1,11 +1,10 @@
 import React from 'react'
-import Workspace from '../../../HOC/Workspace/Workspace'
-import NotFoundPage from '../../NotFoundPage/NotFoundPage'
+import ComingSoon from '../../ErrorPages/ComingSoon/ComingSoon';
 
 
 
 const SchedulePage: React.FC = () => (
-  <NotFoundPage/>
+  <ComingSoon/>
 )
 
 export default SchedulePage

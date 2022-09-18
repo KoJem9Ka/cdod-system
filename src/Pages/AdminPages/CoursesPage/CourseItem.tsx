@@ -89,7 +89,6 @@ const CourseItem: React.FC<CourseItemProps> = ({ course }) => {
         </ImgBlock>
         <TextBlock>
           <span>{course.price ? toRub.format(course.price) : '-'}</span>
-          <span>c 8 лет</span>
         </TextBlock>
       </Header>
       <CourseTopicsBlock color={course.color || 'beige'} programId={course.programId}/>
