@@ -11,16 +11,13 @@ type GroupSelectCourseProps = {
 }
 
 const GroupSelectCourse: React.FC <GroupSelectCourseProps> = ({ value, onChange }) => {
-  const { isEdit, groupOriginal, groupModified } = useGroupForm(g => [ g.isEdit, g.groupOriginal, g.groupModified ])
+  const { isEdit, groupModified } = useGroupForm(g => [ g.isEdit, g.groupOriginal, g.groupModified ])
   const { data: { courses: courses } = { courses: [] } } = useCoursesQuery()
   
-  //TODO: Проверка по groupOriginal или по groupModified..?
   const isNew = () => groupModified?.id === NON_EXISTING_ID
   
-  console.log(courses)
-	
   return isEdit && isNew() ? (
-    <HeadStyledSelect onChange={e => onChange({ id: +e.currentTarget.value, name: '' })}>
+    <HeadStyledSelect value={groupModified?.course.id} onChange={e => onChange({ id: +e.currentTarget.value, name: '' })}>
       <option disabled={groupModified?.course.id !== NON_EXISTING_ID}>Выбор:&nbsp;</option>
       {
         courses.map(course => (

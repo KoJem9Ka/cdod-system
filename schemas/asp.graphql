@@ -204,7 +204,7 @@ type TeacherType {
   address: String
   birthday: Date
   education: String
-  email: String!
+  email: String
   firstName: String
   id: Int!
   inn: String
@@ -214,13 +214,15 @@ type TeacherType {
   passportDate: Date
   passportIssue: String
   passportNo: String
-  password: String!
+  password: String
   patronymic: String
   phoneNumber: String
   post: String
   postId: Int
   snils: String
-  workPlace: String!
+  wageRate: WageRate
+  wageRateId: Int
+  workPlace: String
 }
 
 type TeachersWorkTimeType {
@@ -235,6 +237,11 @@ type TokenResponseType {
   accessToken: String
   message: String
   refreshToken: String
+}
+
+type WageRate {
+  id: Int!
+  rate: Float!
 }
 
 type WageRateType {
@@ -825,6 +832,7 @@ input TeacherTypeFilterInput {
   phoneNumber: StringOperationFilterInput
   postId: ComparableNullableOfInt32OperationFilterInput
   snils: StringOperationFilterInput
+  wageRateId: ComparableNullableOfInt32OperationFilterInput
   workPlace: StringOperationFilterInput
 }
 
@@ -847,6 +855,7 @@ input TeacherTypeSortInput {
   phoneNumber: SortEnumType
   postId: SortEnumType
   snils: SortEnumType
+  wageRateId: SortEnumType
   workPlace: SortEnumType
 }
 

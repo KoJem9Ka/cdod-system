@@ -13,7 +13,7 @@ const GroupsTable: React.FC = () => {
   const { data: { groups: data } = { groups: [] } } = useGroupsQuery()
 	
   const { groupOriginal } = useGroupForm(g => [ g.groupOriginal ])
-  const { groupSelect } = GForm
+  const { select } = GForm
   
   const table = useReactTable({
     data,
@@ -28,7 +28,7 @@ const GroupsTable: React.FC = () => {
   return (
     <div className={styles.tableMainContainer}>
       <div className={styles.utils}>
-        <TableControl thumb='add' onClick={GForm.groupCreate}/>
+        <TableControl thumb='add' onClick={GForm.create}/>
         <TableHeadSeparator/>
       </div>
       <div className={styles.tableSizableContainer}>
@@ -57,7 +57,7 @@ const GroupsTable: React.FC = () => {
               <tr
                 key={row.id}
                 className = {row.original.id === groupOriginal?.id ? styles.selected : undefined}
-                onClick={() => groupSelect(row.original.id, row.original.course.id )}
+                onClick={() => select(row.original.id, row.original.course.id )}
               >
                 {row.getVisibleCells().map(cell => (
                   <td key={cell.id}>

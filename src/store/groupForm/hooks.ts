@@ -3,7 +3,7 @@ import {
   useAppDispatch,
   useAppSelector
 } from '../store'
-import { thunkGroupCommit, thunkLoadGroupByID } from './thunks'
+import { thunkGroupCommit, thunkLoadGroupByID, thunkLoadOtherStudents } from './thunks'
 import { GGroupByIdQuery }    from '../../other/generated'
 import {
   actionGroupAddStudent,
@@ -18,13 +18,14 @@ type AGroup = GGroupByIdQuery['group']
 const { dispatch } = store
 
 export const GForm = {
-  groupSelect        : (groupID: number, courseID: number) => void dispatch(thunkLoadGroupByID({ groupID, courseID })),
-  groupToggleEdit    : () => void dispatch(actionGroupToggleEdit()),
-  changeGroup        : (value: Parameters<typeof actionGroupChange>[0]): void => void dispatch(actionGroupChange(value)),
-  groupAddStudent    : (studentId: number) => void dispatch(actionGroupAddStudent(studentId)),
-  groupRemoveStudent : (studentId: number) => void dispatch(actionGroupRemoveStudent(studentId)),
-  groupCommit        : () => void dispatch(thunkGroupCommit()),
-  groupCreate        : () => void dispatch(actionGroupCreate()),
+  select            : (groupID: number, courseID: number) => void dispatch(thunkLoadGroupByID({ groupID, courseID })),
+  toggleEdit        : () => void dispatch(actionGroupToggleEdit()),
+  change            : (value: Parameters<typeof actionGroupChange>[0]): void => void dispatch(actionGroupChange(value)),
+  addStudent        : (studentId: number) => void dispatch(actionGroupAddStudent(studentId)),
+  removeStudent     : (studentId: number) => void dispatch(actionGroupRemoveStudent(studentId)),
+  commit            : () => void dispatch(thunkGroupCommit()),
+  create            : () => void dispatch(actionGroupCreate()),
+  loadOtherStudents : (courseID: number) => void dispatch(thunkLoadOtherStudents( courseID )),
 }
 
 const selectPartialGroup = ({ groupForm: { groupModified, groupOriginal, addedIds, removedIds } }: TAppState) => ({

@@ -2,8 +2,8 @@ import {
   createSlice,
   PayloadAction
 }                             from '@reduxjs/toolkit'
-import { GGroupByIdQuery }    from '../../other/generated'
-import { thunkGroupCommit, thunkLoadGroupByID } from './thunks'
+import { GContractState, GGroupByIdQuery } from '../../other/generated'
+import { thunkGroupCommit, thunkLoadGroupByID, thunkLoadOtherStudents } from './thunks'
 import {
   cloneDeep,
   isNil,
@@ -17,6 +17,7 @@ import { CREATE, NON_EXISTING_ID } from '../../other/helpers'
 
 type AGroup = GGroupByIdQuery['group']
 type AStudents = GGroupByIdQuery['students']
+type AOtherStudents = GGroupByIdQuery['otherStudents']
 
 
 const initialState = {
@@ -27,7 +28,7 @@ const initialState = {
   removedIds : [] as number[],
   addedIds   : [] as number[],
 
-  otherStudents : [] as AStudents,
+  otherStudents : [] as AOtherStudents,
   
   isEdit : false as boolean,
 
@@ -85,7 +86,7 @@ export const groupFormSlice = createSlice( {
 
         state.students = []
         state.otherStudents = []
-        
+
         state.removedIds = []
         state.addedIds   = []
 
@@ -99,10 +100,24 @@ export const groupFormSlice = createSlice( {
         state.groupLoading  = false
         state.groupOriginal = action.payload.group
         state.groupModified = action.payload.group
-        state.students      = action.payload.students
-        
+        state.students      = action.payload.students       
         state.otherStudents = action.payload.otherStudents
-      } )
+      })
+      .addCase(thunkLoadOtherStudents.pending, state => {
+        state.groupLoading = true
+        state.error = null
+        state.otherStudents = []
+        state.addedIds = []
+      })
+      .addCase(thunkLoadOtherStudents.rejected, (state, action) => {
+        state.groupLoading = false
+        state.error        = `${action.error.message}: ${action.payload}`
+      })
+      //TODO: убрать фильтр
+      .addCase(thunkLoadOtherStudents.fulfilled, (state, action) => {
+        state.groupLoading = false
+        state.otherStudents = action.payload.otherStudents.filter(st => st.info.some(study => study.contractState === GContractState.Studying || study.contractState === GContractState.Consideration))
+      })
       .addCase(thunkGroupCommit.pending, state => {
         state.groupLoading = true,
         state.isEdit = false

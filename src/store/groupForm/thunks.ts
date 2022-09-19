@@ -2,13 +2,18 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import { TAppDispatch, TAppState, TAppThunkConfig } from '../store'
 import { ApolloQueryResult } from '@apollo/client'
 import {
-  GContractState,
+  GContractState, GGroupAttachStudentsMutationFn,
   GGroupByIdQuery,
   GGroupByIdQueryVariables,
-  GGroupCreateInput,
-  GGroupUpdateInput, GGroupUpdateWithStudiesMutationFn,
-  GroupByIdDocument, GroupsDocument, GroupUpdateWithStudiesDocument,
-  GStudentToCourseUpdateInput
+  GGroupCreateInput, GGroupCreateMutationFn,
+  GGroupUpdateInput,
+  GGroupUpdateWithStudiesMutationFn,
+  GOtherStudentsByCourseIdQuery,
+  GOtherStudentsByCourseIdQueryVariables, GroupAttachStudentsDocument,
+  GroupByIdDocument, GroupCreateDocument,
+  GroupsDocument,
+  GroupUpdateWithStudiesDocument,
+  GStudentToCourseUpdateInput, OtherStudentsByCourseIdDocument
 } from '../../other/generated'
 import { client } from '../../queries/client'
 import { toast } from 'react-toastify'
@@ -39,6 +44,20 @@ export const thunkLoadGroupByID = createAsyncThunk<GGroupByIdQuery, LoadGroupByI
     return queryResult.data
   }
 )
+
+export const thunkLoadOtherStudents = createAsyncThunk<GOtherStudentsByCourseIdQuery, number, TAppThunkConfig>('groupForm/loadOtherStudents', async (courseID, { rejectWithValue }) => {
+  let queryResult: ApolloQueryResult<GOtherStudentsByCourseIdQuery>
+  try {
+    queryResult = await client.query<GOtherStudentsByCourseIdQuery, GOtherStudentsByCourseIdQueryVariables>({
+      query     : OtherStudentsByCourseIdDocument,
+      variables : { courseID },
+    })
+  }
+  catch (e) {
+    return rejectWithValue(`Произошла ошибка при загрузке студентов из курса с id = ${courseID}, error: ${e}`)
+  }
+  return queryResult.data
+})
 
 export const thunkGroupCommit = createAsyncThunk('groupForm/commit', async (_, {
   rejectWithValue,
@@ -88,8 +107,21 @@ export const thunkGroupCommit = createAsyncThunk('groupForm/commit', async (_, {
     
     await client.resetStore()
     
+    let updatableGroupId = gM.id
+    
     if (IS_CLIENT_TEMP_ID(gM.id)) {
-      console.log('ну..................')
+      const res = await (client.mutate as GGroupCreateMutationFn)({
+        mutation  : GroupCreateDocument,
+        variables : { group: GroupCreateInput },
+      })
+      if (isNil(res.data)) return rejectWithValue('Не удалось создать группу')
+      updatableGroupId = res.data.groupCreate.id
+      StudentsToCourseInput.forEach(el => el.groupId = updatableGroupId)
+      await (client.mutate as GGroupAttachStudentsMutationFn)({
+        mutation       : GroupAttachStudentsDocument,
+        variables      : { studies: StudentsToCourseInput },
+        refetchQueries : [ { query: GroupsDocument } ],
+      })
     }
     else {
       await (client.mutate as GGroupUpdateWithStudiesMutationFn)({
@@ -99,7 +131,7 @@ export const thunkGroupCommit = createAsyncThunk('groupForm/commit', async (_, {
       })
     }
   
-    await (dispatch as TAppDispatch)(thunkLoadGroupByID({ groupID: gM.id, courseID: gM.course.id, refetch: true }))
+    await (dispatch as TAppDispatch)(thunkLoadGroupByID({ groupID: updatableGroupId, courseID: gM.course.id, refetch: true }))
     toast('Успешная отправка!')
   }
   catch (e) {

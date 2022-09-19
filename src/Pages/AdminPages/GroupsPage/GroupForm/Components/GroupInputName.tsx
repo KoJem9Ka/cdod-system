@@ -8,9 +8,9 @@ type GroupInputNameProps = {
 
 const GroupInputName: React.FC<GroupInputNameProps> = ({ value }) => {
   const { isEdit } = useGroupForm(g => g.isEdit)
-  const { changeGroup } = GForm
+  const { change } = GForm
     
-  return isEdit ? <StyledLineEdit value={value} placeholder={'Название'} onChange={e => changeGroup({ name: e.currentTarget.value })}/>
+  return isEdit ? <StyledLineEdit value={value} placeholder={'Название'} onChange={e => change({ name: e.currentTarget.value })}/>
     : <HeadStyledText>{value}</HeadStyledText>
 }
 

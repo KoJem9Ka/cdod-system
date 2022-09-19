@@ -27,7 +27,7 @@ type GroupBodyListItem = {
 const GroupBodyListItem: React.FC<GroupBodyListItem> = ({ student, index, other }) => {
   
   const { isEdit, removedIds, addedIds } = useGroupForm(g => [ g.isEdit, g.removedIds, g.addedIds ])
-  const { groupRemoveStudent, groupAddStudent } = GForm
+  const { removeStudent, addStudent } = GForm
   
   return (
     <Item>
@@ -35,10 +35,10 @@ const GroupBodyListItem: React.FC<GroupBodyListItem> = ({ student, index, other 
         isEdit ? <span>
           {
             other
-              ? <Icons thumb={addedIds.includes(student.id) ? 'studentAdded' : 'studentAdd'} onClick={() => groupAddStudent(student.id)}/>
+              ? <Icons thumb={addedIds.includes(student.id) ? 'studentAdded' : 'studentAdd'} onClick={() => addStudent(student.id)}/>
               : <Icons
                 thumb={removedIds.includes(student.id) ? 'studentRemoved' : 'studentRemove'}
-                onClick={() => groupRemoveStudent(student.id)
+                onClick={() => removeStudent(student.id)
                 }
               />
           }

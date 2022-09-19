@@ -16,13 +16,16 @@ export type QGroupTeacher = Pick<TTeacher, 'lastName' | 'firstName' | 'patronymi
 type TCourse = GCoursesQuery['courses'][number]
 export type QGroupCourse = Pick<TCourse, 'id' | 'name'>
 
-const handlerTeacher = (teacher: QGroupTeacher) => GForm.changeGroup({ teacher })
-const handlerCourse = (course: QGroupCourse) => GForm.changeGroup({ course })
+const handlerTeacher = (teacher: QGroupTeacher) => GForm.change({ teacher })
+const handlerCourse = (course: QGroupCourse) => {
+  GForm.change({ course })
+  GForm.loadOtherStudents(course.id)
+}
 
 const GroupForm: React.FC = () => {	
   const { groupModified, removedIds, addedIds } = useGroupForm( g => [ g.groupModified, g.addedIds, g.removedIds ])
   if (!groupModified) return <></>  
-  const teacherName = strJoinSpace(groupModified.teacher.lastName, groupModified.teacher.firstName && groupModified.teacher.firstName[0], groupModified.teacher.patronymic && groupModified.teacher.patronymic[0])
+  const teacherName = strJoinSpace(groupModified.teacher.lastName, groupModified.teacher.firstName && groupModified.teacher.firstName[0] + '.', groupModified.teacher.patronymic && groupModified.teacher.patronymic[0] + '.')
   
   return (
     <Form>

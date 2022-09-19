@@ -1,25 +1,3 @@
-#query GroupByID($groupID: ID!) {
-#  group: Group(id: $groupID) {
-#    id
-#    name
-#    course: Course {
-#      name
-#    }
-#    teacher: Teacher {
-#      lastName
-#      firstName
-#      patronymic
-#    }
-#    students: Infos {
-#      Student {
-#        id
-#        lastName
-#        firstName
-#        patronymic
-#      }
-#    }
-#  }
-#}
 query GroupByID($groupID: Int!, $courseID: Int!) {
   group(id: $groupID) {
     id
@@ -52,15 +30,24 @@ query GroupByID($groupID: Int!, $courseID: Int!) {
     }
   }
   otherStudents: students (groupId: $groupID, courseId: $courseID){
-    id
-    firstName
-    lastName
-    patronymic
-    birthDate
-    info {
-      courseId
-      contractState
-      attempt
-    }
+    ...otherStudentsFields
+  }
+}
+
+query OtherStudentsByCourseId ($courseID: Int!){
+  otherStudents: students(courseId: $courseID){
+    ...otherStudentsFields
+  }
+}
+fragment otherStudentsFields on StudentType{
+  id
+  firstName
+  lastName
+  patronymic
+  birthDate
+  info {
+    courseId
+    contractState
+    attempt
   }
 }

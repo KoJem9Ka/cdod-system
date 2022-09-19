@@ -18,11 +18,11 @@ const GroupSelectTeacher: React.FC<GroupSelectTeacherProps> = ({ value, onChange
   const isNew = () => groupModified?.id === NON_EXISTING_ID
   
   return isEdit ? (
-    <HeadStyledSelect onChange={e => onChange({ id: +e.currentTarget.value })} value={''}>
-      <option disabled={groupModified?.teacher.id !== NON_EXISTING_ID}>Выбор:&nbsp;</option>
+    <HeadStyledSelect value={groupModified?.teacher.id} onChange={e => onChange({ id: +e.currentTarget.value })}>
+      <option disabled={groupModified?.teacher.id !== NON_EXISTING_ID} value={NON_EXISTING_ID}>Выбор:&nbsp;</option>
       {
         teachers.map(teacher => {
-          const teacherName = strJoinSpace(teacher.lastName, teacher.firstName && teacher.firstName[0], teacher.patronymic && teacher.patronymic[0])
+          const teacherName = strJoinSpace(teacher.lastName, teacher.firstName && teacher.firstName[0] + '.', teacher.patronymic && teacher.patronymic[0] + '.')
           return (
             <option key={teacher.id} value={teacher.id}>{teacherName}</option>
           )
