@@ -30,7 +30,7 @@ The application uses custom eslint config for code quality support.
 ## Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using
-the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) TypeScript template.
+[Redux Toolkit](https://redux-toolkit.js.org/) & [TypeScript](https://www.typescriptlang.org/) template.
 
 `create-react-app --template typescript`
 or

@@ -1,12 +1,11 @@
-import React from 'react'
-import { useGroupsQuery } from '../../../../other/generated'
 import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
-import { columns } from './configColumns'
-import styles from '../../../../styles/tableStyles.module.scss'
-import { GForm, useGroupForm } from '../../../../store/groupForm/hooks'
-import { isEmpty } from 'lodash'
+import React from 'react'
 import { TableControl } from '../../../../components/UIKit/Tables/subcomponents/TableControl'
 import { TableHeadSeparator } from '../../../../components/UIKit/Tables/subcomponents/TableHeadSeparator'
+import { useGroupsQuery } from '../../../../other/generated'
+import { GForm, useGroupForm } from '../../../../store/groupForm/hooks'
+import styles from '../../../../styles/tableStyles.module.scss'
+import { columns } from './configColumns'
 
 const GroupsTable: React.FC = () => {
 	
@@ -22,8 +21,8 @@ const GroupsTable: React.FC = () => {
     getCoreRowModel : getCoreRowModel(),
   })
   
-  if ( isEmpty( data ) )
-    return <></>
+  // if ( isEmpty( data ) )
+  //   return <></>
   
   return (
     <div className={styles.tableMainContainer}>
